@@ -12,6 +12,6 @@ steps:
     version: '8.x'
 - uses: subosito/flutter-action@master
   with:
-    version: 'v1.7.8+hotfix.4'
+    version: '1.7.8+hotfix.4'
 - run: flutter build apk
 ```

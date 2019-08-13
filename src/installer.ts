@@ -46,7 +46,7 @@ export async function getFlutter(
     const sdkDir = await extractDownload(sdkFile, tempDir);
     core.debug(`Flutter sdk extracted to ${sdkDir}`);
 
-    toolPath = await tc.cacheDir(sdkDir, 'Flutter', `${version}-${channel}`);
+    toolPath = await tc.cacheDir(sdkDir, 'Flutter', version);
   }
 
   core.exportVariable('FLUTTER_HOME', toolPath);
@@ -72,7 +72,7 @@ function getDownloadInfo(
 ): {version: string; url: string} {
   const os = osName();
   const ext = extName();
-  const url = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${os}/flutter_${os}_${version}-${channel}.${ext}`;
+  const url = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
 
   return {
     version,
