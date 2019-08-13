@@ -1,5 +1,5 @@
-name: 'Setup Flutter environment'
-description: 'Setup your runner with Flutter'
+name: 'Flutter Action'
+description: 'Setup your runner with Flutter environment'
 author: 'Alif Rachmawadi'
 inputs:
   version:
