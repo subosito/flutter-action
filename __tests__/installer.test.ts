@@ -3,19 +3,23 @@ import fs = require('fs');
 import path = require('path');
 
 const toolDir = path.join(__dirname, 'runner', 'tools');
+const tempDir = path.join(__dirname, 'runner', 'temp');
 
 process.env['RUNNER_TOOL_CACHE'] = toolDir;
+process.env['RUNNER_TEMP'] = tempDir;
 
 import * as installer from '../src/installer';
 
 describe('installer tests', () => {
   beforeAll(async () => {
     await io.rmRF(toolDir);
+    await io.rmRF(tempDir);
   }, 300000);
 
   afterAll(async () => {
     try {
       await io.rmRF(toolDir);
+      await io.rmRF(tempDir);
     } catch {
       console.log('Failed to remove test directories');
     }
