@@ -24,13 +24,16 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.0.0",
+    "@actions/exec": "^1.0.0",
     "@actions/io": "^1.0.0",
-    "@actions/tool-cache": "^1.0.0"
+    "@actions/tool-cache": "^1.0.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "@types/node": "^12.0.4",
     "@types/semver": "^6.0.0",
+    "@types/uuid": "^3.4.5",
     "husky": "^3.0.0",
     "jest": "^24.8.0",
     "jest-circus": "^24.7.1",

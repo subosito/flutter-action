@@ -3,6 +3,8 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 import * as path from 'path';
+import uuidV4 from 'uuid/v4';
+import {exec} from '@actions/exec/lib/exec';
 
 const IS_WINDOWS = process.platform === 'win32';
 const IS_DARWIN = process.platform === 'darwin';
@@ -115,8 +117,39 @@ async function extractFile(file: string, destDir: string): Promise<void> {
   }
 
   if ('tar.xz' === extName()) {
-    await tc.extract7z(file, destDir);
+    await extractTarXz(file, destDir);
   } else {
     await tc.extractZip(file, destDir);
   }
+}
+
+/**
+ * Extract a tar.xz
+ *
+ * @param file     path to the tar.xz
+ * @param dest     destination directory. Optional.
+ * @returns        path to the destination directory
+ */
+export async function extractTarXz(
+  file: string,
+  dest?: string
+): Promise<string> {
+  if (!file) {
+    throw new Error("parameter 'file' is required");
+  }
+
+  dest = dest || (await _createExtractFolder(dest));
+  const tarPath: string = await io.which('tar', true);
+  await exec(`"${tarPath}"`, ['xC', dest, '-f', file]);
+
+  return dest;
+}
+
+async function _createExtractFolder(dest?: string): Promise<string> {
+  if (!dest) {
+    dest = path.join(tempDirectory, uuidV4());
+  }
+
+  await io.mkdirP(dest);
+  return dest;
 }
