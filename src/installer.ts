@@ -119,7 +119,11 @@ async function extractFile(file: string, destDir: string): Promise<void> {
   if ('tar.xz' === extName()) {
     await extractTarXz(file, destDir);
   } else {
-    await tc.extractZip(file, destDir);
+    if (IS_DARWIN) {
+      await extractZipDarwin(file, destDir);
+    } else {
+      await tc.extractZip(file, destDir);
+    }
   }
 }
 
@@ -152,4 +156,15 @@ async function _createExtractFolder(dest?: string): Promise<string> {
 
   await io.mkdirP(dest);
   return dest;
+}
+
+async function extractZipDarwin(file: string, dest: string): Promise<void> {
+  const unzipPath = path.join(
+    __dirname,
+    '..',
+    'scripts',
+    'externals',
+    'unzip-darwin'
+  );
+  await exec(`"${unzipPath}"`, [file], {cwd: dest});
 }
