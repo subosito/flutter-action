@@ -12,3 +12,6 @@ inputs:
 runs:
   using: 'node12'
   main: 'lib/index.js'
+branding:
+  icon: 'maximize'
+  color: 'blue'
