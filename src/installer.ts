@@ -114,13 +114,9 @@ async function extractFile(file: string, destDir: string): Promise<void> {
     throw new Error(`Failed to extract ${file} - it is a directory`);
   }
 
-  const ext = extName();
-
-  if ('tar.xz' === ext) {
-    await tc.extractTar(file, destDir);
-  } else if ('zip' === ext) {
-    await tc.extractZip(file, destDir);
-  } else {
+  if ('tar.xz' === extName()) {
     await tc.extract7z(file, destDir);
+  } else {
+    await tc.extractZip(file, destDir);
   }
 }
