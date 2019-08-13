@@ -1,0 +1,14 @@
+name: 'Setup Flutter environment'
+description: 'Setup your runner with Flutter'
+author: 'Alif Rachmawadi'
+inputs:
+  version:
+    description: 'The Flutter version to make available on the path'
+    required: true
+  channel:
+    description: 'The Flutter build release channel'
+    required: false
+    default: 'stable'
+runs:
+  using: 'node12'
+  main: 'lib/index.js'
