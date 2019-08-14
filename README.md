@@ -10,7 +10,7 @@ steps:
 - uses: actions/setup-java@v1
   with:
     java-version: '12.x'
-- uses: subosito/flutter-action@master
+- uses: subosito/flutter-action@v1.0.1
   with:
     version: '1.7.8+hotfix.4'
 - run: flutter pub get
@@ -30,10 +30,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-java@v1.0.1
+      - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@master
+      - uses: subosito/flutter-action@v1.0.1
         with:
           version: '1.7.8+hotfix.4'
       - run: flutter pub get
