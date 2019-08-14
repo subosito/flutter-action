@@ -27,7 +27,12 @@ describe('installer tests', () => {
 
   it('Downloads flutter', async () => {
     await installer.getFlutter('1.7.8+hotfix.4', 'stable');
-    const sdkDir = path.join(toolDir, 'Flutter', '1.7.8', 'x64');
+    const sdkDir = path.join(
+      toolDir,
+      'Flutter',
+      '1.7.8-hotfix.4-stable',
+      'x64'
+    );
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
@@ -35,7 +40,7 @@ describe('installer tests', () => {
 
   it('Downloads flutter from beta channel', async () => {
     await installer.getFlutter('1.8.3', 'beta');
-    const sdkDir = path.join(toolDir, 'Flutter', '1.8.3', 'x64');
+    const sdkDir = path.join(toolDir, 'Flutter', '1.8.3-beta', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
