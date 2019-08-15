@@ -35,7 +35,7 @@ export async function getFlutter(
   // make semver compatible, eg: 1.7.8+hotfix.4 -> 1.7.8-hotfix.4
   const semver = version.replace('+', '-');
   const cleanver = `${semver}-${channel}`;
-  let toolPath = tc.find('Flutter', cleanver);
+  let toolPath = tc.find('flutter', cleanver);
 
   if (toolPath) {
     core.debug(`Tool found in cache ${toolPath}`);
@@ -49,7 +49,7 @@ export async function getFlutter(
     const sdkDir = await extractDownload(sdkFile, tempDir);
     core.debug(`Flutter sdk extracted to ${sdkDir}`);
 
-    toolPath = await tc.cacheDir(sdkDir, 'Flutter', cleanver);
+    toolPath = await tc.cacheDir(sdkDir, 'flutter', cleanver);
   }
 
   core.exportVariable('FLUTTER_HOME', toolPath);
