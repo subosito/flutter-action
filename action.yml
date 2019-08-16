@@ -4,7 +4,7 @@ author: 'Alif Rachmawadi'
 inputs:
   version:
     description: 'The Flutter version to make available on the path'
-    required: true
+    required: false
   channel:
     description: 'The Flutter build release channel'
     required: false
