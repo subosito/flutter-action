@@ -45,4 +45,14 @@ describe('installer tests', () => {
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
   }, 100000);
+
+  it('Throws if no location contains correct flutter version', async () => {
+    let thrown = false;
+    try {
+      await installer.getFlutter('1000.0', 'dev');
+    } catch {
+      thrown = true;
+    }
+    expect(thrown).toBe(true);
+  });
 });
