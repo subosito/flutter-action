@@ -1,8 +1,8 @@
 {
   "name": "flutter-action",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
-  "description": "flutter action",
+  "description": "Flutter environment for use in actions",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
