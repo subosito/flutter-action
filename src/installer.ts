@@ -4,6 +4,7 @@ import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as restm from 'typed-rest-client/RestClient';
+import * as semver from 'semver';
 import uuidV4 from 'uuid/v4';
 import {exec} from '@actions/exec/lib/exec';
 
@@ -216,6 +217,24 @@ async function getLatestVersion(
 
   if (!storage) {
     throw new Error('unable to get latest version');
+  }
+
+  if (version.endsWith('.x')) {
+    const sver = version.slice(0, version.length - 2);
+    const releases = storage.releases.filter(
+      release =>
+        release.version.startsWith(`v${sver}`) && release.channel === channel
+    );
+    const versions = releases.map(release =>
+      release.version.slice(1, release.version.length)
+    );
+    const sortedVersions = versions.sort(semver.rcompare);
+
+    core.debug(
+      `latest version of ${version} from channel ${channel} is ${sortedVersions[0]}`
+    );
+
+    return sortedVersions[0];
   }
 
   const channelVersion = storage.releases.find(
