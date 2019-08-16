@@ -3,8 +3,9 @@ import * as installer from './installer';
 
 async function run() {
   try {
-    const version = core.getInput('version', {required: false}) || '';
-    const channel = core.getInput('channel', {required: false}) || 'stable';
+    const version =
+      core.getInput('version') || core.getInput('flutter-version') || '';
+    const channel = core.getInput('channel') || 'stable';
 
     await installer.getFlutter(version, channel);
   } catch (error) {

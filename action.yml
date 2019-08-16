@@ -2,13 +2,16 @@ name: 'Flutter Action'
 description: 'Setup your runner with Flutter environment'
 author: 'Alif Rachmawadi'
 inputs:
-  version:
+  flutter-version:
     description: 'The Flutter version to make available on the path'
     required: false
   channel:
     description: 'The Flutter build release channel'
     required: false
     default: 'stable'
+  # Deprecated option, do not use. Will not be supported after October 1, 2019
+  version:
+    description: 'Deprecated. Use flutter-version instead. Will not be supported after October 1, 2019'
 runs:
   using: 'node12'
   main: 'lib/index.js'
