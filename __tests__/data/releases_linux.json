@@ -1,0 +1,1522 @@
+{
+  "base_url": "https://storage.googleapis.com/flutter_infra/releases",
+  "current_release": {
+    "beta": "e4ebcdf6f4facee5779c38a04d91d08dc58ea7a4",
+    "dev": "760635e6dbf9180222171ac189199982a65cf608",
+    "stable": "20e59316b8b8474554b38493b8ca888794b0234a"
+  },
+  "releases": [
+    {
+      "hash": "760635e6dbf9180222171ac189199982a65cf608",
+      "channel": "dev",
+      "version": "v1.9.0",
+      "release_date": "2019-08-15T22:34:12.938596Z",
+      "archive": "dev/linux/flutter_linux_v1.9.0-dev.tar.xz",
+      "sha256": "e351dd48c477a1cdfd85fd5e4f8fa6b88483265c22e2097e595eaa71c44044dc"
+    },
+    {
+      "hash": "e4ebcdf6f4facee5779c38a04d91d08dc58ea7a4",
+      "channel": "beta",
+      "version": "v1.8.3",
+      "release_date": "2019-08-08T21:41:47.801072Z",
+      "archive": "beta/linux/flutter_linux_v1.8.3-beta.tar.xz",
+      "sha256": "87520c7c6021e8d260e4084f2d1ea9000d7264fcdccd5dfb0d135181ca9b6c4e"
+    },
+    {
+      "hash": "954714c9674af0da6530795407fc66179fdaef88",
+      "channel": "dev",
+      "version": "v1.8.4",
+      "release_date": "2019-08-07T17:21:09.951106Z",
+      "archive": "dev/linux/flutter_linux_v1.8.4-dev.tar.xz",
+      "sha256": "1a244298c909700f371971cdfc0d4fb3d113afc875cd318deb01a3fff3390b13"
+    },
+    {
+      "hash": "e4ebcdf6f4facee5779c38a04d91d08dc58ea7a4",
+      "channel": "dev",
+      "version": "v1.8.3",
+      "release_date": "2019-07-31T20:26:55.826423Z",
+      "archive": "dev/linux/flutter_linux_v1.8.3-dev.tar.xz",
+      "sha256": "9d3b156265be427dadccd96c090839a4af4894e8d42f43937cd428ca86288400"
+    },
+    {
+      "hash": "20e59316b8b8474554b38493b8ca888794b0234a",
+      "channel": "stable",
+      "version": "v1.7.8+hotfix.4",
+      "release_date": "2019-07-24T16:14:50.488967Z",
+      "archive": "stable/linux/flutter_linux_v1.7.8+hotfix.4-stable.tar.xz",
+      "sha256": "c7d010c8037e64d2d3e2957f83bd8bee604ff6014230b09b8c043ef039538bd7"
+    },
+    {
+      "hash": "20e59316b8b8474554b38493b8ca888794b0234a",
+      "channel": "beta",
+      "version": "v1.7.8+hotfix.4",
+      "release_date": "2019-07-19T21:02:27.844658Z",
+      "archive": "beta/linux/flutter_linux_v1.7.8+hotfix.4-beta.tar.xz",
+      "sha256": "b859d85088c7f28776eb78aed19f1edaddb01a0d7d57ec28568a75bdf4401357"
+    },
+    {
+      "hash": "0a39d8d92ed43a0b7efcc93742a17660a14d78aa",
+      "channel": "dev",
+      "version": "v1.8.2",
+      "release_date": "2019-07-19T19:13:55.016591Z",
+      "archive": "dev/linux/flutter_linux_v1.8.2-dev.tar.xz",
+      "sha256": "6462f5b32f13fa402559ef9ded5490650060c8d40a52b629d9e08f011e294692"
+    },
+    {
+      "hash": "d3eee57c0bd2e19aaa944be07b24c533075fd1a0",
+      "channel": "dev",
+      "version": "v1.8.1",
+      "release_date": "2019-07-11T21:06:56.137495Z",
+      "archive": "dev/linux/flutter_linux_v1.8.1-dev.tar.xz",
+      "sha256": "57c6366f07df9107e6e2c81d98c94836d949255535aaaa8e057e5bb33a707077"
+    },
+    {
+      "hash": "b712a172f9694745f50505c93340883493b505e5",
+      "channel": "stable",
+      "version": "v1.7.8+hotfix.3",
+      "release_date": "2019-07-09T21:26:14.141143Z",
+      "archive": "stable/linux/flutter_linux_v1.7.8+hotfix.3-stable.tar.xz",
+      "sha256": "ba6906f2c695c09e8ba8caa06fb0c0273e2ac435b6116e27926c265e57d1957b"
+    },
+    {
+      "hash": "b712a172f9694745f50505c93340883493b505e5",
+      "channel": "beta",
+      "version": "v1.7.8+hotfix.3",
+      "release_date": "2019-07-09T21:21:42.274658Z",
+      "archive": "beta/linux/flutter_linux_v1.7.8+hotfix.3-beta.tar.xz",
+      "sha256": "f4486c039ca256f855943fbd07974444dfc98f9bae593ae30f5de385d826b911"
+    },
+    {
+      "hash": "2e540931f73593e35627592ca4f9a4ca3035ed31",
+      "channel": "stable",
+      "version": "v1.7.8+hotfix.2",
+      "release_date": "2019-07-08T17:22:05.600230Z",
+      "archive": "stable/linux/flutter_linux_v1.7.8+hotfix.2-stable.tar.xz",
+      "sha256": "0cf4c6eb5eb9cee32e3e32966a832697cf0152830b87cae9cb519546f9ef4a4b"
+    },
+    {
+      "hash": "2e540931f73593e35627592ca4f9a4ca3035ed31",
+      "channel": "beta",
+      "version": "v1.7.8+hotfix.2",
+      "release_date": "2019-07-02T16:52:29.158369Z",
+      "archive": "beta/linux/flutter_linux_v1.7.8+hotfix.2-beta.tar.xz",
+      "sha256": "535fe7f2e7691ca420299da50b171f0d25278d47f6048b61edd73e1036f6220f"
+    },
+    {
+      "hash": "43b03127d469f1f6d9a22f8dae41eea2eed2afd9",
+      "channel": "dev",
+      "version": "v1.7.11",
+      "release_date": "2019-06-28T16:42:26.390467Z",
+      "archive": "dev/linux/flutter_linux_v1.7.11-dev.tar.xz",
+      "sha256": "1b3129bf4cc886933f3fc35aa44e1d1a1551d9c0b2605130be490c6454355e7f"
+    },
+    {
+      "hash": "9a3a7490c8ded5f13d4fce2e493df2a63d602e57",
+      "channel": "dev",
+      "version": "v1.7.10",
+      "release_date": "2019-06-26T20:48:21.874605Z",
+      "archive": "dev/linux/flutter_linux_v1.7.10-dev.tar.xz",
+      "sha256": "85a899dab17130165fcd74319de0c55ce81a50adf3fd08d324747e53d5703145"
+    },
+    {
+      "hash": "8dbfc82bc7f94c721efaeff904b4388d222c7919",
+      "channel": "dev",
+      "version": "v1.7.9",
+      "release_date": "2019-06-25T02:41:33.204252Z",
+      "archive": "dev/linux/flutter_linux_v1.7.9-dev.tar.xz",
+      "sha256": "f3ed668be915db6c12a829f1698bf7d9d4e0094b01f9d7a7b562d2efa8913673"
+    },
+    {
+      "hash": "d51fd86cdb486192e187ccdf6f02cb2a38273d8d",
+      "channel": "dev",
+      "version": "v1.7.8",
+      "release_date": "2019-06-22T06:41:22.424026Z",
+      "archive": "dev/linux/flutter_linux_v1.7.8-dev.tar.xz",
+      "sha256": "ce1c2240060cda08d501afd024a302f699c46a86ede24b39aa6b4c8ba4dae06a"
+    },
+    {
+      "hash": "363052567376976b68bc995905397156fc5a28a0",
+      "channel": "dev",
+      "version": "v1.7.7",
+      "release_date": "2019-06-22T01:06:19.065095Z",
+      "archive": "dev/linux/flutter_linux_v1.7.7-dev.tar.xz",
+      "sha256": "fbbf1e397ef5bb7b024249f80c1597b9008da3d5cc40c5ce994deaf33e560600"
+    },
+    {
+      "hash": "63438b924497ed9479f4c69a03d399bcbc2b4781",
+      "channel": "dev",
+      "version": "v1.7.6",
+      "release_date": "2019-06-21T23:10:52.072637Z",
+      "archive": "dev/linux/flutter_linux_v1.7.6-dev.tar.xz",
+      "sha256": "61b621ce1a84eb74a2d4ba613a6c405fc1fee55caeebce8aebb6809993fd9b84"
+    },
+    {
+      "hash": "dfecafa4ab30f9c509ce409241000cdd785ef23d",
+      "channel": "dev",
+      "version": "v1.7.4",
+      "release_date": "2019-06-14T19:52:05.259027Z",
+      "archive": "dev/linux/flutter_linux_v1.7.4-dev.tar.xz",
+      "sha256": "d4f0f4e57782950d58312c13f7f851d8500867b361f655e16d6d1a7260df8ecd"
+    },
+    {
+      "hash": "362b999b90d53859aa7b926a59c970f3ea31abf4",
+      "channel": "dev",
+      "version": "v1.7.3",
+      "release_date": "2019-06-07T22:20:18.312386Z",
+      "archive": "dev/linux/flutter_linux_v1.7.3-dev.tar.xz",
+      "sha256": "e47dcb602d2cee416bb103599addf3ee3f75f9452b66cb4f2fed48fa577065c8"
+    },
+    {
+      "hash": "b3b6d03737bd3f61209570e86f2b045c80f35c44",
+      "channel": "dev",
+      "version": "v1.7.2",
+      "release_date": "2019-06-06T16:56:37.925697Z",
+      "archive": "dev/linux/flutter_linux_v1.7.2-dev.tar.xz",
+      "sha256": "9ab387cadb8d00c697b6010437292aa6acfe33ef0afd06171a0a0510c7957d1d"
+    },
+    {
+      "hash": "04015b987b8b9ccb4b428decadf2b9f5cd25dc91",
+      "channel": "dev",
+      "version": "v1.7.1",
+      "release_date": "2019-06-04T19:33:57.340863Z",
+      "archive": "dev/linux/flutter_linux_v1.7.1-dev.tar.xz",
+      "sha256": "7b9839be19f7a1da229eae009a585f1b616912f1d1398f68fcc7cd81bf522dad"
+    },
+    {
+      "hash": "f36a35d20ac5dc2936cab6ccc60f5d9afa34466e",
+      "channel": "dev",
+      "version": "v1.7.0",
+      "release_date": "2019-06-03T20:30:56.698702Z",
+      "archive": "dev/linux/flutter_linux_v1.7.0-dev.tar.xz",
+      "sha256": "52db66244b9e762b87fb756af09517bd300273723424c321689ad552a38d9dbd"
+    },
+    {
+      "hash": "cba41ca2ec977888806a9a02fc06c459f7a806ae",
+      "channel": "dev",
+      "version": "v1.6.7",
+      "release_date": "2019-05-31T18:11:35.815309Z",
+      "archive": "dev/linux/flutter_linux_v1.6.7-dev.tar.xz",
+      "sha256": "5f16d8f8d73aa5e1b8cd3aa2f71b6fced42b64b9139a92695814f3a2482df1d3"
+    },
+    {
+      "hash": "bc7bc940836f1f834699625426795fd6f07c18ec",
+      "channel": "beta",
+      "version": "v1.6.3",
+      "release_date": "2019-05-30T23:18:37.088506Z",
+      "archive": "beta/linux/flutter_linux_v1.6.3-beta.tar.xz",
+      "sha256": "dbfb3aebe07f81423f7c739542395514997f5f410763fe43d7551051a61dba56"
+    },
+    {
+      "hash": "e1a784ae3f82948c33c256666c73680420f11350",
+      "channel": "dev",
+      "version": "v1.6.6",
+      "release_date": "2019-05-29T20:55:10.733302Z",
+      "archive": "dev/linux/flutter_linux_v1.6.6-dev.tar.xz",
+      "sha256": "affaf0ce96ec571cf3496b607d89dd5f0d3d361e03276359e0b6f224901a31d7"
+    },
+    {
+      "hash": "7c811b6a66bcbab62f87c8768decc449027e5190",
+      "channel": "dev",
+      "version": "v1.6.5",
+      "release_date": "2019-05-28T23:22:21.227945Z",
+      "archive": "dev/linux/flutter_linux_v1.6.5-dev.tar.xz",
+      "sha256": "2cc8482b51a4e6a7423d1ce7e6ca2fde3edcbf5402af60728cd055b25cb2fbb0"
+    },
+    {
+      "hash": "0f6e4e6190d1c128b8baadd2dee3b2a8923d3f86",
+      "channel": "dev",
+      "version": "v1.6.4",
+      "release_date": "2019-05-28T20:19:54.738436Z",
+      "archive": "dev/linux/flutter_linux_v1.6.4-dev.tar.xz",
+      "sha256": "d78a5d3d058c48bac822724ac81a75f900e9bd426ff6cc09a778caeded780225"
+    },
+    {
+      "hash": "bc7bc940836f1f834699625426795fd6f07c18ec",
+      "channel": "dev",
+      "version": "v1.6.3",
+      "release_date": "2019-05-24T00:35:07.945768Z",
+      "archive": "dev/linux/flutter_linux_v1.6.3-dev.tar.xz",
+      "sha256": "d949adb14d3a66e3e8716a300c5f093cf72c9584f73399331004c365384dd732"
+    },
+    {
+      "hash": "cb576181e9549bdd9d845394b1b5feab1b93807d",
+      "channel": "dev",
+      "version": "v1.6.2",
+      "release_date": "2019-05-23T18:19:28.406435Z",
+      "archive": "dev/linux/flutter_linux_v1.6.2-dev.tar.xz",
+      "sha256": "c67e78ee22f8eb8329256d325f1356d02be922824e544cd862dd7e08aa7af7c8"
+    },
+    {
+      "hash": "d31ce31a274ee721f4e9b54c6dcc2de0b3fd71e4",
+      "channel": "dev",
+      "version": "v1.6.1",
+      "release_date": "2019-05-22T22:31:26.087601Z",
+      "archive": "dev/linux/flutter_linux_v1.6.1-dev.tar.xz",
+      "sha256": "7790134fc8261cc764a91ccda68955c40951d62c818c811dab02b5b5da9cb208"
+    },
+    {
+      "hash": "ed90d05596d85b0ec8e841395bce9d3b6edea134",
+      "channel": "dev",
+      "version": "v1.6.0",
+      "release_date": "2019-05-17T10:07:23.209741Z",
+      "archive": "dev/linux/flutter_linux_v1.6.0-dev.tar.xz",
+      "sha256": "ea89158a5870e42eb570d34148e4e71f12811a1c3841a937009f45e6dc6da6d2"
+    },
+    {
+      "hash": "7a4c33425ddd78c54aba07d86f3f9a4a0051769b",
+      "channel": "stable",
+      "version": "v1.5.4-hotfix.2",
+      "release_date": "2019-05-07T18:44:16.075690Z",
+      "archive": "stable/linux/flutter_linux_v1.5.4-hotfix.2-stable.tar.xz",
+      "sha256": "04e063b01e7087eeeccfc5f7a585ed6adcc521bc44f754e194cb3c98a57c19cd"
+    },
+    {
+      "hash": "7a4c33425ddd78c54aba07d86f3f9a4a0051769b",
+      "channel": "beta",
+      "version": "v1.5.4-hotfix.2",
+      "release_date": "2019-05-02T17:40:50.476547Z",
+      "archive": "beta/linux/flutter_linux_v1.5.4-hotfix.2-beta.tar.xz",
+      "sha256": "0f046965061c25620297d74761b9514495791980cc59dc2e685d5f9f9334f990"
+    },
+    {
+      "hash": "09cbc34a0b19cef287a82aa4b9966d525369eecc",
+      "channel": "beta",
+      "version": "v1.5.4-hotfix.1",
+      "release_date": "2019-04-30T23:04:50.739892Z",
+      "archive": "beta/linux/flutter_linux_v1.5.4-hotfix.1-beta.tar.xz",
+      "sha256": "c8306fdff94e9c84c4a77718d2fd236117d375341b33c09c90424f34f3ca7754"
+    },
+    {
+      "hash": "b593f5167bce84fb3cad5c258477bf3abc1b14eb",
+      "channel": "beta",
+      "version": "v1.5.4",
+      "release_date": "2019-04-27T00:01:42.883758Z",
+      "archive": "beta/linux/flutter_linux_v1.5.4-beta.tar.xz",
+      "sha256": "7933c00d6779022c14ebb3c30da7b96141dbbefbabb8f284fa6b37cee2646554"
+    },
+    {
+      "hash": "0ba67226ee62d6c9d663a6f8410fb4b2f1076046",
+      "channel": "dev",
+      "version": "v1.5.8",
+      "release_date": "2019-04-26T00:03:05.012539Z",
+      "archive": "dev/linux/flutter_linux_v1.5.8-dev.tar.xz",
+      "sha256": "615385bc1f85e93047e1533adc8a380132cbea5ba0d42541be953f1989efdc29"
+    },
+    {
+      "hash": "96f15c74adebb221eb044d3fc71b2d62da0046c0",
+      "channel": "dev",
+      "version": "v1.5.7",
+      "release_date": "2019-04-24T23:49:23.261049Z",
+      "archive": "dev/linux/flutter_linux_v1.5.7-dev.tar.xz",
+      "sha256": "98433d3f828df1b47c5051772c1c6cf0be7378393b495fe9fac035aadd929eba"
+    },
+    {
+      "hash": "e00f1a3c17f65a751c14b821235e5c2875948ff0",
+      "channel": "dev",
+      "version": "v1.5.6",
+      "release_date": "2019-04-24T18:40:46.612634Z",
+      "archive": "dev/linux/flutter_linux_v1.5.6-dev.tar.xz",
+      "sha256": "1434cbdb7b72a3d5658cff325bdb2084d846fee9e990876b66d1be0aa14ba60e"
+    },
+    {
+      "hash": "5c5ddd1fc22de7df08a6bc0e18b4ec345d702fbd",
+      "channel": "dev",
+      "version": "v1.5.5",
+      "release_date": "2019-04-23T23:47:50.170773Z",
+      "archive": "dev/linux/flutter_linux_v1.5.5-dev.tar.xz",
+      "sha256": "fa4113c40eeb4a00256973d060dec7c3303215b3c8d9ce680bd958448b7628f5"
+    },
+    {
+      "hash": "b593f5167bce84fb3cad5c258477bf3abc1b14eb",
+      "channel": "dev",
+      "version": "v1.5.4",
+      "release_date": "2019-04-22T21:17:49.460150Z",
+      "archive": "dev/linux/flutter_linux_v1.5.4-dev.tar.xz",
+      "sha256": "f679a47c9bbd412baa6f54b84586909bd3045b0617575995f6bc18f78030c96a"
+    },
+    {
+      "hash": "80971335c1ee259717076c1e9d308a9572f85259",
+      "channel": "dev",
+      "version": "v1.5.3",
+      "release_date": "2019-04-19T23:20:49.502145Z",
+      "archive": "dev/linux/flutter_linux_v1.5.3-dev.tar.xz",
+      "sha256": "252d997aabd6d796a1ffcfd481f3bd43a7d6782c5f3f83bc92bd561fc78d995e"
+    },
+    {
+      "hash": "efe744a3609d0b8e218b5d9d13823ed394261bb5",
+      "channel": "dev",
+      "version": "v1.5.2",
+      "release_date": "2019-04-17T21:58:20.871350Z",
+      "archive": "dev/linux/flutter_linux_v1.5.2-dev.tar.xz",
+      "sha256": "a6bc4b293337f9c2579f32ce012a4fb2c41794e2daf1dce275ec5cdbcf98e468"
+    },
+    {
+      "hash": "0f5de8725e0f6778406fb5156aee1486d39771f6",
+      "channel": "dev",
+      "version": "v1.5.1",
+      "release_date": "2019-04-17T06:13:23.176508Z",
+      "archive": "dev/linux/flutter_linux_v1.5.1-dev.tar.xz",
+      "sha256": "21f5c6c5e324e6c7089564c55e643fa0eb1fdf30b672be290c461dbb982c6a42"
+    },
+    {
+      "hash": "a18226d06619ca1d61e453205fa89bc646c3d0fc",
+      "channel": "dev",
+      "version": "v1.5.0",
+      "release_date": "2019-04-16T21:01:51.513775Z",
+      "archive": "dev/linux/flutter_linux_v1.5.0-dev.tar.xz",
+      "sha256": "923a8dbeb8d0b7a2cb7ed9caf81a0a234c984e9073d7aaee0a3a5d83047f59fd"
+    },
+    {
+      "hash": "88fa7ea4031f5c86225573e58e5558dc4ea1c251",
+      "channel": "beta",
+      "version": "v1.4.9-hotfix.1",
+      "release_date": "2019-04-12T21:25:21.538016Z",
+      "archive": "beta/linux/flutter_linux_v1.4.9-hotfix.1-beta.tar.xz",
+      "sha256": "923add7e761754481b0160a7b5a15fb8abb74c26b3e374934dd14c429fb5576e"
+    },
+    {
+      "hash": "8bea3fb2ebadc3933b6b213483d2d4379ac53a5c",
+      "channel": "dev",
+      "version": "v1.4.18",
+      "release_date": "2019-04-12T00:32:34.053066Z",
+      "archive": "dev/linux/flutter_linux_v1.4.18-dev.tar.xz",
+      "sha256": "646e39d1d1e52a1074ff7e5e5d52250454f64ec89344420a34e7dda31324561a"
+    },
+    {
+      "hash": "ecb468f33587bad108034c1bbe21e8cbd0d94acc",
+      "channel": "dev",
+      "version": "v1.4.17",
+      "release_date": "2019-04-11T21:53:22.414153Z",
+      "archive": "dev/linux/flutter_linux_v1.4.17-dev.tar.xz",
+      "sha256": "198c097b615aff73f900239a31c10e5172a6495ef0097e7ef74a3f2e4e937403"
+    },
+    {
+      "hash": "d2790bd2bbf1851db2359026df7bca38e255b9d3",
+      "channel": "dev",
+      "version": "v1.4.16",
+      "release_date": "2019-04-11T17:02:15.961785Z",
+      "archive": "dev/linux/flutter_linux_v1.4.16-dev.tar.xz",
+      "sha256": "139a2e8d677b690d1283da8c228b8574735f627dd2a33236827694220da0eb03"
+    },
+    {
+      "hash": "ed91a3be49232c336ab2cf7a3376958cb3d537d2",
+      "channel": "dev",
+      "version": "v1.4.15",
+      "release_date": "2019-04-10T22:27:03.387003Z",
+      "archive": "dev/linux/flutter_linux_v1.4.15-dev.tar.xz",
+      "sha256": "ab91f4ff22368b157080746577772591898c6cbac01b77b056413b4c0d40a5a9"
+    },
+    {
+      "hash": "5a4eaabaf1c0b00f8cf9ace3c63066f754facc94",
+      "channel": "dev",
+      "version": "v1.4.14",
+      "release_date": "2019-04-10T02:55:32.782948Z",
+      "archive": "dev/linux/flutter_linux_v1.4.14-dev.tar.xz",
+      "sha256": "81d80d2b3eb828ba68a8b3a357dc5632fc29ec8c1788c3ff1f7fb96f08ebd921"
+    },
+    {
+      "hash": "514aba6e36d4c9429d307e643dde3398802ca56a",
+      "channel": "dev",
+      "version": "v1.4.13",
+      "release_date": "2019-04-10T01:42:02.324994Z",
+      "archive": "dev/linux/flutter_linux_v1.4.13-dev.tar.xz",
+      "sha256": "58eccdc22008b4411d4e0bdafd969ee3a862e1d17f041d5a226301809ce07102"
+    },
+    {
+      "hash": "294d7ea0cf0c6ff84ba43682b1dddcee18bf4114",
+      "channel": "dev",
+      "version": "v1.4.12",
+      "release_date": "2019-04-09T03:06:18.387769Z",
+      "archive": "dev/linux/flutter_linux_v1.4.12-dev.tar.xz",
+      "sha256": "76687809ba9b122b30b851d49fd7a9b3a80efaa964bc220e4aab21c25736a4c9"
+    },
+    {
+      "hash": "d15b3b1c8b0b4090fa1949b106dd3870d13341ca",
+      "channel": "dev",
+      "version": "v1.4.11",
+      "release_date": "2019-04-08T18:01:12.285150Z",
+      "archive": "dev/linux/flutter_linux_v1.4.11-dev.tar.xz",
+      "sha256": "c6418fa1704bda0c74b20a085b8d9ae97ab49d6d1d146dee3560734e2ff458d2"
+    },
+    {
+      "hash": "6ba720a4890bcffd0e48ec329318c929d517ce2c",
+      "channel": "dev",
+      "version": "v1.4.10",
+      "release_date": "2019-04-04T21:10:15.510204Z",
+      "archive": "dev/linux/flutter_linux_v1.4.10-dev.tar.xz",
+      "sha256": "56fb9a576a875ee50b093a6645fcec4a962f42d94e1b26b2d387dda3392056dd"
+    },
+    {
+      "hash": "16a16e6598cca4129da0d2e76de0320fbc0108f1",
+      "channel": "dev",
+      "version": "v1.4.9",
+      "release_date": "2019-04-04T18:49:39.997783Z",
+      "archive": "dev/linux/flutter_linux_v1.4.9-dev.tar.xz",
+      "sha256": "fd9e335f8f47504e8bc9d11597b9fe4970a083f38f20bdcfea98b440bf42f591"
+    },
+    {
+      "hash": "fbefd6b816a846936dbba847ce85dc1ed55e3faa",
+      "channel": "dev",
+      "version": "v1.4.8",
+      "release_date": "2019-04-03T01:33:45.902970Z",
+      "archive": "dev/linux/flutter_linux_v1.4.8-dev.tar.xz",
+      "sha256": "1eb98d261e0f585d2db6c9add2a0f216589a033a55a8058ee831bce826fee64a"
+    },
+    {
+      "hash": "1bfa2f23114829513a9d2c0a7a27d743287acc2a",
+      "channel": "dev",
+      "version": "v1.4.7",
+      "release_date": "2019-03-29T21:06:01.732208Z",
+      "archive": "dev/linux/flutter_linux_v1.4.7-dev.tar.xz",
+      "sha256": "26ddfd6de97955882003974c15cf1e453fae05540724eafb70cfc20ecad5747e"
+    },
+    {
+      "hash": "4ed13e022cae194aebdc9c5dfa6c2c3c62eeb8fb",
+      "channel": "dev",
+      "version": "v1.4.6-hotfix.1",
+      "release_date": "2019-03-29T20:29:43.258766Z",
+      "archive": "dev/linux/flutter_linux_v1.4.6-hotfix.1-dev.tar.xz",
+      "sha256": "8f4f229f8d8912b0334c090061ca62d6f56d33cf52483f3e3e9b43c45a83b3f7"
+    },
+    {
+      "hash": "ec93c87c8902c63e5b0e71ff761f201d19dc4327",
+      "channel": "dev",
+      "version": "v1.4.6",
+      "release_date": "2019-03-29T00:01:25.778849Z",
+      "archive": "dev/linux/flutter_linux_v1.4.6-dev.tar.xz",
+      "sha256": "945d3e6311821a245fb7202c081f733e59c7cd3f1a2ff10856086c4c86ccf8ca"
+    },
+    {
+      "hash": "99866f4a3dd1bf860c846e10d02af9ad125f9fe1",
+      "channel": "dev",
+      "version": "v1.4.5",
+      "release_date": "2019-03-28T18:13:28.784138Z",
+      "archive": "dev/linux/flutter_linux_v1.4.5-dev.tar.xz",
+      "sha256": "fd96505201505f7f964b5294c0b5022118bafd9c11dfcfed36f5f5bcd2601145"
+    },
+    {
+      "hash": "3b3f6c7a041978505b310b5b50390c2f5ff7eaac",
+      "channel": "dev",
+      "version": "v1.4.4",
+      "release_date": "2019-03-28T01:14:32.831108Z",
+      "archive": "dev/linux/flutter_linux_v1.4.4-dev.tar.xz",
+      "sha256": "54331cab6ecb194464c5661d4a8502ea292c717815f282a11ca83cb7ffedc96a"
+    },
+    {
+      "hash": "64a28e3685bee310e697a91612d7e30d0426cda2",
+      "channel": "dev",
+      "version": "v1.4.3",
+      "release_date": "2019-03-27T21:50:50.687336Z",
+      "archive": "dev/linux/flutter_linux_v1.4.3-dev.tar.xz",
+      "sha256": "6342e0a5ae3f6eacca455704da33aa5163a7660bf052a30370850a7b807a145b"
+    },
+    {
+      "hash": "141f87b32754267cc02bae03477c4b109b828324",
+      "channel": "dev",
+      "version": "v1.4.2",
+      "release_date": "2019-03-27T16:39:20.541106Z",
+      "archive": "dev/linux/flutter_linux_v1.4.2-dev.tar.xz",
+      "sha256": "8c8c83d2da8d7f183c5d466c220ef6b91be95cd97bee3c299f86863756d95035"
+    },
+    {
+      "hash": "204eceea93694aa081e0132c8281b76d3b3d6b4a",
+      "channel": "dev",
+      "version": "v1.4.1",
+      "release_date": "2019-03-27T01:13:10.675659Z",
+      "archive": "dev/linux/flutter_linux_v1.4.1-dev.tar.xz",
+      "sha256": "e4fa4a365f29fbe0da2a25e4a955202bbe5ee3d11ec54bcff2bbcbb7d04a96b0"
+    },
+    {
+      "hash": "18a08a8f4f7bca0d25f34706ebc8af231f3db9d4",
+      "channel": "dev",
+      "version": "v1.4.0",
+      "release_date": "2019-03-26T22:02:37.386587Z",
+      "archive": "dev/linux/flutter_linux_v1.4.0-dev.tar.xz",
+      "sha256": "46ab24fd98a4976c08635a117a6f69f656faf962fd65c9bafd6416960c76269c"
+    },
+    {
+      "hash": "8e7e435706553edea6d350c3843f1c0e5465a0d8",
+      "channel": "dev",
+      "version": "v1.3.14",
+      "release_date": "2019-03-26T01:16:58.897217Z",
+      "archive": "dev/linux/flutter_linux_v1.3.14-dev.tar.xz",
+      "sha256": "3dd54ecb76711f827378e4f0d0d85ad8cbf58082b62a27de74dd74169a43658b"
+    },
+    {
+      "hash": "59ce7d6bff0d0626ae4b90787bf993ebcdc4b110",
+      "channel": "dev",
+      "version": "v1.3.13",
+      "release_date": "2019-03-19T03:42:42.929135Z",
+      "archive": "dev/linux/flutter_linux_v1.3.13-dev.tar.xz",
+      "sha256": "daa5fea0f58e9385c1fd49c47f3b5add5e97779bb45d0aa7368e0b466bce26c7"
+    },
+    {
+      "hash": "a1bee54fda83026c01edd53ba32f01736b4ee4ad",
+      "channel": "dev",
+      "version": "v1.3.12",
+      "release_date": "2019-03-19T00:07:35.793631Z",
+      "archive": "dev/linux/flutter_linux_v1.3.12-dev.tar.xz",
+      "sha256": "cb7ae15fd5db767867b260355c4f1e9b26e44b97cad0fd01f32589241bf60d38"
+    },
+    {
+      "hash": "73fb457cae005cde3e351fc9e1ba1b43de458aad",
+      "channel": "dev",
+      "version": "v1.3.11",
+      "release_date": "2019-03-18T16:38:19.665077Z",
+      "archive": "dev/linux/flutter_linux_v1.3.11-dev.tar.xz",
+      "sha256": "e6c388f9c03b5c48e06b829254ed965e6f95205fe7f2f58efd59dabc62d6726a"
+    },
+    {
+      "hash": "e5b1ed7a7f7b85c1877e09a9495681f719be5578",
+      "channel": "beta",
+      "version": "v1.3.8",
+      "release_date": "2019-03-15T20:18:29.639532Z",
+      "archive": "beta/linux/flutter_linux_v1.3.8-beta.tar.xz",
+      "sha256": "26ba3963ac9e78fe7a690a92ea7efe3bfafd6d00059cfbdd22dd8f5d0ca9d2d3"
+    },
+    {
+      "hash": "4feefa3c9a2176ca7383246c4c01b36254fbec85",
+      "channel": "dev",
+      "version": "v1.3.10",
+      "release_date": "2019-03-15T04:03:09.790369Z",
+      "archive": "dev/linux/flutter_linux_v1.3.10-dev.tar.xz",
+      "sha256": "7acd2baeb164610d1ae3e6ed746023743c1399bb80ab7ff0672944ea4749101f"
+    },
+    {
+      "hash": "f91df4abe1427fef8862c9e81b2e5af6fc05a67a",
+      "channel": "dev",
+      "version": "v1.3.9",
+      "release_date": "2019-03-10T05:32:40.478710Z",
+      "archive": "dev/linux/flutter_linux_v1.3.9-dev.tar.xz",
+      "sha256": "42b9d43d8c60da7b73f707e1265879674a773f8531784615f57555a06be4f64c"
+    },
+    {
+      "hash": "e5b1ed7a7f7b85c1877e09a9495681f719be5578",
+      "channel": "dev",
+      "version": "v1.3.8",
+      "release_date": "2019-03-07T22:47:00.669263Z",
+      "archive": "dev/linux/flutter_linux_v1.3.8-dev.tar.xz",
+      "sha256": "2fa7dc6dbef84535cee55df85720211e8203cc465a298159d682736f4bc3066a"
+    },
+    {
+      "hash": "01a29b85eff7dd4b2d4958f61adf1840042471cc",
+      "channel": "dev",
+      "version": "v1.3.7",
+      "release_date": "2019-03-07T15:20:15.237477Z",
+      "archive": "dev/linux/flutter_linux_v1.3.7-dev.tar.xz",
+      "sha256": "557f38ccb5e39151509ab494eb74713c1e43319a49eed238578d004401b71679"
+    },
+    {
+      "hash": "5099701f88f49ec12ebca676d8e61149917bde9c",
+      "channel": "dev",
+      "version": "v1.3.6",
+      "release_date": "2019-03-07T15:17:53.441780Z",
+      "archive": "dev/linux/flutter_linux_v1.3.6-dev.tar.xz",
+      "sha256": "4c3b9adf1b645a44d49ef4b2b93e3e57f09d927928d834998f132a6b5cec4f63"
+    },
+    {
+      "hash": "7fc14a55af64462763d28abfb4e610086c6e0f39",
+      "channel": "dev",
+      "version": "v1.3.4",
+      "release_date": "2019-03-05T16:01:11.312470Z",
+      "archive": "dev/linux/flutter_linux_v1.3.4-dev.tar.xz",
+      "sha256": "a889c3de1903b6f5e992e8e58e6d19faf1c2a3785bfd43267b18ad5b081d47ea"
+    },
+    {
+      "hash": "778e95a39b82688662e8be7cbe2deb31cad33203",
+      "channel": "dev",
+      "version": "v1.3.3",
+      "release_date": "2019-03-04T16:19:42.411121Z",
+      "archive": "dev/linux/flutter_linux_v1.3.3-dev.tar.xz",
+      "sha256": "f627268bd5b2b5a405d37042345fa76911eef244336c4c495de28b02469ddd92"
+    },
+    {
+      "hash": "046f960ae210afc3887721b1b5aa1dbdab4105cb",
+      "channel": "dev",
+      "version": "v1.3.2",
+      "release_date": "2019-03-01T09:55:35.815246Z",
+      "archive": "dev/linux/flutter_linux_v1.3.2-dev.tar.xz",
+      "sha256": "e5749afc9fc8777005a66dd92b4d346494541d0d55be8975c78f985e12646a79"
+    },
+    {
+      "hash": "6ed9da35c3a4f6cc79d4f91bf850159908daad8e",
+      "channel": "dev",
+      "version": "v1.3.1",
+      "release_date": "2019-03-01T01:32:44.709794Z",
+      "archive": "dev/linux/flutter_linux_v1.3.1-dev.tar.xz",
+      "sha256": "baa3211917be497fc8ea1a3fb73bbc546b654d7eab6b63d3c39a34a30f293190"
+    },
+    {
+      "hash": "3054a935791bf0bcc34ba0a111df794ddb7a3589",
+      "channel": "dev",
+      "version": "v1.3.0",
+      "release_date": "2019-02-28T04:56:47.051158Z",
+      "archive": "dev/linux/flutter_linux_v1.3.0-dev.tar.xz",
+      "sha256": "b0e802b0b6c006d207bf5dd582d5b830bd6ad21fdfc44552ee86c2a9df1e3bd1"
+    },
+    {
+      "hash": "007a415c2a2fa37e8fd5ad87d6710bca8e212ef1",
+      "channel": "dev",
+      "version": "v1.2.2",
+      "release_date": "2019-02-27T23:55:32.285624Z",
+      "archive": "dev/linux/flutter_linux_v1.2.2-dev.tar.xz",
+      "sha256": "abec8aa947b2e0d5d3ea0c534c693083b775dadfc64092a84786c0f6aa451897"
+    },
+    {
+      "hash": "8661d8aecd626f7f57ccbcb735553edc05a2e713",
+      "channel": "stable",
+      "version": "v1.2.1",
+      "release_date": "2019-02-26T17:24:44.521898Z",
+      "archive": "stable/linux/flutter_linux_v1.2.1-stable.tar.xz",
+      "sha256": "e5f9e8a641854a2b598083fd9d733d56bc9b77346b79777c19127992cbf6be51"
+    },
+    {
+      "hash": "8661d8aecd626f7f57ccbcb735553edc05a2e713",
+      "channel": "beta",
+      "version": "v1.2.1",
+      "release_date": "2019-02-26T01:53:13.255892Z",
+      "archive": "beta/linux/flutter_linux_v1.2.1-beta.tar.xz",
+      "sha256": "4b4fafef0104d536cc50b8100820378328f7c7410e984ca7cd814743a174edf6"
+    },
+    {
+      "hash": "8661d8aecd626f7f57ccbcb735553edc05a2e713",
+      "channel": "dev",
+      "version": "v1.2.1",
+      "release_date": "2019-02-15T06:29:10.644685Z",
+      "archive": "dev/linux/flutter_linux_v1.2.1-dev.tar.xz",
+      "sha256": "cebcbb84d4ec8d46b0029a7a552ad4c8e1a9499ab578a1d675e199f65d7559b0"
+    },
+    {
+      "hash": "06b979c4d5e1b499745422269f01a00341257058",
+      "channel": "dev",
+      "version": "v1.2.0",
+      "release_date": "2019-01-31T03:59:51.369963Z",
+      "archive": "dev/linux/flutter_linux_v1.2.0-dev.tar.xz",
+      "sha256": "79fdd83b2c690f438fd1388e649e5fabd88ff993645297d437db9225a9624522"
+    },
+    {
+      "hash": "985ccb6d14c6ce5ce74823a4d366df2438eac44f",
+      "channel": "beta",
+      "version": "v1.1.8",
+      "release_date": "2019-01-29T22:16:42.061861Z",
+      "archive": "beta/linux/flutter_linux_v1.1.8-beta.tar.xz",
+      "sha256": "faf14d93a5e1fb8d0fb44c8855fbdc97844d686001c1257d0aad02e2754cd588"
+    },
+    {
+      "hash": "985ccb6d14c6ce5ce74823a4d366df2438eac44f",
+      "channel": "dev",
+      "version": "v1.1.8",
+      "release_date": "2019-01-09T21:36:17.364354Z",
+      "archive": "dev/linux/flutter_linux_v1.1.8-dev.tar.xz",
+      "sha256": "185c66139b1abf7a5a4dcce34e4578ea087c18a94efbd98b72847ed98617547c"
+    },
+    {
+      "hash": "3cca1a2ec35604ca50f9c656b8e761b07a00a9ed",
+      "channel": "dev",
+      "version": "v1.1.0",
+      "release_date": "2018-12-12T00:34:29.682984Z",
+      "archive": "dev/linux/flutter_linux_v1.1.0-dev.tar.xz",
+      "sha256": "53a147e73456d3fd7b125549421994914b85f7f9df410a4973c179742fc03abf"
+    },
+    {
+      "hash": "5391447fae6209bb21a89e6a5a6583cac1af9b4b",
+      "channel": "stable",
+      "version": "v1.0.0",
+      "release_date": "2018-12-04T17:38:52.282873Z",
+      "archive": "stable/linux/flutter_linux_v1.0.0-stable.tar.xz",
+      "sha256": "96e59dac54e427d4a6936d6ae98bda1b04a06a17a4323a95480f22fa19f9e2f4"
+    },
+    {
+      "hash": "5391447fae6209bb21a89e6a5a6583cac1af9b4b",
+      "channel": "beta",
+      "version": "v1.0.0",
+      "release_date": "2018-12-04T17:02:15.249924Z",
+      "archive": "beta/linux/flutter_linux_v1.0.0-beta.tar.xz",
+      "sha256": "3d52bc8fefe427bf245c12b4d4dd5179b894e174db5d98554fc9d853bd567013"
+    },
+    {
+      "hash": "5391447fae6209bb21a89e6a5a6583cac1af9b4b",
+      "channel": "dev",
+      "version": "v1.0.0",
+      "release_date": "2018-12-04T17:00:36.684130Z",
+      "archive": "dev/linux/flutter_linux_v1.0.0-dev.tar.xz",
+      "sha256": "338850dd27a791c13ea088d68d20cbea6bd35fbeb289cf50df82d5b66bc8eea4"
+    },
+    {
+      "hash": "58c8489fcdb4e4ef6c010117584c9b23d15221aa",
+      "channel": "beta",
+      "version": "v0.11.13",
+      "release_date": "2018-11-30T05:17:44.100731Z",
+      "archive": "beta/linux/flutter_linux_v0.11.13-beta.tar.xz",
+      "sha256": "13c41d9aa4ccae5b96a9e068ed630183c5496d047e3db55d902b5c21d6408622"
+    },
+    {
+      "hash": "58c8489fcdb4e4ef6c010117584c9b23d15221aa",
+      "channel": "dev",
+      "version": "v0.11.13",
+      "release_date": "2018-11-30T05:04:36.738359Z",
+      "archive": "dev/linux/flutter_linux_v0.11.13-dev.tar.xz",
+      "sha256": "a1ec730b4922a8b9d11858f45099dfdc106ecb7c3502911e1ee49594af9e7be5"
+    },
+    {
+      "hash": "06ec8d3b41beb469d845626e36a246ee09300fa7",
+      "channel": "dev",
+      "version": "v0.11.12",
+      "release_date": "2018-11-29T03:51:24.955933Z",
+      "archive": "dev/linux/flutter_linux_v0.11.12-dev.tar.xz",
+      "sha256": "77cd27683cecbc09dfa4c34c0f14b84afdcd14f98a79463137b3177d8fcb621d"
+    },
+    {
+      "hash": "06ec8d3b41beb469d845626e36a246ee09300fa7",
+      "channel": "beta",
+      "version": "v0.11.12",
+      "release_date": "2018-11-29T03:49:28.450887Z",
+      "archive": "beta/linux/flutter_linux_v0.11.12-beta.tar.xz",
+      "sha256": "6c9a2efc13ca03ac2713c447ab9acb216ba5e1257ba5fef79422128adf6a0240"
+    },
+    {
+      "hash": "e7680128afbbde443d69f89bb264015276a8475a",
+      "channel": "dev",
+      "version": "v0.11.11",
+      "release_date": "2018-11-28T16:57:21.243569Z",
+      "archive": "dev/linux/flutter_linux_v0.11.11-dev.tar.xz",
+      "sha256": "71f2f7340c0e746a3799d00b1bcc7b1714e43c1b66131e7eac447009629834fc"
+    },
+    {
+      "hash": "e7680128afbbde443d69f89bb264015276a8475a",
+      "channel": "beta",
+      "version": "v0.11.11",
+      "release_date": "2018-11-28T16:55:28.702491Z",
+      "archive": "beta/linux/flutter_linux_v0.11.11-beta.tar.xz",
+      "sha256": "8b90990e6f3ce1832e1d3f862c9b06f09780e46fab756aef48221514b645c750"
+    },
+    {
+      "hash": "c27c4a265e9ad295e5d434cddabbc639b2e3542d",
+      "channel": "beta",
+      "version": "v0.11.10",
+      "release_date": "2018-11-27T06:51:22.538620Z",
+      "archive": "beta/linux/flutter_linux_v0.11.10-beta.tar.xz",
+      "sha256": "7934eb31e136c892f25db660e18fb6051e6b565aada5c8f85720591533b3ee3d"
+    },
+    {
+      "hash": "c27c4a265e9ad295e5d434cddabbc639b2e3542d",
+      "channel": "dev",
+      "version": "v0.11.10",
+      "release_date": "2018-11-27T06:50:27.263812Z",
+      "archive": "dev/linux/flutter_linux_v0.11.10-dev.tar.xz",
+      "sha256": "21b936fb7fbf0786f8d1a2ff067931d24a8ecf561587231ab7761eaa58f8a233"
+    },
+    {
+      "hash": "d48e6e433cc5ca67b24b19f70aaa197e84ba63c1",
+      "channel": "beta",
+      "version": "v0.11.9",
+      "release_date": "2018-11-21T07:50:12.774703Z",
+      "archive": "beta/linux/flutter_linux_v0.11.9-beta.tar.xz",
+      "sha256": "1e81034a1c1798af68b66cd02399b3127704e41d5c6c10973febe02b0550fe0e"
+    },
+    {
+      "hash": "d48e6e433cc5ca67b24b19f70aaa197e84ba63c1",
+      "channel": "dev",
+      "version": "v0.11.9",
+      "release_date": "2018-11-21T07:48:58.950398Z",
+      "archive": "dev/linux/flutter_linux_v0.11.9-dev.tar.xz",
+      "sha256": "202d3bfd0a9d1e0cd5175d8b6cfb23301c85a26b9de8314e30a40c1f18c6d4e4"
+    },
+    {
+      "hash": "f5b02e3c05ed1ab31e890add84fb56e35de2d392",
+      "channel": "beta",
+      "version": "v0.11.8",
+      "release_date": "2018-11-20T18:47:30.345385Z",
+      "archive": "beta/linux/flutter_linux_v0.11.8-beta.tar.xz",
+      "sha256": "c36b6285b0c24e9622e9eb883c9b12df9af487612cf32351bc59e02cd84c4203"
+    },
+    {
+      "hash": "f5b02e3c05ed1ab31e890add84fb56e35de2d392",
+      "channel": "dev",
+      "version": "v0.11.8",
+      "release_date": "2018-11-20T18:35:12.256960Z",
+      "archive": "dev/linux/flutter_linux_v0.11.8-dev.tar.xz",
+      "sha256": "9397eff88e8b996de75d1f9846c38db76d5e03c962452a1a81f4879d4f576838"
+    },
+    {
+      "hash": "7a005e1dcda665ace7241a24e79fae1a71f17b18",
+      "channel": "beta",
+      "version": "v0.11.7",
+      "release_date": "2018-11-19T19:14:35.559091Z",
+      "archive": "beta/linux/flutter_linux_v0.11.7-beta.tar.xz",
+      "sha256": "f9c59f5f6dd975c6bf8a0eaf5be9365197e31aefff37bfcbe551f6acab2d080c"
+    },
+    {
+      "hash": "7a005e1dcda665ace7241a24e79fae1a71f17b18",
+      "channel": "dev",
+      "version": "v0.11.7",
+      "release_date": "2018-11-19T19:03:42.568411Z",
+      "archive": "dev/linux/flutter_linux_v0.11.7-dev.tar.xz",
+      "sha256": "63cb1a86c636c31feeb372c3b0eee19d2e816994e5193a800c56c58249358d13"
+    },
+    {
+      "hash": "d44aa57c120c30d523c937a0455a6af30e743da9",
+      "channel": "dev",
+      "version": "v0.11.6",
+      "release_date": "2018-11-15T00:06:07.567249Z",
+      "archive": "dev/linux/flutter_linux_v0.11.6-dev.tar.xz",
+      "sha256": "a611307137eead7862e1e5cc4463e82661e9a98e798f00a23ddd5e19921a447f"
+    },
+    {
+      "hash": "97e03104a0913886a666a36f5d11ab5763d45e6e",
+      "channel": "dev",
+      "version": "v0.11.5",
+      "release_date": "2018-11-14T08:21:52.745142Z",
+      "archive": "dev/linux/flutter_linux_v0.11.5-dev.tar.xz",
+      "sha256": "a79a2c81cb2b5c0b8ccb39b0eb1989bc7eb40b5dc6bd760785d24d40ba9c689c"
+    },
+    {
+      "hash": "df57dc9da9905744fa0b49fe30254d6d7b204d5b",
+      "channel": "dev",
+      "version": "v0.11.4",
+      "release_date": "2018-11-13T19:26:13.591295Z",
+      "archive": "dev/linux/flutter_linux_v0.11.4-dev.tar.xz",
+      "sha256": "52ffcc6820aa53e61f6e9c82c2cad75b7d038e417c05cd041a5e51c94259185b"
+    },
+    {
+      "hash": "72bf075e8d6961d2ca6df462b2228954f8d0e73a",
+      "channel": "beta",
+      "version": "v0.11.3",
+      "release_date": "2018-11-13T01:12:51.313753Z",
+      "archive": "beta/linux/flutter_linux_v0.11.3-beta.tar.xz",
+      "sha256": "486e12ffffef6a441399f07c0bd636d35fc41161d65cf26ba84ebeba5beb3d7e"
+    },
+    {
+      "hash": "72bf075e8d6961d2ca6df462b2228954f8d0e73a",
+      "channel": "dev",
+      "version": "v0.11.3",
+      "release_date": "2018-11-11T18:31:39.196426Z",
+      "archive": "dev/linux/flutter_linux_v0.11.3-dev.tar.xz",
+      "sha256": "d9795d766b537239bd1589304ae5bd3ef8bf1dd6cdc378036704c4c79e46e072"
+    },
+    {
+      "hash": "e32cd85446c6fd5afdbe1ba463c18e2b2ee27781",
+      "channel": "dev",
+      "version": "v0.11.2",
+      "release_date": "2018-11-10T03:57:25.010916Z",
+      "archive": "dev/linux/flutter_linux_v0.11.2-dev.tar.xz",
+      "sha256": "5322559673f66be3f8178ef4d0c6bd17037a29675a78b714a5e227a7016bac16"
+    },
+    {
+      "hash": "756d5938d4eb4ef1572075fae7744502d870c7ba",
+      "channel": "dev",
+      "version": "v0.11.1",
+      "release_date": "2018-11-10T00:05:02.633915Z",
+      "archive": "dev/linux/flutter_linux_v0.11.1-dev.tar.xz",
+      "sha256": "4567b3b61de1dce2f204693cfe1b5e9a1096c9eb0e0ade2011f21fa90fea4c76"
+    },
+    {
+      "hash": "c319b890b33f2c15af043f2ab857e7c2944beefa",
+      "channel": "dev",
+      "version": "v0.11.0",
+      "release_date": "2018-11-08T20:06:52.048337Z",
+      "archive": "dev/linux/flutter_linux_v0.11.0-dev.tar.xz",
+      "sha256": "c8ec08c40e4c5e4477fee0329a01f4937402c8c7c05462b7dcf6ef3c388b310d"
+    },
+    {
+      "hash": "d8cbb80206db06d151206f8b599b7dde5a386a2d",
+      "channel": "beta",
+      "version": "v0.10.2",
+      "release_date": "2018-11-06T18:44:46.133026Z",
+      "archive": "beta/linux/flutter_linux_v0.10.2-beta.tar.xz",
+      "sha256": "9672d324de28a41ff256a2e7f43021c21110d6d4e84295bcca6244a093fe50e8"
+    },
+    {
+      "hash": "d8cbb80206db06d151206f8b599b7dde5a386a2d",
+      "channel": "dev",
+      "version": "v0.10.2",
+      "release_date": "2018-11-01T23:41:26.427053Z",
+      "archive": "dev/linux/flutter_linux_v0.10.2-dev.tar.xz",
+      "sha256": "f9b2774ee8db7f64557d5dcf07aa13dae65da0e744818ed561c6d74807f3d6ce"
+    },
+    {
+      "hash": "6a3ff018b199a7febbe2b5adbb564081d8f49e2f",
+      "channel": "dev",
+      "version": "v0.10.1",
+      "release_date": "2018-10-20T05:19:03.365595Z",
+      "archive": "dev/linux/flutter_linux_v0.10.1-dev.tar.xz",
+      "sha256": "92a8044a1fc6c9a37755614bcfe3fd4dd4f4e7a65c379edbab3a1f86bd6a38ea"
+    },
+    {
+      "hash": "d954ae6850a06ea461d5595cef424e278ed9f17f",
+      "channel": "dev",
+      "version": "v0.10.0",
+      "release_date": "2018-10-10T01:30:38.767479Z",
+      "archive": "dev/linux/flutter_linux_v0.10.0-dev.tar.xz",
+      "sha256": "d909191be010c2b3e81fd5a907427ee9ca046e281efec3332cfbb9df8d3a1db9"
+    },
+    {
+      "hash": "f37c235c32fc15babe6dc7b7bc2ee4387e5ecf92",
+      "channel": "beta",
+      "version": "v0.9.4",
+      "release_date": "2018-10-09T23:37:36.097058Z",
+      "archive": "beta/linux/flutter_linux_v0.9.4-beta.tar.xz",
+      "sha256": "92fd11c7292d022a8011a4cfffde8da9ef71a4320f0339202ea02f856affbeb8"
+    },
+    {
+      "hash": "13684e4f8e9edb4c2b2a0fd8e1439f93e6e30fde",
+      "channel": "dev",
+      "version": "v0.9.6",
+      "release_date": "2018-10-04T02:33:40.645472Z",
+      "archive": "dev/linux/flutter_linux_v0.9.6-dev.tar.xz",
+      "sha256": "a3f8577e883906255f1e6ac2ea50050fc619bb827eeb985c165e0d1b33f74932"
+    },
+    {
+      "hash": "020fd590b032c403b82688933e67474215b1debc",
+      "channel": "dev",
+      "version": "v0.9.5",
+      "release_date": "2018-09-28T23:30:33.903465Z",
+      "archive": "dev/linux/flutter_linux_v0.9.5-dev.tar.xz",
+      "sha256": "c584166e4f814964526ffc25736b52df350bff0f7bb6ffb733606658fd4d70c0"
+    },
+    {
+      "hash": "f37c235c32fc15babe6dc7b7bc2ee4387e5ecf92",
+      "channel": "dev",
+      "version": "v0.9.4",
+      "release_date": "2018-09-27T02:03:24.847660Z",
+      "archive": "dev/linux/flutter_linux_v0.9.4-dev.tar.xz",
+      "sha256": "d4fca5608f0eeb238a709ec7085690b7c1dd4fa8b8b33ca99da2718a6a7ceb6d"
+    },
+    {
+      "hash": "eed8c7ad07a2ba90b0a57d0aa7cc6ebed1864ecd",
+      "channel": "dev",
+      "version": "v0.9.3",
+      "release_date": "2018-09-25T20:36:24.192396Z",
+      "archive": "dev/linux/flutter_linux_v0.9.3-dev.tar.xz",
+      "sha256": "735a233daf935737047b3685d487a709771c5f1d6926ee98724b7f66bbf24934"
+    },
+    {
+      "hash": "85b4670b2aee067838821d4c4020315c16e8930a",
+      "channel": "dev",
+      "version": "v0.9.2",
+      "release_date": "2018-09-19T23:58:27.474764Z",
+      "archive": "dev/linux/flutter_linux_v0.9.2-dev.tar.xz",
+      "sha256": "fb73d368d63911a105093b3f90c95c67d6adf5beda84765c487ded8cfa4fb36d"
+    },
+    {
+      "hash": "bf7c27095cc4dc07c03d8a6ad2e9e0e28e26227e",
+      "channel": "dev",
+      "version": "v0.9.1",
+      "release_date": "2018-09-18T23:13:24.302005Z",
+      "archive": "dev/linux/flutter_linux_v0.9.1-dev.tar.xz",
+      "sha256": "9c837a3879b2b902e5f7237f2e4c9d8aaebce2ae46840a3806c0cf96511cecd0"
+    },
+    {
+      "hash": "f8c50ea15f6a78fdb6fa038cf3fb70fb154714ef",
+      "channel": "dev",
+      "version": "v0.9.0",
+      "release_date": "2018-09-18T21:46:29.068829Z",
+      "archive": "dev/linux/flutter_linux_v0.9.0-dev.tar.xz",
+      "sha256": "b87da1c31bc219f0b3ab1e550299b5fcff7a3967c545c0cf79e8a154ccb7853e"
+    },
+    {
+      "hash": "ccd070a5b42d18d1b8dfce4e8b59417373122dc2",
+      "channel": "dev",
+      "version": "v0.8.7",
+      "release_date": "2018-09-18T20:41:01.857935Z",
+      "archive": "dev/linux/flutter_linux_v0.8.7-dev.tar.xz",
+      "sha256": "3595f1fdd47cabc2fbf3ee27bf542bafb855d38c8b54fcad588c2a219755af61"
+    },
+    {
+      "hash": "5ab9e70727d858def3a586db7fb98ee580352957",
+      "channel": "beta",
+      "version": "v0.8.2",
+      "release_date": "2018-09-18T19:36:29.169888Z",
+      "archive": "beta/linux/flutter_linux_v0.8.2-beta.tar.xz",
+      "sha256": "c201ec9b3242fa6fb89296c55fbd6a252f26faacdff5ca6768175858ed9a97a5"
+    },
+    {
+      "hash": "9f359aeee2a474fe9c565b3b59cf1d504b919b4d",
+      "channel": "dev",
+      "version": "v0.8.6",
+      "release_date": "2018-09-18T00:40:12.111590Z",
+      "archive": "dev/linux/flutter_linux_v0.8.6-dev.tar.xz",
+      "sha256": "b2a9146f47c3e680b40b18397f6bc95a32acc86f7898ff6eeef2fa476c9da1ad"
+    },
+    {
+      "hash": "2bca8007bd1962940fa3b3d568bc52e446005616",
+      "channel": "dev",
+      "version": "v0.8.5",
+      "release_date": "2018-09-17T21:10:18.168755Z",
+      "archive": "dev/linux/flutter_linux_v0.8.5-dev.tar.xz",
+      "sha256": "c131c87ca519635bcc72e1d6e2ef6f8da27d5f531e3da87429d769cff19302ef"
+    },
+    {
+      "hash": "7f7a731da095addd1ce684a6a2f4bc8651229769",
+      "channel": "dev",
+      "version": "v0.8.4",
+      "release_date": "2018-09-14T20:21:32.119972Z",
+      "archive": "dev/linux/flutter_linux_v0.8.4-dev.tar.xz",
+      "sha256": "ce2839643841f93c0bec5a472935cbe9e785462e9c97fc4c9cb2b45203bb7dbc"
+    },
+    {
+      "hash": "2895d71b79b1482c8c1d1de387d04e2a5e667f1e",
+      "channel": "dev",
+      "version": "v0.8.3",
+      "release_date": "2018-09-14T17:24:49.586078Z",
+      "archive": "dev/linux/flutter_linux_v0.8.3-dev.tar.xz",
+      "sha256": "f0b1a427f06321ae19c85d50becdd30d6dd0bde1c0255b16724a1a88ea54459a"
+    },
+    {
+      "hash": "5ab9e70727d858def3a586db7fb98ee580352957",
+      "channel": "dev",
+      "version": "v0.8.2",
+      "release_date": "2018-09-10T20:15:13.878682Z",
+      "archive": "dev/linux/flutter_linux_v0.8.2-dev.tar.xz",
+      "sha256": "1654c065c016c89d040e516ab5281f80a48571269b85b0abb9a6c10f9f5f3916"
+    },
+    {
+      "hash": "0235ec59d108f8b4f6c6a664cc11c56c11cbb50a",
+      "channel": "dev",
+      "version": "v0.8.1",
+      "release_date": "2018-09-07T16:06:09.740756Z",
+      "archive": "dev/linux/flutter_linux_v0.8.1-dev.tar.xz",
+      "sha256": "9e9bc5d62c976f553fcc2cc49a467f10f21084cb9a0eb1800eacc540085e9819"
+    },
+    {
+      "hash": "a74f591d0c05f2173448b2b421785b8dc51e8370",
+      "channel": "dev",
+      "version": "v0.8.0",
+      "release_date": "2018-09-06T19:21:48.303173Z",
+      "archive": "dev/linux/flutter_linux_v0.8.0-dev.tar.xz",
+      "sha256": "d4d29f7baebf91c1e4d0b7891297f6352328fb9c8c96dfd0e54579eb59d2cc00"
+    },
+    {
+      "hash": "3b309bda072a6b326e8aa4591a5836af600923ce",
+      "channel": "beta",
+      "version": "v0.7.3",
+      "release_date": "2018-09-05T02:54:37.048088Z",
+      "archive": "beta/linux/flutter_linux_v0.7.3-beta.tar.xz",
+      "sha256": "77434ce2ad82204f75db7eece636f4a26a17571cef16a9ced6ee2385195e4160"
+    },
+    {
+      "hash": "eab5cd9853c13ec2207977d9b9ef7b6750fe0817",
+      "channel": "dev",
+      "version": "v0.7.5",
+      "release_date": "2018-08-31T00:53:05.441989Z",
+      "archive": "dev/linux/flutter_linux_v0.7.5-dev.tar.xz",
+      "sha256": "9aa4d5e8c00c52ed8ebd02b53e10dcba89366b40fc75f5ce99dd55c9462e811a"
+    },
+    {
+      "hash": "ce51e71d19eeadaa079d70388a61f7ae710313f7",
+      "channel": "dev",
+      "version": "v0.7.4",
+      "release_date": "2018-08-30T22:18:00.789268Z",
+      "archive": "dev/linux/flutter_linux_v0.7.4-dev.tar.xz",
+      "sha256": "41b179f090b1065e9eab351b48bcb6068f1727da99154f2564b98758d6134302"
+    },
+    {
+      "hash": "3b309bda072a6b326e8aa4591a5836af600923ce",
+      "channel": "dev",
+      "version": "v0.7.3",
+      "release_date": "2018-08-29T23:19:08.961236Z",
+      "archive": "dev/linux/flutter_linux_v0.7.3-dev.tar.xz",
+      "sha256": "3356f15e9b0a6f172bf9aa4c5520ee66e12363e0568a893d617dfce6eac28781"
+    },
+    {
+      "hash": "f8a2fc7c287ea0f25bb893d56caa45302d22eed6",
+      "channel": "dev",
+      "version": "v0.7.2",
+      "release_date": "2018-08-28T19:42:43.472854Z",
+      "archive": "dev/linux/flutter_linux_v0.7.2-dev.tar.xz",
+      "sha256": "01466d29620b4f1463a6d4c76fd89666a0f8721b9007ed196ca7359fa106f21b"
+    },
+    {
+      "hash": "9299c02cf708497d6f72edda8efae0bb8340660e",
+      "channel": "beta",
+      "version": "v0.6.0",
+      "release_date": "2018-08-28T18:25:23.275832Z",
+      "archive": "beta/linux/flutter_linux_v0.6.0-beta.tar.xz",
+      "sha256": "49108580ab84e2576dbdd9473cd982fafd61fac15aceb76e192c4f41c6d03659"
+    },
+    {
+      "hash": "3c624f8b2c578fe7c14ae1b2dec725e265891758",
+      "channel": "dev",
+      "version": "v0.7.1",
+      "release_date": "2018-08-27T19:08:49.442865Z",
+      "archive": "dev/linux/flutter_linux_v0.7.1-dev.tar.xz",
+      "sha256": "10a41a086edb3f24819b54b8f1f38b14917b6cd85f26674ebdcf474f560ed9af"
+    },
+    {
+      "hash": "09fe34708f5767e3dac6b04943677d2d8962b78c",
+      "channel": "dev",
+      "version": "v0.7.0",
+      "release_date": "2018-08-22T22:19:20.039553Z",
+      "archive": "dev/linux/flutter_linux_v0.7.0-dev.tar.xz",
+      "sha256": "0ca939847fbcd72f37a750c359b2dcf74c2b291ca4bee6926daec3b803c6c846"
+    },
+    {
+      "hash": "392a178169a9e620a5ae8e55c40d4276cddd3b36",
+      "channel": "dev",
+      "version": "v0.6.2",
+      "release_date": "2018-08-21T23:35:25.724670Z",
+      "archive": "dev/linux/flutter_linux_v0.6.2-dev.tar.xz",
+      "sha256": "f6ace82c2a3180c37b71e9322e9282a6d0edb47da205e4380a41bbbb6502fd08"
+    },
+    {
+      "hash": "ad1eaff45ab97ab65e2dd5aba768d19a4b48d49b",
+      "channel": "dev",
+      "version": "v0.6.1",
+      "release_date": "2018-08-21T19:15:54.048647Z",
+      "archive": "dev/linux/flutter_linux_v0.6.1-dev.tar.xz",
+      "sha256": "98e57ee13d6fa6c0115c4f22a599ab2f3b14ff9542eaafce8e9a9a8e8468ea6f"
+    },
+    {
+      "hash": "9299c02cf708497d6f72edda8efae0bb8340660e",
+      "channel": "dev",
+      "version": "v0.6.0",
+      "release_date": "2018-08-20T20:04:47.145283Z",
+      "archive": "dev/linux/flutter_linux_v0.6.0-dev.tar.xz",
+      "sha256": "8fc6e43f54913917f474514fc55726d5fab9245ecd5956303ac6ef0083a6ff9b"
+    },
+    {
+      "hash": "e4b989bf3dbefc61f11bce298d16f92ebd9cde41",
+      "channel": "dev",
+      "version": "v0.5.8",
+      "release_date": "2018-08-10T18:54:54.439606Z",
+      "archive": "dev/linux/flutter_linux_v0.5.8-dev.tar.xz",
+      "sha256": "15b3af1eb53b509d18976eb6fe757bffe0aad45f86589c19c27d25583e6527a5"
+    },
+    {
+      "hash": "66091f969653fd3535b265ddcd87436901858a1d",
+      "channel": "dev",
+      "version": "v0.5.7",
+      "release_date": "2018-07-16T17:00:12.907102Z",
+      "archive": "dev/linux/flutter_linux_v0.5.7-dev.tar.xz",
+      "sha256": "09daa11c6e144f89fb4febee162e53615f407324841c8dd01a0401631e4e52cd"
+    },
+    {
+      "hash": "472bbccf756e7954af2a81d2c8abc46d65a570af",
+      "channel": "dev",
+      "version": "v0.5.6",
+      "release_date": "2018-07-03T18:05:18.897446Z",
+      "archive": "dev/linux/flutter_linux_v0.5.6-dev.tar.xz",
+      "sha256": "25fe3fc79d9694e13735e9805f1c72e8e2169f235d02f5388e4587723eace318"
+    },
+    {
+      "hash": "c7ea3ca377e909469c68f2ab878a5bc53d3cf66b",
+      "channel": "beta",
+      "version": "v0.5.1",
+      "release_date": "2018-06-19T16:34:52.432566Z",
+      "archive": "beta/linux/flutter_linux_v0.5.1-beta.tar.xz",
+      "sha256": "ac66a026e0bcce96e54757bfb2eb0e132497270b8a43b09803e6aef69d313cba"
+    },
+    {
+      "hash": "020e0ef55ce73d94284db593f895bfc3a0b520e9",
+      "channel": "dev",
+      "version": "v0.5.5",
+      "release_date": "2018-06-18T19:06:38.885879Z",
+      "archive": "dev/linux/flutter_linux_v0.5.5-dev.tar.xz",
+      "sha256": "adcc8254955786caefca3a506c32cad66a666ccc277522d833c827cb94a0f32f"
+    },
+    {
+      "hash": "3019ad976d333cceb903b3f53885cd9ae678a622",
+      "channel": "dev",
+      "version": "v0.5.4",
+      "release_date": "2018-06-11T23:06:33.203054Z",
+      "archive": "dev/linux/flutter_linux_v0.5.4-dev.tar.xz",
+      "sha256": "413e51c908913bf5e7acb303cdd8c7c522244b4ee69c0c67890595e7dd5835ae"
+    },
+    {
+      "hash": "691cbee61343977c5fe09eef45694f0d755d2d1b",
+      "channel": "dev",
+      "version": "v0.5.3",
+      "release_date": "2018-06-11T17:12:09.004263Z",
+      "archive": "dev/linux/flutter_linux_v0.5.3-dev.tar.xz",
+      "sha256": "50151fccc1a09de380ec4067f6f02d902423befdbbffd6f5b3f1a86cecb6af8e"
+    },
+    {
+      "hash": "0a26ac09703b92a939fe3340c0584657a1791566",
+      "channel": "dev",
+      "version": "v0.5.2",
+      "release_date": "2018-06-08T00:45:49.120148Z",
+      "archive": "dev/linux/flutter_linux_v0.5.2-dev.tar.xz",
+      "sha256": "fe5f446fd603ae5cca65794a64952a8786fdb7de2d0d02385901f4338d10b061"
+    },
+    {
+      "hash": "c7ea3ca377e909469c68f2ab878a5bc53d3cf66b",
+      "channel": "dev",
+      "version": "v0.5.1",
+      "release_date": "2018-05-30T16:54:19.730575Z",
+      "archive": "dev/linux/flutter_linux_v0.5.1-dev.tar.xz",
+      "sha256": "62b1c311b629521d3236ad9e4bb236a38d41e5625a5af6b13c5ff19361a94edd"
+    },
+    {
+      "hash": "a863817c045396bad2830a80e722903154dda32b",
+      "channel": "dev",
+      "version": "v0.5.0",
+      "release_date": "2018-05-29T14:37:09.929118Z",
+      "archive": "dev/linux/flutter_linux_v0.5.0-dev.tar.xz",
+      "sha256": "a574fe0100202ad181e97191039d886d682ba7e84679db8a40c13085de5bb0d2"
+    },
+    {
+      "hash": "f9bb4289e9fd861d70ae78bcc3a042ef1b35cc9d",
+      "channel": "beta",
+      "version": "v0.4.4",
+      "release_date": "2018-05-22T22:56:13.374276Z",
+      "archive": "beta/linux/flutter_linux_v0.4.4-beta.tar.xz",
+      "sha256": "70faf2bbeda659a3d9b6e04b9ea04401798556b736935c6249d3b563a3bf2cad"
+    },
+    {
+      "hash": "f9bb4289e9fd861d70ae78bcc3a042ef1b35cc9d",
+      "channel": "dev",
+      "version": "v0.4.4",
+      "release_date": "2018-05-14T05:22:45.595510Z",
+      "archive": "dev/linux/flutter_linux_v0.4.4-dev.tar.xz",
+      "sha256": "38f3632ac10db4359b1bf0e9fa91a8cdda27e309e95f5e081631111fa934c0a0"
+    },
+    {
+      "hash": "f086a45f8259fa77ef931ad2bfbb630360a8f5a6",
+      "channel": "dev",
+      "version": "v0.4.3",
+      "release_date": "2018-05-11T18:23:10.418979Z",
+      "archive": "dev/linux/flutter_linux_v0.4.3-dev.tar.xz",
+      "sha256": "94b9914036c2bdcfe5806f79e7088df126071cb15a965d1ded9e98cd46f08774"
+    },
+    {
+      "hash": "de332ec78292c2d79fdb76034328f902c9087ee9",
+      "channel": "dev",
+      "version": "v0.4.2",
+      "release_date": "2018-05-09T05:04:04.217562Z",
+      "archive": "dev/linux/flutter_linux_v0.4.2-dev.tar.xz",
+      "sha256": "3d6a4afd43ce8d23382f75ea401741cdbb4c77532b899cbc3e00a42455b34f07"
+    },
+    {
+      "hash": "e8d08744683d25661c6150b3b247c049719e99ba",
+      "channel": "dev",
+      "version": "v0.4.1",
+      "release_date": "2018-05-09T04:21:20.388240Z",
+      "archive": "dev/linux/flutter_linux_v0.4.1-dev.tar.xz",
+      "sha256": "3011413067058de471d1c7a96f41e199254b375ef5b6bdacb2458d60a621509a"
+    },
+    {
+      "hash": "7984f6e043ee661b420e70c72241973c676034e5",
+      "channel": "dev",
+      "version": "v0.4.0",
+      "release_date": "2018-05-07T19:54:40.036291Z",
+      "archive": "dev/linux/flutter_linux_v0.4.0-dev.tar.xz",
+      "sha256": "e9afba00b7f62e17d4492711ad166941635806677e1882a4eec291ff484597ad"
+    },
+    {
+      "hash": "44b7e7d3f42f050a79712daab253af06e9daf530",
+      "channel": "beta",
+      "version": "v0.3.2",
+      "release_date": "2018-05-07T18:35:13.818643Z",
+      "archive": "beta/linux/flutter_linux_v0.3.2-beta.tar.xz",
+      "sha256": "f7ef3862c035b70d67157c51f83a59573c1c27cb1c0557206eeb353034469cda"
+    },
+    {
+      "hash": "be09a200ee19024db34257653b067dcf5b998dc2",
+      "channel": "dev",
+      "version": "v0.3.6",
+      "release_date": "2018-05-04T20:12:10.557689Z",
+      "archive": "dev/linux/flutter_linux_v0.3.6-dev.tar.xz",
+      "sha256": "07b91358c93f45e8fef074e52f56bf4a8894ddc9aa67f0dcdd2b3c97fbfc47db"
+    },
+    {
+      "hash": "7ffcd3d22d7bc1222d53d6d3bb83f59891aac2c2",
+      "channel": "dev",
+      "version": "v0.3.5",
+      "release_date": "2018-04-25T02:36:56.617731Z",
+      "archive": "dev/linux/flutter_linux_v0.3.5-dev.tar.xz",
+      "sha256": "476557bc64f5f172a5b9b8ae76ab523de15edc4a0e1ef28371ca4bce1ced7ac0"
+    },
+    {
+      "hash": "c7ee37a0d88bb3d60ac0f70cf381cd2492baf5e4",
+      "channel": "dev",
+      "version": "v0.3.4",
+      "release_date": "2018-04-24T21:38:15.356720Z",
+      "archive": "dev/linux/flutter_linux_v0.3.4-dev.tar.xz",
+      "sha256": "97d5ccbd802a48593098b8c3f717059dc905d4d82d6ee22d96219acf6259ff1e"
+    },
+    {
+      "hash": "12bbaba9ae044d0ea77da4dd5e4db15eed403f09",
+      "channel": "beta",
+      "version": "v0.3.1",
+      "release_date": "2018-04-24T16:58:25.525831Z",
+      "archive": "beta/linux/flutter_linux_v0.3.1-beta.tar.xz",
+      "sha256": "785505e58fb228284c6c7cb8912a9f93281ec7094024ec18fbbb5d0aea4164bc"
+    },
+    {
+      "hash": "a742b11a50ad5d70f44a219e4a29a9fb5ca80252",
+      "channel": "dev",
+      "version": "v0.3.3",
+      "release_date": "2018-04-23T13:45:14.270896Z",
+      "archive": "dev/linux/flutter_linux_v0.3.3-dev.tar.xz",
+      "sha256": "e58d02bf0b3d2817e4f3df82410bb28d0a1cee7331b09ca3b4b6fc12e4f32f21"
+    },
+    {
+      "hash": "44b7e7d3f42f050a79712daab253af06e9daf530",
+      "channel": "dev",
+      "version": "v0.3.2",
+      "release_date": "2018-04-20T08:26:17.688699Z",
+      "archive": "dev/linux/flutter_linux_v0.3.2-dev.tar.xz",
+      "sha256": "8e578c801b61a0450b2c66269d4c6f523f568b312dc4945d6bff7cf226ffe8b9"
+    },
+    {
+      "hash": "12bbaba9ae044d0ea77da4dd5e4db15eed403f09",
+      "channel": "dev",
+      "version": "v0.3.1",
+      "release_date": "2018-04-20T07:57:29.226382Z",
+      "archive": "dev/linux/flutter_linux_v0.3.1-dev.tar.xz",
+      "sha256": "9932f84582775f5fa361c175cfcb275207a6c1347533becbb35081066131810c"
+    },
+    {
+      "hash": "c73b8a7cf63455189e9dc005010f2c9b34497420",
+      "channel": "dev",
+      "version": "v0.3.0",
+      "release_date": "2018-04-16T20:03:43.109412Z",
+      "archive": "dev/linux/flutter_linux_v0.3.0-dev.tar.xz",
+      "sha256": "ebf806365ca9cd5cc0bf0cca21303ceb5ad7ab5896816e1c02ba762fbf24e6b9"
+    },
+    {
+      "hash": "f408bb06f9361793ca85493c38d809ee1e2f7e30",
+      "channel": "dev",
+      "version": "v0.2.11",
+      "release_date": "2018-04-12T01:48:48.011863Z",
+      "archive": "dev/linux/flutter_linux_v0.2.11-dev.tar.xz",
+      "sha256": "bc63716b8053fc6c07936b0b0632441b7291b83d388ddbe2a210115a63a5ef1a"
+    },
+    {
+      "hash": "d6d874474b21b512aac03f1dcd0d3b88835cdcdd",
+      "channel": "dev",
+      "version": "v0.2.10",
+      "release_date": "2018-04-09T20:24:31.158345Z",
+      "archive": "dev/linux/flutter_linux_v0.2.10-dev.tar.xz",
+      "sha256": "0184236517aca16387698c122d20b750dbfa5fd8966d9e864b67675ec18a8c84"
+    },
+    {
+      "hash": "b397406561f5e7a9c94e28f58d9e49fca0dd58b7",
+      "channel": "beta",
+      "version": "v0.2.8",
+      "release_date": "2018-04-09T18:34:23.057146Z",
+      "archive": "beta/linux/flutter_linux_v0.2.8-beta.tar.xz",
+      "sha256": "97725c50e795498d2d7e9796ed9ee45d4039dec5cae81ee88f65c4cf6c6045c8"
+    },
+    {
+      "hash": "487e6bc91efd3b8ef859a31963b26e19d12ca6fa",
+      "channel": "dev",
+      "version": "v0.2.9",
+      "release_date": "2018-04-05T15:46:23.078195Z",
+      "archive": "dev/linux/flutter_linux_v0.2.9-dev.tar.xz",
+      "sha256": "99ebcc35e3359c79abc015124f109a1b86f69de0e5fe7fe631d42eea34b39eb9"
+    },
+    {
+      "hash": "b397406561f5e7a9c94e28f58d9e49fca0dd58b7",
+      "channel": "dev",
+      "version": "v0.2.8",
+      "release_date": "2018-04-03T01:46:58.039956Z",
+      "archive": "dev/linux/flutter_linux_v0.2.8-dev.tar.xz",
+      "sha256": "ba30a280209ab95d906eda647e2bb17b6a786279a1e3e4cffeb73b7bf0172d63"
+    },
+    {
+      "hash": "5a58b36e36b8d7aace89d3950e6deb307956a6a0",
+      "channel": "beta",
+      "version": "v0.2.3",
+      "release_date": "2018-04-02T23:23:50.189137Z",
+      "archive": "beta/linux/flutter_linux_v0.2.3-beta.tar.xz",
+      "sha256": "4fe85a822093e81cb5a66c7fc263f68de39b5797b294191b6d75e7afcc86aff8"
+    },
+    {
+      "hash": "0c89920069320b75d1fa4a47d36b2c48cf85697c",
+      "channel": "dev",
+      "version": "v0.2.7",
+      "release_date": "2018-04-02T23:11:51.217078Z",
+      "archive": "dev/linux/flutter_linux_v0.2.7-dev.tar.xz",
+      "sha256": "1092f0a13bbea5524f9cb4d476384db98a4aef9daad6396d98dc66b4afac4d12"
+    },
+    {
+      "hash": "1d067220daa06be91956de1130d93e63fb2f1a5a",
+      "channel": "dev",
+      "version": "v0.2.6",
+      "release_date": "2018-03-30T13:56:17.652025Z",
+      "archive": "dev/linux/flutter_linux_v0.2.6-dev.tar.xz",
+      "sha256": "4caeb9af0ac3c251b7d02ec418808e7a274e9d089426a33478b4e50fe2b22fdb"
+    },
+    {
+      "hash": "bffae2157102dd75a625153d3dc866d3de69c853",
+      "channel": "dev",
+      "version": "v0.2.5",
+      "release_date": "2018-03-30T01:48:38.085191Z",
+      "archive": "dev/linux/flutter_linux_v0.2.5-dev.tar.xz",
+      "sha256": "f0ffdd05349842cc8e31d18e6786143a5a3dfcc7a993042e3f9e08dbd7512b5c"
+    },
+    {
+      "hash": "3352a3fb488df4742ff323243d3dc44d9b7cd3e8",
+      "channel": "dev",
+      "version": "v0.2.4",
+      "release_date": "2018-03-26T20:43:01.049354Z",
+      "archive": "dev/linux/flutter_linux_v0.2.4-dev.tar.xz",
+      "sha256": "f4d7aae23436505d1826d174a37658209dc3057a8deff417ab93c886f798b972"
+    },
+    {
+      "hash": "5a58b36e36b8d7aace89d3950e6deb307956a6a0",
+      "channel": "dev",
+      "version": "v0.2.3",
+      "release_date": "2018-03-20T01:47:02.851729Z",
+      "archive": "dev/linux/flutter_linux_v0.2.3-dev.tar.xz",
+      "sha256": "20705630ad9963aa8dca62a5dc8f33264e4cbe6735f5697e77d4a2075c019a1d"
+    },
+    {
+      "hash": "b9bd51cc36b706215915711e580851901faebb40",
+      "channel": "dev",
+      "version": "v0.2.2",
+      "release_date": "2018-03-16T18:48:13.375013Z",
+      "archive": "dev/linux/flutter_linux_v0.2.2-dev.tar.xz",
+      "sha256": "6073331168cdb37a4637a5dc073d6a7ef4e466321effa2c529fa27d2253a4d4b"
+    },
+    {
+      "hash": "3ea4d06340a97a1e9d7cae97567c64e0569dcaa2",
+      "channel": "beta",
+      "version": "v0.1.5",
+      "release_date": "2018-03-15T16:54:36.795002Z",
+      "archive": "beta/linux/flutter_linux_v0.1.5-beta.tar.xz",
+      "sha256": "d3be599c0a2367a0c38c496a0ed474fa619957022a95d4e9d8b06b1bede2f105"
+    },
+    {
+      "hash": "6f5bcb97a43e45b302b6b8d9eb5ef9d54f09515e",
+      "channel": "dev",
+      "version": "v0.2.1",
+      "release_date": "2018-03-12T17:08:21.387382Z",
+      "archive": "dev/linux/flutter_linux_v0.2.1-dev.tar.xz",
+      "sha256": "a9d370d8a76ccae4cb74458bd95027380c3cc3d034fc267513d89fe153fdc33d"
+    },
+    {
+      "hash": "f8ac23cd8646538634f63032df4bfaf3b597007d",
+      "channel": "dev",
+      "version": "v0.2.0",
+      "release_date": "2018-03-07T19:43:29.371633Z",
+      "archive": "dev/linux/flutter_linux_v0.2.0-dev.tar.xz",
+      "sha256": "2d18e27823ac46d0664fe7a8c2e7944ae03b965868c962194eec312e5b6a995d"
+    },
+    {
+      "hash": "70f60b17d7de9844c356fb7ab0e2cf1630a70965",
+      "channel": "dev",
+      "version": "v0.1.9",
+      "release_date": "2018-03-07T05:33:37.499761Z",
+      "archive": "dev/linux/flutter_linux_v0.1.9-dev.tar.xz",
+      "sha256": "1a843c6c3b960871385274573d988f6c842147deadfde08b3c9ce8e2061919c5"
+    },
+    {
+      "hash": "6993b203c05477fec537f566be7ff7fbf072d33b",
+      "channel": "dev",
+      "version": "v0.1.8",
+      "release_date": "2018-03-06T08:16:53.944971Z",
+      "archive": "dev/linux/flutter_linux_v0.1.8-dev.tar.xz",
+      "sha256": "30d70d9b8e60d1fe08420718842995b566c045720eaabbd0452669edb3270b01"
+    },
+    {
+      "hash": "1f3eb5034ff2372956620b2a9eb88683eee9495e",
+      "channel": "dev",
+      "version": "v0.1.6",
+      "release_date": "2018-02-27T00:26:37.058993Z",
+      "archive": "dev/linux/flutter_linux_v0.1.6-dev.tar.xz",
+      "sha256": "5dd34873b3a3e214a32fd30c2c319a0f46e608afb72f0d450b2d621a6d02aebd"
+    }
+  ]
+}

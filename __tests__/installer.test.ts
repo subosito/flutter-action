@@ -1,14 +1,27 @@
 import io = require('@actions/io');
 import fs = require('fs');
 import path = require('path');
+import nock = require('nock');
 
 const toolDir = path.join(__dirname, 'runner', 'tools');
 const tempDir = path.join(__dirname, 'runner', 'temp');
+const dataDir = path.join(__dirname, 'data');
 
 process.env['RUNNER_TOOL_CACHE'] = toolDir;
 process.env['RUNNER_TEMP'] = tempDir;
 
 import * as installer from '../src/installer';
+
+function osName(): string {
+  switch (process.platform) {
+    case 'win32':
+      return 'windows';
+    case 'darwin':
+      return 'macos';
+    default:
+      return process.platform;
+  }
+}
 
 describe('installer tests', () => {
   beforeAll(async () => {
@@ -27,6 +40,25 @@ describe('installer tests', () => {
 
   it('Downloads flutter', async () => {
     await installer.getFlutter('1.7.8+hotfix.4', 'stable');
+    const sdkDir = path.join(
+      toolDir,
+      'flutter',
+      '1.7.8-hotfix.4-stable',
+      'x64'
+    );
+
+    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+  }, 100000);
+
+  it('Downloads latest flutter release from stable channel', async () => {
+    const platform = osName();
+
+    nock('https://storage.googleapis.com')
+      .get(`/flutter_infra/releases/releases_${platform}.json`)
+      .replyWithFile(200, path.join(dataDir, `releases_${platform}.json`));
+
+    await installer.getFlutter('', 'stable');
     const sdkDir = path.join(
       toolDir,
       'flutter',
