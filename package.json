@@ -1,6 +1,6 @@
 {
   "name": "flutter-action",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "private": true,
   "description": "Flutter environment for use in actions",
   "main": "lib/index.js",
