@@ -3,12 +3,15 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as restm from 'typed-rest-client/RestClient';
 import uuidV4 from 'uuid/v4';
 import {exec} from '@actions/exec/lib/exec';
 
 const IS_WINDOWS = process.platform === 'win32';
 const IS_DARWIN = process.platform === 'darwin';
 const IS_LINUX = process.platform === 'linux';
+
+const storageUrl = 'https://storage.googleapis.com/flutter_infra/releases';
 
 let tempDirectory = process.env['RUNNER_TEMP'] || '';
 
@@ -32,9 +35,9 @@ export async function getFlutter(
   version: string,
   channel: string
 ): Promise<void> {
-  // make semver compatible, eg: 1.7.8+hotfix.4 -> 1.7.8-hotfix.4
-  const semver = version.replace('+', '-');
-  const cleanver = `${semver}-${channel}`;
+  version = await determineVersion(version, channel);
+
+  let cleanver = `${version.replace('+', '-')}-${channel}`;
   let toolPath = tc.find('flutter', cleanver);
 
   if (toolPath) {
@@ -75,7 +78,7 @@ function getDownloadInfo(
 ): {version: string; url: string} {
   const os = osName();
   const ext = extName();
-  const url = `https://storage.googleapis.com/flutter_infra/releases/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
+  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
 
   return {
     version,
@@ -170,4 +173,62 @@ async function extractZipDarwin(file: string, dest: string): Promise<void> {
     'unzip-darwin'
   );
   await exec(`"${unzipPath}"`, [file], {cwd: dest});
+}
+
+async function determineVersion(
+  version: string,
+  channel: string
+): Promise<string> {
+  if (version.endsWith('.x') || version === '') {
+    return await getLatestVersion(version, channel);
+  }
+
+  return version;
+}
+
+interface IFlutterChannel {
+  [key: string]: string;
+  beta: string;
+  dev: string;
+  stable: string;
+}
+
+interface IFlutterRelease {
+  hash: string;
+  channel: string;
+  version: string;
+}
+
+interface IFlutterStorage {
+  current_release: IFlutterChannel;
+  releases: IFlutterRelease[];
+}
+
+async function getLatestVersion(
+  version: string,
+  channel: string
+): Promise<string> {
+  const releasesUrl: string = `${storageUrl}/releases_${osName()}.json`;
+  const rest: restm.RestClient = new restm.RestClient('setup-go');
+  const storage: IFlutterStorage | null = (await rest.get<IFlutterStorage | null>(
+    releasesUrl
+  )).result;
+
+  if (!storage) {
+    throw new Error('unable to get latest version');
+  }
+
+  const channelVersion = storage.releases.find(
+    release => release.hash === storage.current_release[channel]
+  );
+
+  if (!channelVersion) {
+    throw new Error(`unable to get latest version from channel ${channel}`);
+  }
+
+  let cver = channelVersion.version;
+  cver = cver.slice(1, cver.length);
+
+  core.debug(`latest version from channel ${channel} is ${cver}`);
+  return cver;
 }
