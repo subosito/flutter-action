@@ -54,38 +54,48 @@ describe('installer tests', () => {
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
   }, 100000);
 
-  it('Downloads latest flutter release from stable channel', async () => {
-    const platform = osName();
+  describe('get the latest release of a flutter version', () => {
+    beforeEach(() => {
+      const platform = osName();
+      nock('https://storage.googleapis.com', {allowUnmocked: true})
+        .get(`/flutter_infra/releases/releases_${platform}.json`)
+        .replyWithFile(200, path.join(dataDir, `releases_${platform}.json`));
+    });
 
-    nock('https://storage.googleapis.com', {allowUnmocked: true})
-      .get(`/flutter_infra/releases/releases_${platform}.json`)
-      .replyWithFile(200, path.join(dataDir, `releases_${platform}.json`));
+    afterEach(() => {
+      nock.cleanAll();
+      nock.enableNetConnect();
+    });
 
-    await installer.getFlutter('', 'stable');
-    const sdkDir = path.join(
-      toolDir,
-      'flutter',
-      '1.7.8-hotfix.4-stable',
-      'x64'
-    );
+    it('Downloads latest flutter release from stable channel', async () => {
+      await installer.getFlutter('', 'stable');
+      const sdkDir = path.join(
+        toolDir,
+        'flutter',
+        '1.7.8-hotfix.4-stable',
+        'x64'
+      );
 
-    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
-    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-  }, 100000);
+      expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+      expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+    }, 100000);
 
-  it('Downloads latest flutter release using .x version syntax from dev channel', async () => {
-    const platform = osName();
+    it('Downloads latest flutter release of 1.7 when using version 1.7 from dev channel', async () => {
+      await installer.getFlutter('1.7', 'dev');
+      const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
 
-    nock('https://storage.googleapis.com', {allowUnmocked: true})
-      .get(`/flutter_infra/releases/releases_${platform}.json`)
-      .replyWithFile(200, path.join(dataDir, `releases_${platform}.json`));
+      expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+      expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+    }, 100000);
 
-    await installer.getFlutter('1.7.x', 'dev');
-    const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
+    it('Downloads latest flutter release of 1.7 when using version 1.7.x from dev channel', async () => {
+      await installer.getFlutter('1.7.x', 'dev');
+      const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
 
-    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
-    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-  }, 100000);
+      expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+      expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+    }, 100000);
+  });
 
   it('Throws if no location contains correct flutter version', async () => {
     let thrown = false;
