@@ -36,6 +36,12 @@ export async function getFlutter(
   version: string,
   channel: string
 ): Promise<void> {
+  const versionPart = version.split('.');
+
+  if (versionPart[1] == null || versionPart[2] == null) {
+    version = version.concat('.x');
+  }
+
   version = await determineVersion(version, channel);
 
   let cleanver = `${version.replace('+', '-')}-${channel}`;
