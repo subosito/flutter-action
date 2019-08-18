@@ -44,8 +44,8 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.7.x'
-    channel: 'dev'
+    flutter-version: '1.7.x' # you can use 1.7
+    channel: 'dev' # optional, default to: 'stable'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
