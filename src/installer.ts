@@ -216,7 +216,7 @@ async function getLatestVersion(
   channel: string
 ): Promise<string> {
   const releasesUrl: string = `${storageUrl}/releases_${osName()}.json`;
-  const rest: restm.RestClient = new restm.RestClient('setup-go');
+  const rest: restm.RestClient = new restm.RestClient('flutter-action');
   const storage: IFlutterStorage | null = (await rest.get<IFlutterStorage | null>(
     releasesUrl
   )).result;
