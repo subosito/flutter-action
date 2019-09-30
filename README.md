@@ -68,7 +68,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.8.4'
+          flutter-version: '1.7.8+hotfix.4'
           channel: 'beta'
       - run: flutter pub get
       - run: flutter test
