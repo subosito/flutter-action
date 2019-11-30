@@ -75,3 +75,4 @@ jobs:
       - run: flutter build apk
 ```
 
+For a step by step guide on implemenatation read the tutorial on [Medium](https://medium.com/better-programming/ci-cd-for-flutter-apps-using-github-actions-b833f8f7aac)
