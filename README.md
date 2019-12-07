@@ -12,7 +12,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.7.8+hotfix.4'
+    flutter-version: '1.9.1+hotfix.6'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -44,7 +44,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.7.x' # you can use 1.7
+    flutter-version: '1.12.x' # you can use 1.12
     channel: 'dev' # optional, default to: 'stable'
 - run: flutter pub get
 - run: flutter test
@@ -68,7 +68,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.7.8+hotfix.4'
+          flutter-version: '1.11.0'
           channel: 'beta'
       - run: flutter pub get
       - run: flutter test
