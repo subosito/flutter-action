@@ -2877,7 +2877,7 @@ const installer = __importStar(__webpack_require__(749));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const version = core.getInput('version') || core.getInput('flutter-version') || '';
+            const version = core.getInput('flutter-version') || '';
             const channel = core.getInput('channel') || 'stable';
             yield installer.getFlutter(version, channel);
         }
