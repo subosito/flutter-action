@@ -75,9 +75,3 @@ jobs:
       - run: flutter build apk
 ```
 
-## Articles
-
-- [Continuous Integration for Flutter with GitHub Actions](https://admcpr.com/continuous-integration-for-flutter-with-github-actions/)
-- [CI/CD for Flutter Apps Using GitHub Actions](https://medium.com/better-programming/ci-cd-for-flutter-apps-using-github-actions-b833f8f7aac)
-- [Guard your open-sourced Flutter app with GitHub Actions](https://medium.com/@jacksonz666/guard-your-open-sourced-flutter-app-with-github-actions-824cc4d9844)
-- [Run Flutter Driver tests on GitHub Actions](https://medium.com/flutter-community/run-flutter-driver-tests-on-github-actions-13c639c7e4ab)
