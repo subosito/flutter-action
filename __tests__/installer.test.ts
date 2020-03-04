@@ -78,7 +78,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 100000);
+    }, 200000);
 
     it('Downloads latest flutter release of 1.7 when using version 1.7 from dev channel', async () => {
       await installer.getFlutter('1.7', 'dev');
@@ -86,7 +86,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 100000);
+    }, 200000);
 
     it('Downloads latest flutter release of 1.7 when using version 1.7.x from dev channel', async () => {
       await installer.getFlutter('1.7.x', 'dev');
@@ -94,7 +94,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 100000);
+    }, 200000);
   });
 
   it('Throws if no location contains correct flutter version', async () => {
