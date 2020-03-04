@@ -3,7 +3,7 @@ import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as restm from 'typed-rest-client/RestClient';
+import * as httpm from '@actions/http-client';
 import * as semver from 'semver';
 
 const IS_WINDOWS = process.platform === 'win32';
@@ -168,10 +168,10 @@ async function getLatestVersion(
   channel: string
 ): Promise<string> {
   const releasesUrl: string = `${storageUrl}/releases_${osName()}.json`;
-  const rest: restm.RestClient = new restm.RestClient('flutter-action');
-  const storage: IFlutterStorage | null = (await rest.get<IFlutterStorage | null>(
-    releasesUrl
-  )).result;
+  const http: httpm.HttpClient = new httpm.HttpClient('flutter-action');
+  const storage: IFlutterStorage | null = (
+    await http.getJson<IFlutterStorage | null>(releasesUrl)
+  ).result;
 
   if (!storage) {
     throw new Error('unable to get latest version');
