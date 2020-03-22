@@ -150,6 +150,7 @@ interface IFlutterChannel {
   beta: string;
   dev: string;
   stable: string;
+  master: string;
 }
 
 interface IFlutterRelease {
