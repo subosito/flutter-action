@@ -39,7 +39,7 @@ export async function getFlutter(
   if (versionPart[1] == null || versionPart[2] == null) {
     version = version.concat('.x');
   }
-
+  
   version = await determineVersion(version, channel);
 
   let cleanver = `${version.replace('+', '-')}-${channel}`;
@@ -83,7 +83,7 @@ function getDownloadInfo(
 ): {version: string; url: string} {
   const os = osName();
   const ext = extName();
-  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
+  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_${version}-${channel}.${ext}`;
 
   return {
     version,
@@ -181,7 +181,7 @@ async function getLatestVersion(
     const sver = version.slice(0, version.length - 2);
     const releases = storage.releases.filter(
       release =>
-        release.version.startsWith(`v${sver}`) && release.channel === channel
+        release.version.startsWith(`${sver}`) && release.channel === channel
     );
     const versions = releases.map(release =>
       release.version.slice(1, release.version.length)

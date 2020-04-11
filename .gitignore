@@ -1,3 +1,5 @@
 node_modules/
 lib/
 __tests__/runner/*
+package-lock.json
+.vscode
