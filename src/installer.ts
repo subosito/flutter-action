@@ -83,8 +83,7 @@ function getDownloadInfo(
 ): {version: string; url: string} {
   const os = osName();
   const ext = extName();
-  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
-
+  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_${version}-${channel}.${ext}`;
   return {
     version,
     url
@@ -180,14 +179,10 @@ async function getLatestVersion(
   if (version.endsWith('.x')) {
     const sver = version.slice(0, version.length - 2);
     const releases = storage.releases.filter(
-      release =>
-        release.version.startsWith(`v${sver}`) && release.channel === channel
+      release => release.version.includes(sver) && release.channel === channel
     );
-    const versions = releases.map(release =>
-      release.version.slice(1, release.version.length)
-    );
+    const versions = releases.map(release => release.version);
     const sortedVersions = versions.sort(semver.rcompare);
-
     core.debug(
       `latest version of ${version} from channel ${channel} is ${sortedVersions[0]}`
     );

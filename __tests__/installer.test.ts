@@ -39,7 +39,7 @@ describe('installer tests', () => {
   }, 100000);
 
   it('Downloads flutter', async () => {
-    await installer.getFlutter('1.0.0', 'stable');
+    await installer.getFlutter('v1.0.0', 'stable');
     const sdkDir = path.join(toolDir, 'flutter', '1.0.0-stable', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
@@ -47,7 +47,7 @@ describe('installer tests', () => {
   }, 100000);
 
   it('Downloads flutter from beta channel', async () => {
-    await installer.getFlutter('1.8.3', 'beta');
+    await installer.getFlutter('v1.8.3', 'beta');
     const sdkDir = path.join(toolDir, 'flutter', '1.8.3-beta', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
@@ -80,16 +80,16 @@ describe('installer tests', () => {
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
     }, 200000);
 
-    it('Downloads latest flutter release of 1.7 when using version 1.7 from dev channel', async () => {
-      await installer.getFlutter('1.7', 'dev');
+    it('Downloads latest flutter release of 1.7 when using version v1.7 from dev channel', async () => {
+      await installer.getFlutter('v1.7', 'dev');
       const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
     }, 200000);
 
-    it('Downloads latest flutter release of 1.7 when using version 1.7.x from dev channel', async () => {
-      await installer.getFlutter('1.7.x', 'dev');
+    it('Downloads latest flutter release of 1.7 when using version v1.7.x from dev channel', async () => {
+      await installer.getFlutter('v1.7.x', 'dev');
       const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
