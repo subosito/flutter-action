@@ -70,6 +70,8 @@ jobs:
         with:
           flutter-version: '1.11.0'
           channel: 'beta'
+      - run: dart --version
+      - run: flutter --version
       - run: flutter pub get
       - run: flutter test
       - run: flutter build apk
