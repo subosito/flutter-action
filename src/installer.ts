@@ -62,6 +62,7 @@ export async function getFlutter(
 
   core.exportVariable('FLUTTER_HOME', toolPath);
   core.addPath(path.join(toolPath, 'bin'));
+  core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
 }
 
 function osName(): string {
