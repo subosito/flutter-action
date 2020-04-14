@@ -27,7 +27,7 @@ describe('installer tests', () => {
   beforeAll(async () => {
     await io.rmRF(toolDir);
     await io.rmRF(tempDir);
-  }, 300000);
+  }, 100000);
 
   afterAll(async () => {
     try {
@@ -38,9 +38,22 @@ describe('installer tests', () => {
     }
   }, 100000);
 
+  afterEach(async () => {
+    await io.rmRF(toolDir);
+    await io.rmRF(tempDir);
+  }, 100000);
+
   it('Downloads flutter', async () => {
     await installer.getFlutter('1.0.0', 'stable');
     const sdkDir = path.join(toolDir, 'flutter', '1.0.0-stable', 'x64');
+
+    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+  }, 100000);
+
+  it('Downloads flutter from dev channel', async () => {
+    await installer.getFlutter('1.17.0-dev.5.0', 'dev');
+    const sdkDir = path.join(toolDir, 'flutter', '1.17.0-dev.5.0-dev', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
