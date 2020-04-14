@@ -29,15 +29,6 @@ describe('installer tests', () => {
     await io.rmRF(tempDir);
   }, 100000);
 
-  afterAll(async () => {
-    try {
-      await io.rmRF(toolDir);
-      await io.rmRF(tempDir);
-    } catch {
-      console.log('Failed to remove test directories');
-    }
-  }, 100000);
-
   afterEach(async () => {
     await io.rmRF(toolDir);
     await io.rmRF(tempDir);
@@ -49,7 +40,7 @@ describe('installer tests', () => {
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-  }, 100000);
+  }, 300000);
 
   it('Downloads flutter from dev channel', async () => {
     await installer.getFlutter('1.17.0-dev.5.0', 'dev');
@@ -57,7 +48,7 @@ describe('installer tests', () => {
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-  }, 100000);
+  }, 300000);
 
   describe('get the latest release of a flutter version', () => {
     beforeEach(() => {
@@ -83,7 +74,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 200000);
+    }, 300000);
 
     it('Downloads latest flutter release from beta channel (using new release format)', async () => {
       await installer.getFlutter('', 'beta');
@@ -96,7 +87,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 200000);
+    }, 300000);
 
     it('Downloads latest flutter release of 1.7 when using version 1.7 from dev channel', async () => {
       await installer.getFlutter('1.7', 'dev');
@@ -104,7 +95,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 200000);
+    }, 300000);
 
     it('Downloads latest flutter release of 1.7 when using version 1.7.x from dev channel', async () => {
       await installer.getFlutter('1.7.x', 'dev');
@@ -112,7 +103,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 200000);
+    }, 300000);
 
     it('Downloads latest flutter release of 1.18 when using version 1.18.x from dev channel (using new release format)', async () => {
       await installer.getFlutter('1.18.x', 'dev');
@@ -120,7 +111,7 @@ describe('installer tests', () => {
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-    }, 200000);
+    }, 300000);
   });
 
   it('Throws if no location contains correct flutter version', async () => {
