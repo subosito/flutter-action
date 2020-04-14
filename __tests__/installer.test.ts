@@ -46,14 +46,6 @@ describe('installer tests', () => {
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
   }, 100000);
 
-  it('Downloads flutter from beta channel', async () => {
-    await installer.getFlutter('1.8.3', 'beta');
-    const sdkDir = path.join(toolDir, 'flutter', '1.8.3-beta', 'x64');
-
-    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
-    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
-  }, 100000);
-
   describe('get the latest release of a flutter version', () => {
     beforeEach(() => {
       const platform = osName();
@@ -72,7 +64,20 @@ describe('installer tests', () => {
       const sdkDir = path.join(
         toolDir,
         'flutter',
-        '1.7.8-hotfix.4-stable',
+        '1.12.13-hotfix.9-stable',
+        'x64'
+      );
+
+      expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+      expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+    }, 200000);
+
+    it('Downloads latest flutter release from beta channel (using new release format)', async () => {
+      await installer.getFlutter('', 'beta');
+      const sdkDir = path.join(
+        toolDir,
+        'flutter',
+        '1.17.0-dev.3.1-beta',
         'x64'
       );
 
@@ -91,6 +96,14 @@ describe('installer tests', () => {
     it('Downloads latest flutter release of 1.7 when using version 1.7.x from dev channel', async () => {
       await installer.getFlutter('1.7.x', 'dev');
       const sdkDir = path.join(toolDir, 'flutter', '1.7.11-dev', 'x64');
+
+      expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+      expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+    }, 200000);
+
+    it('Downloads latest flutter release of 1.18 when using version 1.18.x from dev channel (using new release format)', async () => {
+      await installer.getFlutter('1.18.x', 'dev');
+      const sdkDir = path.join(toolDir, 'flutter', '1.18.0-dev.5.0-dev', 'x64');
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
