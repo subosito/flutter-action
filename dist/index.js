@@ -2934,9 +2934,12 @@ const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 const httpm = __importStar(__webpack_require__(539));
 const semver = __importStar(__webpack_require__(550));
+const stream = __importStar(__webpack_require__(794));
+const util = __importStar(__webpack_require__(669));
 const v4_1 = __importDefault(__webpack_require__(951));
 const exec_1 = __webpack_require__(986);
 const assert_1 = __webpack_require__(357);
+const retry_helper_1 = __webpack_require__(979);
 class HTTPError extends Error {
     constructor(httpStatusCode) {
         super(`Unexpected HTTP response: ${httpStatusCode}`);
@@ -2947,31 +2950,6 @@ class HTTPError extends Error {
 exports.HTTPError = HTTPError;
 const IS_WINDOWS = process.platform === 'win32';
 const userAgent = 'actions/tool-cache';
-// On load grab temp directory and cache directory and remove them from env (currently don't want to expose this)
-let tempDirectory = process.env['RUNNER_TEMP'] || '';
-let cacheRoot = process.env['RUNNER_TOOL_CACHE'] || '';
-// If directories not found, place them in common temp locations
-if (!tempDirectory || !cacheRoot) {
-    let baseLocation;
-    if (IS_WINDOWS) {
-        // On windows use the USERPROFILE env variable
-        baseLocation = process.env['USERPROFILE'] || 'C:\\';
-    }
-    else {
-        if (process.platform === 'darwin') {
-            baseLocation = '/Users';
-        }
-        else {
-            baseLocation = '/home';
-        }
-    }
-    if (!tempDirectory) {
-        tempDirectory = path.join(baseLocation, 'actions', 'temp');
-    }
-    if (!cacheRoot) {
-        cacheRoot = path.join(baseLocation, 'actions', 'cache');
-    }
-}
 /**
  * Download a tool from an url and stream it into a file
  *
@@ -2981,52 +2959,71 @@ if (!tempDirectory || !cacheRoot) {
  */
 function downloadTool(url, dest) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Wrap in a promise so that we can resolve from within stream callbacks
-        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                const http = new httpm.HttpClient(userAgent, [], {
-                    allowRetries: true,
-                    maxRetries: 3
-                });
-                dest = dest || path.join(tempDirectory, v4_1.default());
-                yield io.mkdirP(path.dirname(dest));
-                core.debug(`Downloading ${url}`);
-                core.debug(`Downloading ${dest}`);
-                if (fs.existsSync(dest)) {
-                    throw new Error(`Destination file path ${dest} already exists`);
+        dest = dest || path.join(_getTempDirectory(), v4_1.default());
+        yield io.mkdirP(path.dirname(dest));
+        core.debug(`Downloading ${url}`);
+        core.debug(`Destination ${dest}`);
+        const maxAttempts = 3;
+        const minSeconds = _getGlobal('TEST_DOWNLOAD_TOOL_RETRY_MIN_SECONDS', 10);
+        const maxSeconds = _getGlobal('TEST_DOWNLOAD_TOOL_RETRY_MAX_SECONDS', 20);
+        const retryHelper = new retry_helper_1.RetryHelper(maxAttempts, minSeconds, maxSeconds);
+        return yield retryHelper.execute(() => __awaiter(this, void 0, void 0, function* () {
+            return yield downloadToolAttempt(url, dest || '');
+        }), (err) => {
+            if (err instanceof HTTPError && err.httpStatusCode) {
+                // Don't retry anything less than 500, except 408 Request Timeout and 429 Too Many Requests
+                if (err.httpStatusCode < 500 &&
+                    err.httpStatusCode !== 408 &&
+                    err.httpStatusCode !== 429) {
+                    return false;
                 }
-                const response = yield http.get(url);
-                if (response.message.statusCode !== 200) {
-                    const err = new HTTPError(response.message.statusCode);
-                    core.debug(`Failed to download from "${url}". Code(${response.message.statusCode}) Message(${response.message.statusMessage})`);
-                    throw err;
-                }
-                const file = fs.createWriteStream(dest);
-                file.on('open', () => __awaiter(this, void 0, void 0, function* () {
-                    try {
-                        const stream = response.message.pipe(file);
-                        stream.on('close', () => {
-                            core.debug('download complete');
-                            resolve(dest);
-                        });
-                    }
-                    catch (err) {
-                        core.debug(`Failed to download from "${url}". Code(${response.message.statusCode}) Message(${response.message.statusMessage})`);
-                        reject(err);
-                    }
-                }));
-                file.on('error', err => {
-                    file.end();
-                    reject(err);
-                });
             }
-            catch (err) {
-                reject(err);
-            }
-        }));
+            // Otherwise retry
+            return true;
+        });
     });
 }
 exports.downloadTool = downloadTool;
+function downloadToolAttempt(url, dest) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (fs.existsSync(dest)) {
+            throw new Error(`Destination file path ${dest} already exists`);
+        }
+        // Get the response headers
+        const http = new httpm.HttpClient(userAgent, [], {
+            allowRetries: false
+        });
+        const response = yield http.get(url);
+        if (response.message.statusCode !== 200) {
+            const err = new HTTPError(response.message.statusCode);
+            core.debug(`Failed to download from "${url}". Code(${response.message.statusCode}) Message(${response.message.statusMessage})`);
+            throw err;
+        }
+        // Download the response body
+        const pipeline = util.promisify(stream.pipeline);
+        const responseMessageFactory = _getGlobal('TEST_DOWNLOAD_TOOL_RESPONSE_MESSAGE_FACTORY', () => response.message);
+        const readStream = responseMessageFactory();
+        let succeeded = false;
+        try {
+            yield pipeline(readStream, fs.createWriteStream(dest));
+            core.debug('download complete');
+            succeeded = true;
+            return dest;
+        }
+        finally {
+            // Error, delete dest before retry
+            if (!succeeded) {
+                core.debug('download failed');
+                try {
+                    yield io.rmRF(dest);
+                }
+                catch (err) {
+                    core.debug(`Failed to delete '${dest}'. ${err.message}`);
+                }
+            }
+        }
+    });
+}
 /**
  * Extract a .7z file
  *
@@ -3116,14 +3113,17 @@ function extractTar(file, dest, flags = 'xz') {
         // Create dest
         dest = yield _createExtractFolder(dest);
         // Determine whether GNU tar
+        core.debug('Checking tar --version');
         let versionOutput = '';
         yield exec_1.exec('tar --version', [], {
             ignoreReturnCode: true,
+            silent: true,
             listeners: {
                 stdout: (data) => (versionOutput += data.toString()),
                 stderr: (data) => (versionOutput += data.toString())
             }
         });
+        core.debug(versionOutput.trim());
         const isGnuTar = versionOutput.toUpperCase().includes('GNU TAR');
         // Initialize args
         const args = [flags];
@@ -3284,7 +3284,7 @@ function find(toolName, versionSpec, arch) {
     let toolPath = '';
     if (versionSpec) {
         versionSpec = semver.clean(versionSpec) || '';
-        const cachePath = path.join(cacheRoot, toolName, versionSpec, arch);
+        const cachePath = path.join(_getCacheDirectory(), toolName, versionSpec, arch);
         core.debug(`checking cache: ${cachePath}`);
         if (fs.existsSync(cachePath) && fs.existsSync(`${cachePath}.complete`)) {
             core.debug(`Found tool in cache ${toolName} ${versionSpec} ${arch}`);
@@ -3306,7 +3306,7 @@ exports.find = find;
 function findAllVersions(toolName, arch) {
     const versions = [];
     arch = arch || os.arch();
-    const toolPath = path.join(cacheRoot, toolName);
+    const toolPath = path.join(_getCacheDirectory(), toolName);
     if (fs.existsSync(toolPath)) {
         const children = fs.readdirSync(toolPath);
         for (const child of children) {
@@ -3325,7 +3325,7 @@ function _createExtractFolder(dest) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!dest) {
             // create a temp dir
-            dest = path.join(tempDirectory, v4_1.default());
+            dest = path.join(_getTempDirectory(), v4_1.default());
         }
         yield io.mkdirP(dest);
         return dest;
@@ -3333,7 +3333,7 @@ function _createExtractFolder(dest) {
 }
 function _createToolPath(tool, version, arch) {
     return __awaiter(this, void 0, void 0, function* () {
-        const folderPath = path.join(cacheRoot, tool, semver.clean(version) || version, arch || '');
+        const folderPath = path.join(_getCacheDirectory(), tool, semver.clean(version) || version, arch || '');
         core.debug(`destination ${folderPath}`);
         const markerPath = `${folderPath}.complete`;
         yield io.rmRF(folderPath);
@@ -3343,7 +3343,7 @@ function _createToolPath(tool, version, arch) {
     });
 }
 function _completeToolPath(tool, version, arch) {
-    const folderPath = path.join(cacheRoot, tool, semver.clean(version) || version, arch || '');
+    const folderPath = path.join(_getCacheDirectory(), tool, semver.clean(version) || version, arch || '');
     const markerPath = `${folderPath}.complete`;
     fs.writeFileSync(markerPath, '');
     core.debug('finished caching tool');
@@ -3379,6 +3379,31 @@ function _evaluateVersions(versions, versionSpec) {
         core.debug('match not found');
     }
     return version;
+}
+/**
+ * Gets RUNNER_TOOL_CACHE
+ */
+function _getCacheDirectory() {
+    const cacheDirectory = process.env['RUNNER_TOOL_CACHE'] || '';
+    assert_1.ok(cacheDirectory, 'Expected RUNNER_TOOL_CACHE to be defined');
+    return cacheDirectory;
+}
+/**
+ * Gets RUNNER_TEMP
+ */
+function _getTempDirectory() {
+    const tempDirectory = process.env['RUNNER_TEMP'] || '';
+    assert_1.ok(tempDirectory, 'Expected RUNNER_TEMP to be defined');
+    return tempDirectory;
+}
+/**
+ * Gets a global variable
+ */
+function _getGlobal(key, defaultValue) {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const value = global[key];
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+    return value !== undefined ? value : defaultValue;
 }
 //# sourceMappingURL=tool-cache.js.map
 
@@ -5938,20 +5963,20 @@ if (!tempDirectory) {
 }
 function getFlutter(version, channel) {
     return __awaiter(this, void 0, void 0, function* () {
-        const versionPart = version.split('.');
-        if (versionPart[1] == null || versionPart[2] == null) {
+        const versionPart = version.split('.').filter(Boolean);
+        if (versionPart.length > 0 &&
+            (versionPart[1] == null || versionPart[2] == null)) {
             version = version.concat('.x');
         }
-        version = yield determineVersion(version, channel);
-        let cleanver = `${version.replace('+', '-')}-${channel}`;
+        const { version: selected, rawVersion, downloadUrl } = yield determineVersion(version, channel);
+        let cleanver = `${selected.replace('+', '-')}-${channel}`;
         let toolPath = tc.find('flutter', cleanver);
         if (toolPath) {
             core.debug(`Tool found in cache ${toolPath}`);
         }
         else {
             core.debug('Downloading Flutter from Google storage');
-            const downloadInfo = getDownloadInfo(version, channel);
-            const sdkFile = yield tc.downloadTool(downloadInfo.url);
+            const sdkFile = yield tc.downloadTool(downloadUrl);
             let tempDir = generateTempDir();
             const sdkDir = yield extractDownload(sdkFile, tempDir);
             core.debug(`Flutter sdk extracted to ${sdkDir}`);
@@ -5959,6 +5984,7 @@ function getFlutter(version, channel) {
         }
         core.exportVariable('FLUTTER_HOME', toolPath);
         core.addPath(path.join(toolPath, 'bin'));
+        core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
     });
 }
 exports.getFlutter = getFlutter;
@@ -5973,15 +5999,6 @@ function extName() {
     if (IS_LINUX)
         return 'tar.xz';
     return 'zip';
-}
-function getDownloadInfo(version, channel) {
-    const os = osName();
-    const ext = extName();
-    const url = `${storageUrl}/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
-    return {
-        version,
-        url
-    };
 }
 function generateTempDir() {
     return path.join(tempDirectory, 'temp_' + Math.floor(Math.random() * 2000000000));
@@ -6023,34 +6040,89 @@ function determineVersion(version, channel) {
         if (version.endsWith('.x') || version === '') {
             return yield getLatestVersion(version, channel);
         }
-        return version;
+        return yield getSelectedVersion(version, channel);
     });
 }
-function getLatestVersion(version, channel) {
+function getReleases() {
     return __awaiter(this, void 0, void 0, function* () {
         const releasesUrl = `${storageUrl}/releases_${osName()}.json`;
         const http = new httpm.HttpClient('flutter-action');
         const storage = (yield http.getJson(releasesUrl)).result;
         if (!storage) {
-            throw new Error('unable to get latest version');
+            throw new Error('unable to get flutter releases');
         }
+        return storage;
+    });
+}
+function getSelectedVersion(version, channel) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const storage = yield getReleases();
+        const release = storage.releases.find(release => {
+            if (release.channel != channel)
+                return false;
+            return compare(version, release.version);
+        });
+        if (!release) {
+            throw new Error(`invalid flutter version ${version}, channel ${channel}`);
+        }
+        return {
+            version,
+            rawVersion: release.version,
+            downloadUrl: `${storageUrl}/${release.archive}`
+        };
+    });
+}
+function getLatestVersion(version, channel) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const storage = yield getReleases();
         if (version.endsWith('.x')) {
             const sver = version.slice(0, version.length - 2);
-            const releases = storage.releases.filter(release => release.version.startsWith(`v${sver}`) && release.channel === channel);
-            const versions = releases.map(release => release.version.slice(1, release.version.length));
+            const releases = storage.releases.filter(release => {
+                if (release.channel != channel)
+                    return false;
+                return prefixCompare(sver, release.version);
+            });
+            const versions = releases
+                .map(release => release.version)
+                .map(version => version.startsWith('v') ? version.slice(1, version.length) : version);
             const sortedVersions = versions.sort(semver.rcompare);
-            core.debug(`latest version of ${version} from channel ${channel} is ${sortedVersions[0]}`);
-            return sortedVersions[0];
+            let cver = sortedVersions[0];
+            let release = releases.find(release => compare(cver, release.version));
+            if (!release) {
+                throw new Error(`unable to find release for ${cver}`);
+            }
+            core.debug(`latest version of ${version} from channel ${channel} is ${release.version}`);
+            return {
+                version: cver,
+                rawVersion: release.version,
+                downloadUrl: `${storageUrl}/${release.archive}`
+            };
         }
         const channelVersion = storage.releases.find(release => release.hash === storage.current_release[channel]);
         if (!channelVersion) {
             throw new Error(`unable to get latest version from channel ${channel}`);
         }
-        let cver = channelVersion.version;
-        cver = cver.slice(1, cver.length);
-        core.debug(`latest version from channel ${channel} is ${cver}`);
-        return cver;
+        let rver = channelVersion.version;
+        let cver = rver.startsWith('v') ? rver.slice(1, rver.length) : rver;
+        core.debug(`latest version from channel ${channel} is ${rver}`);
+        return {
+            version: cver,
+            rawVersion: rver,
+            downloadUrl: `${storageUrl}/${channelVersion.archive}`
+        };
     });
+}
+function compare(version, releaseVersion) {
+    if (releaseVersion.startsWith('v')) {
+        return releaseVersion === `v${version}`;
+    }
+    return releaseVersion === version;
+}
+function prefixCompare(version, releaseVersion) {
+    if (releaseVersion.startsWith('v')) {
+        return releaseVersion.startsWith(`v${version}`);
+    }
+    return releaseVersion.startsWith(version);
 }
 
 
@@ -6138,6 +6210,13 @@ module.exports = {
   rcompareIdentifiers
 }
 
+
+/***/ }),
+
+/***/ 794:
+/***/ (function(module) {
+
+module.exports = require("stream");
 
 /***/ }),
 
@@ -6668,6 +6747,83 @@ createToken('HYPHENRANGELOOSE', `^\\s*(${src[t.XRANGEPLAINLOOSE]})` +
 // Star ranges basically just allow anything at all.
 createToken('STAR', '(<|>)?=?\\s*\\*')
 
+
+/***/ }),
+
+/***/ 979:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core = __importStar(__webpack_require__(470));
+/**
+ * Internal class for retries
+ */
+class RetryHelper {
+    constructor(maxAttempts, minSeconds, maxSeconds) {
+        if (maxAttempts < 1) {
+            throw new Error('max attempts should be greater than or equal to 1');
+        }
+        this.maxAttempts = maxAttempts;
+        this.minSeconds = Math.floor(minSeconds);
+        this.maxSeconds = Math.floor(maxSeconds);
+        if (this.minSeconds > this.maxSeconds) {
+            throw new Error('min seconds should be less than or equal to max seconds');
+        }
+    }
+    execute(action, isRetryable) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let attempt = 1;
+            while (attempt < this.maxAttempts) {
+                // Try
+                try {
+                    return yield action();
+                }
+                catch (err) {
+                    if (isRetryable && !isRetryable(err)) {
+                        throw err;
+                    }
+                    core.info(err.message);
+                }
+                // Sleep
+                const seconds = this.getSleepAmount();
+                core.info(`Waiting ${seconds} seconds before trying again`);
+                yield this.sleep(seconds);
+                attempt++;
+            }
+            // Last attempt
+            return yield action();
+        });
+    }
+    getSleepAmount() {
+        return (Math.floor(Math.random() * (this.maxSeconds - this.minSeconds + 1)) +
+            this.minSeconds);
+    }
+    sleep(seconds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+        });
+    }
+}
+exports.RetryHelper = RetryHelper;
+//# sourceMappingURL=retry-helper.js.map
 
 /***/ }),
 
