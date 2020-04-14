@@ -34,15 +34,21 @@ export async function getFlutter(
   version: string,
   channel: string
 ): Promise<void> {
-  const versionPart = version.split('.');
+  const versionPart = version.split('.').filter(Boolean);
 
-  if (versionPart[1] == null || versionPart[2] == null) {
+  if (
+    versionPart.length > 0 &&
+    (versionPart[1] == null || versionPart[2] == null)
+  ) {
     version = version.concat('.x');
   }
 
-  version = await determineVersion(version, channel);
+  const {version: selected, rawVersion, downloadUrl} = await determineVersion(
+    version,
+    channel
+  );
 
-  let cleanver = `${version.replace('+', '-')}-${channel}`;
+  let cleanver = `${selected.replace('+', '-')}-${channel}`;
   let toolPath = tc.find('flutter', cleanver);
 
   if (toolPath) {
@@ -50,8 +56,7 @@ export async function getFlutter(
   } else {
     core.debug('Downloading Flutter from Google storage');
 
-    const downloadInfo = getDownloadInfo(version, channel);
-    const sdkFile = await tc.downloadTool(downloadInfo.url);
+    const sdkFile = await tc.downloadTool(downloadUrl);
 
     let tempDir: string = generateTempDir();
     const sdkDir = await extractDownload(sdkFile, tempDir);
@@ -76,20 +81,6 @@ function extName(): string {
   if (IS_LINUX) return 'tar.xz';
 
   return 'zip';
-}
-
-function getDownloadInfo(
-  version: string,
-  channel: string
-): {version: string; url: string} {
-  const os = osName();
-  const ext = extName();
-  const url = `${storageUrl}/${channel}/${os}/flutter_${os}_v${version}-${channel}.${ext}`;
-
-  return {
-    version,
-    url
-  };
 }
 
 function generateTempDir(): string {
@@ -138,12 +129,12 @@ async function extractFile(file: string, destDir: string): Promise<void> {
 async function determineVersion(
   version: string,
   channel: string
-): Promise<string> {
+): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
   if (version.endsWith('.x') || version === '') {
     return await getLatestVersion(version, channel);
   }
 
-  return version;
+  return await getSelectedVersion(version, channel);
 }
 
 interface IFlutterChannel {
@@ -157,6 +148,7 @@ interface IFlutterRelease {
   hash: string;
   channel: string;
   version: string;
+  archive: string;
 }
 
 interface IFlutterStorage {
@@ -164,10 +156,7 @@ interface IFlutterStorage {
   releases: IFlutterRelease[];
 }
 
-async function getLatestVersion(
-  version: string,
-  channel: string
-): Promise<string> {
+async function getReleases(): Promise<IFlutterStorage> {
   const releasesUrl: string = `${storageUrl}/releases_${osName()}.json`;
   const http: httpm.HttpClient = new httpm.HttpClient('flutter-action');
   const storage: IFlutterStorage | null = (
@@ -175,25 +164,70 @@ async function getLatestVersion(
   ).result;
 
   if (!storage) {
-    throw new Error('unable to get latest version');
+    throw new Error('unable to get flutter releases');
   }
+
+  return storage;
+}
+
+async function getSelectedVersion(
+  version: string,
+  channel: string
+): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+  const storage = await getReleases();
+  const release = storage.releases.find(release => {
+    if (release.channel != channel) return false;
+    return compare(version, release.version);
+  });
+
+  if (!release) {
+    throw new Error(`invalid flutter version ${version}, channel ${channel}`);
+  }
+
+  return {
+    version,
+    rawVersion: release.version,
+    downloadUrl: `${storageUrl}/${release.archive}`
+  };
+}
+
+async function getLatestVersion(
+  version: string,
+  channel: string
+): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+  const storage = await getReleases();
 
   if (version.endsWith('.x')) {
     const sver = version.slice(0, version.length - 2);
-    const releases = storage.releases.filter(
-      release =>
-        release.version.startsWith(`v${sver}`) && release.channel === channel
-    );
-    const versions = releases.map(release =>
-      release.version.slice(1, release.version.length)
-    );
+    const releases = storage.releases.filter(release => {
+      if (release.channel != channel) return false;
+      return prefixCompare(sver, release.version);
+    });
+
+    const versions = releases
+      .map(release => release.version)
+      .map(version =>
+        version.startsWith('v') ? version.slice(1, version.length) : version
+      );
+
     const sortedVersions = versions.sort(semver.rcompare);
 
+    let cver = sortedVersions[0];
+    let release = releases.find(release => compare(cver, release.version));
+
+    if (!release) {
+      throw new Error(`unable to find release for ${cver}`);
+    }
+
     core.debug(
-      `latest version of ${version} from channel ${channel} is ${sortedVersions[0]}`
+      `latest version of ${version} from channel ${channel} is ${release.version}`
     );
 
-    return sortedVersions[0];
+    return {
+      version: cver,
+      rawVersion: release.version,
+      downloadUrl: `${storageUrl}/${release.archive}`
+    };
   }
 
   const channelVersion = storage.releases.find(
@@ -204,9 +238,29 @@ async function getLatestVersion(
     throw new Error(`unable to get latest version from channel ${channel}`);
   }
 
-  let cver = channelVersion.version;
-  cver = cver.slice(1, cver.length);
+  let rver = channelVersion.version;
+  let cver = rver.startsWith('v') ? rver.slice(1, rver.length) : rver;
 
-  core.debug(`latest version from channel ${channel} is ${cver}`);
-  return cver;
+  core.debug(`latest version from channel ${channel} is ${rver}`);
+  return {
+    version: cver,
+    rawVersion: rver,
+    downloadUrl: `${storageUrl}/${channelVersion.archive}`
+  };
+}
+
+function compare(version: string, releaseVersion: string): boolean {
+  if (releaseVersion.startsWith('v')) {
+    return releaseVersion === `v${version}`;
+  }
+
+  return releaseVersion === version;
+}
+
+function prefixCompare(version: string, releaseVersion: string): boolean {
+  if (releaseVersion.startsWith('v')) {
+    return releaseVersion.startsWith(`v${version}`);
+  }
+
+  return releaseVersion.startsWith(version);
 }
