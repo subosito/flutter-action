@@ -354,13 +354,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const os = __webpack_require__(87);
-const events = __webpack_require__(614);
-const child = __webpack_require__(129);
-const path = __webpack_require__(622);
-const io = __webpack_require__(1);
-const ioUtil = __webpack_require__(672);
+const os = __importStar(__webpack_require__(87));
+const events = __importStar(__webpack_require__(614));
+const child = __importStar(__webpack_require__(129));
+const path = __importStar(__webpack_require__(622));
+const io = __importStar(__webpack_require__(1));
+const ioUtil = __importStar(__webpack_require__(672));
 /* eslint-disable @typescript-eslint/unbound-method */
 const IS_WINDOWS = process.platform === 'win32';
 /*
@@ -804,6 +811,12 @@ class ToolRunner extends events.EventEmitter {
                         resolve(exitCode);
                     }
                 });
+                if (this.options.input) {
+                    if (!cp.stdin) {
+                        throw new Error('child process missing stdin');
+                    }
+                    cp.stdin.end(this.options.input);
+                }
             });
         });
     }
@@ -1452,11 +1465,11 @@ const parseComparator = (comp, options) => {
 const isX = id => !id || id.toLowerCase() === 'x' || id === '*'
 
 // ~, ~> --> * (any, kinda silly)
-// ~2, ~2.x, ~2.x.x, ~>2, ~>2.x ~>2.x.x --> >=2.0.0 <3.0.0
-// ~2.0, ~2.0.x, ~>2.0, ~>2.0.x --> >=2.0.0 <2.1.0
-// ~1.2, ~1.2.x, ~>1.2, ~>1.2.x --> >=1.2.0 <1.3.0
-// ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0
-// ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0
+// ~2, ~2.x, ~2.x.x, ~>2, ~>2.x ~>2.x.x --> >=2.0.0 <3.0.0-0
+// ~2.0, ~2.0.x, ~>2.0, ~>2.0.x --> >=2.0.0 <2.1.0-0
+// ~1.2, ~1.2.x, ~>1.2, ~>1.2.x --> >=1.2.0 <1.3.0-0
+// ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0-0
+// ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0-0
 const replaceTildes = (comp, options) =>
   comp.trim().split(/\s+/).map((comp) => {
     return replaceTilde(comp, options)
@@ -1471,18 +1484,18 @@ const replaceTilde = (comp, options) => {
     if (isX(M)) {
       ret = ''
     } else if (isX(m)) {
-      ret = `>=${M}.0.0 <${+M + 1}.0.0`
+      ret = `>=${M}.0.0 <${+M + 1}.0.0-0`
     } else if (isX(p)) {
-      // ~1.2 == >=1.2.0 <1.3.0
-      ret = `>=${M}.${m}.0 <${M}.${+m + 1}.0`
+      // ~1.2 == >=1.2.0 <1.3.0-0
+      ret = `>=${M}.${m}.0 <${M}.${+m + 1}.0-0`
     } else if (pr) {
       debug('replaceTilde pr', pr)
       ret = `>=${M}.${m}.${p}-${pr
-      } <${M}.${+m + 1}.0`
+      } <${M}.${+m + 1}.0-0`
     } else {
-      // ~1.2.3 == >=1.2.3 <1.3.0
+      // ~1.2.3 == >=1.2.3 <1.3.0-0
       ret = `>=${M}.${m}.${p
-      } <${M}.${+m + 1}.0`
+      } <${M}.${+m + 1}.0-0`
     }
 
     debug('tilde return', ret)
@@ -1491,11 +1504,11 @@ const replaceTilde = (comp, options) => {
 }
 
 // ^ --> * (any, kinda silly)
-// ^2, ^2.x, ^2.x.x --> >=2.0.0 <3.0.0
-// ^2.0, ^2.0.x --> >=2.0.0 <3.0.0
-// ^1.2, ^1.2.x --> >=1.2.0 <2.0.0
-// ^1.2.3 --> >=1.2.3 <2.0.0
-// ^1.2.0 --> >=1.2.0 <2.0.0
+// ^2, ^2.x, ^2.x.x --> >=2.0.0 <3.0.0-0
+// ^2.0, ^2.0.x --> >=2.0.0 <3.0.0-0
+// ^1.2, ^1.2.x --> >=1.2.0 <2.0.0-0
+// ^1.2.3 --> >=1.2.3 <2.0.0-0
+// ^1.2.0 --> >=1.2.0 <2.0.0-0
 const replaceCarets = (comp, options) =>
   comp.trim().split(/\s+/).map((comp) => {
     return replaceCaret(comp, options)
@@ -1512,40 +1525,40 @@ const replaceCaret = (comp, options) => {
     if (isX(M)) {
       ret = ''
     } else if (isX(m)) {
-      ret = `>=${M}.0.0${z} <${+M + 1}.0.0${z}`
+      ret = `>=${M}.0.0${z} <${+M + 1}.0.0-0`
     } else if (isX(p)) {
       if (M === '0') {
-        ret = `>=${M}.${m}.0${z} <${M}.${+m + 1}.0${z}`
+        ret = `>=${M}.${m}.0${z} <${M}.${+m + 1}.0-0`
       } else {
-        ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0${z}`
+        ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0-0`
       }
     } else if (pr) {
       debug('replaceCaret pr', pr)
       if (M === '0') {
         if (m === '0') {
           ret = `>=${M}.${m}.${p}-${pr
-          } <${M}.${m}.${+p + 1}${z}`
+          } <${M}.${m}.${+p + 1}-0`
         } else {
           ret = `>=${M}.${m}.${p}-${pr
-          } <${M}.${+m + 1}.0${z}`
+          } <${M}.${+m + 1}.0-0`
         }
       } else {
         ret = `>=${M}.${m}.${p}-${pr
-        } <${+M + 1}.0.0${z}`
+        } <${+M + 1}.0.0-0`
       }
     } else {
       debug('no pr')
       if (M === '0') {
         if (m === '0') {
           ret = `>=${M}.${m}.${p
-          }${z} <${M}.${m}.${+p + 1}${z}`
+          }${z} <${M}.${m}.${+p + 1}-0`
         } else {
           ret = `>=${M}.${m}.${p
-          }${z} <${M}.${+m + 1}.0${z}`
+          }${z} <${M}.${+m + 1}.0-0`
         }
       } else {
         ret = `>=${M}.${m}.${p
-        } <${+M + 1}.0.0${z}`
+        } <${+M + 1}.0.0-0`
       }
     }
 
@@ -1618,12 +1631,15 @@ const replaceXRange = (comp, options) => {
         }
       }
 
+      if (gtlt === '<')
+        pr = '-0'
+
       ret = `${gtlt + M}.${m}.${p}${pr}`
     } else if (xm) {
-      ret = `>=${M}.0.0${pr} <${+M + 1}.0.0${pr}`
+      ret = `>=${M}.0.0${pr} <${+M + 1}.0.0-0`
     } else if (xp) {
       ret = `>=${M}.${m}.0${pr
-      } <${M}.${+m + 1}.0${pr}`
+      } <${M}.${+m + 1}.0-0`
     }
 
     debug('xRange return', ret)
@@ -1649,8 +1665,8 @@ const replaceGTE0 = (comp, options) => {
 // This function is passed to string.replace(re[t.HYPHENRANGE])
 // M, m, patch, prerelease, build
 // 1.2 - 3.4.5 => >=1.2.0 <=3.4.5
-// 1.2.3 - 3.4 => >=1.2.0 <3.5.0 Any 3.4.x will do
-// 1.2 - 3.4 => >=1.2.0 <3.5.0
+// 1.2.3 - 3.4 => >=1.2.0 <3.5.0-0 Any 3.4.x will do
+// 1.2 - 3.4 => >=1.2.0 <3.5.0-0
 const hyphenReplace = incPr => ($0,
   from, fM, fm, fp, fpr, fb,
   to, tM, tm, tp, tpr, tb) => {
@@ -1669,9 +1685,9 @@ const hyphenReplace = incPr => ($0,
   if (isX(tM)) {
     to = ''
   } else if (isX(tm)) {
-    to = `<${+tM + 1}.0.0${incPr ? '-0' : ''}`
+    to = `<${+tM + 1}.0.0-0`
   } else if (isX(tp)) {
-    to = `<${tM}.${+tm + 1}.0${incPr ? '-0' : ''}`
+    to = `<${tM}.${+tm + 1}.0-0`
   } else if (tpr) {
     to = `<=${tM}.${tm}.${tp}-${tpr}`
   } else if (incPr) {
@@ -2418,14 +2434,28 @@ class Command {
         return cmdStr;
     }
 }
+/**
+ * Sanitizes an input into a string so it can be passed into issueCommand safely
+ * @param input input to sanitize into a string
+ */
+function toCommandValue(input) {
+    if (input === null || input === undefined) {
+        return '';
+    }
+    else if (typeof input === 'string' || input instanceof String) {
+        return input;
+    }
+    return JSON.stringify(input);
+}
+exports.toCommandValue = toCommandValue;
 function escapeData(s) {
-    return (s || '')
+    return toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A');
 }
 function escapeProperty(s) {
-    return (s || '')
+    return toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A')
@@ -2582,11 +2612,13 @@ var ExitCode;
 /**
  * Sets env variable for this action and future actions in the job
  * @param name the name of the variable to set
- * @param val the value of the variable
+ * @param val the value of the variable. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function exportVariable(name, val) {
-    process.env[name] = val;
-    command_1.issueCommand('set-env', { name }, val);
+    const convertedVal = command_1.toCommandValue(val);
+    process.env[name] = convertedVal;
+    command_1.issueCommand('set-env', { name }, convertedVal);
 }
 exports.exportVariable = exportVariable;
 /**
@@ -2625,12 +2657,22 @@ exports.getInput = getInput;
  * Sets the value of an output.
  *
  * @param     name     name of the output to set
- * @param     value    value to store
+ * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
+/**
+ * Enables or disables the echoing of commands into stdout for the rest of the step.
+ * Echoing is disabled by default if ACTIONS_STEP_DEBUG is not set.
+ *
+ */
+function setCommandEcho(enabled) {
+    command_1.issue('echo', enabled ? 'on' : 'off');
+}
+exports.setCommandEcho = setCommandEcho;
 //-----------------------------------------------------------------------
 // Results
 //-----------------------------------------------------------------------
@@ -2664,18 +2706,18 @@ function debug(message) {
 exports.debug = debug;
 /**
  * Adds an error issue
- * @param message error issue message
+ * @param message error issue message. Errors will be converted to string via toString()
  */
 function error(message) {
-    command_1.issue('error', message);
+    command_1.issue('error', message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
  * Adds an warning issue
- * @param message warning issue message
+ * @param message warning issue message. Errors will be converted to string via toString()
  */
 function warning(message) {
-    command_1.issue('warning', message);
+    command_1.issue('warning', message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
 /**
@@ -2733,8 +2775,9 @@ exports.group = group;
  * Saves state for current action, the state can only be retrieved by this action's post job execution.
  *
  * @param     name     name of the state to store
- * @param     value    value to store
+ * @param     value    value to store. Non-string values will be converted to a string via JSON.stringify
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function saveState(name, value) {
     command_1.issueCommand('save-state', { name }, value);
 }
@@ -6141,7 +6184,10 @@ function getLatestVersion(version, channel) {
                 downloadUrl: `${storageUrl}/${release.archive}`
             };
         }
-        const channelVersion = storage.releases.find(release => release.hash === storage.current_release[channel]);
+        const channelVersion = storage.releases.find(release => {
+            return (release.hash === storage.current_release[channel] &&
+                release.channel == channel);
+        });
         if (!channelVersion) {
             throw new Error(`unable to get latest version from channel ${channel}`);
         }
@@ -6941,8 +6987,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tr = __webpack_require__(9);
+const tr = __importStar(__webpack_require__(9));
 /**
  * Exec a command.
  * Output will be streamed to the live console.
