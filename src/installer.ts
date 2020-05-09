@@ -230,9 +230,12 @@ async function getLatestVersion(
     };
   }
 
-  const channelVersion = storage.releases.find(
-    release => release.hash === storage.current_release[channel]
-  );
+  const channelVersion = storage.releases.find(release => {
+    return (
+      release.hash === storage.current_release[channel] &&
+      release.channel == channel
+    );
+  });
 
   if (!channelVersion) {
     throw new Error(`unable to get latest version from channel ${channel}`);
