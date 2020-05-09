@@ -65,12 +65,7 @@ describe('installer tests', () => {
 
     it('Downloads latest flutter release from stable channel', async () => {
       await installer.getFlutter('', 'stable');
-      const sdkDir = path.join(
-        toolDir,
-        'flutter',
-        '1.12.13-hotfix.9-stable',
-        'x64'
-      );
+      const sdkDir = path.join(toolDir, 'flutter', '1.17.0-stable', 'x64');
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
@@ -81,7 +76,7 @@ describe('installer tests', () => {
       const sdkDir = path.join(
         toolDir,
         'flutter',
-        '1.17.0-dev.3.1-beta',
+        '1.17.0-3.4.pre-beta',
         'x64'
       );
 
@@ -107,7 +102,12 @@ describe('installer tests', () => {
 
     it('Downloads latest flutter release of 1.18 when using version 1.18.x from dev channel (using new release format)', async () => {
       await installer.getFlutter('1.18.x', 'dev');
-      const sdkDir = path.join(toolDir, 'flutter', '1.18.0-dev.5.0-dev', 'x64');
+      const sdkDir = path.join(
+        toolDir,
+        'flutter',
+        '1.18.0-13.0.pre-dev',
+        'x64'
+      );
 
       expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
       expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
