@@ -77,3 +77,16 @@ jobs:
       - run: flutter build apk
 ```
 
+Web build:
+
+```yaml
+steps:
+- uses: actions/checkout@v1
+- uses: subosito/flutter-action@v1
+  with:
+    channel: 'stable' # or: 'dev' or 'beta'
+- name: Build Web
+  env:
+    FLUTTER_WEB: 'true'
+  run: flutter build web     
+```
