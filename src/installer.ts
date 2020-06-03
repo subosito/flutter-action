@@ -68,6 +68,8 @@ export async function getFlutter(
   core.exportVariable('FLUTTER_HOME', toolPath);
   core.addPath(path.join(toolPath, 'bin'));
   core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
+
+  core.info(`##[add-matcher]${path.join(__dirname, '../problem-matcher.json')}`);
 }
 
 function osName(): string {

@@ -1,0 +1,18 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "flutter-analyze-matcher",
+            "pattern": [
+                {
+                    "regexp": "^\\s+(.+?)\\s+\\W\\s+(.+?)\\s+\\W\\s+(.+?):(\\d+):(\\d+)\\s+\\W\\s+(.+)$",
+                    "severity": 1,
+                    "message": 2,
+                    "file": 3,
+                    "line": 4,
+                    "column": 5,
+                    "code": 6
+                }
+            ]
+        }
+    ]
+}
