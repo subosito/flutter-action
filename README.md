@@ -54,6 +54,23 @@ steps:
 - run: flutter build appbundle
 ```
 
+Build for the web:
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: beta
+    - run: flutter config --enable-web
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter build web
+```
+
 Use latest release for particular channel:
 
 ```yaml
