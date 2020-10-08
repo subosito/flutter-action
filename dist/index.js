@@ -43,6 +43,10 @@ function run() {
         try {
             const version = core.getInput('flutter-version') || '';
             const channel = core.getInput('channel') || 'stable';
+            if (channel == 'master' && version != '') {
+                core.setFailed('using `flutter-version` with master channel is not supported.');
+                return;
+            }
             yield installer.getFlutter(version, channel);
         }
         catch (error) {
@@ -92,6 +96,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFlutter = void 0;
 const core = __importStar(__webpack_require__(2186));
 const io = __importStar(__webpack_require__(7436));
+const exec = __importStar(__webpack_require__(1514));
 const tc = __importStar(__webpack_require__(7784));
 const fs = __importStar(__webpack_require__(5747));
 const path = __importStar(__webpack_require__(5622));
@@ -99,8 +104,11 @@ const release = __importStar(__webpack_require__(878));
 function getFlutter(version, channel) {
     return __awaiter(this, void 0, void 0, function* () {
         const platform = release.getPlatform();
-        const { version: selected, downloadUrl } = yield release.determineVersion(version, channel, platform);
-        let cleanver = `${selected.replace('+', '-')}-${channel}`;
+        const useMaster = channel == 'master';
+        const { version: selected, downloadUrl } = yield release.determineVersion(version, useMaster ? 'dev' : channel, platform);
+        let cleanver = useMaster
+            ? channel
+            : `${selected.replace('+', '-')}-${channel}`;
         let toolPath = tc.find('flutter', cleanver);
         if (toolPath) {
             core.debug(`Tool found in cache ${toolPath}`);
@@ -115,6 +123,10 @@ function getFlutter(version, channel) {
         core.exportVariable('FLUTTER_HOME', toolPath);
         core.addPath(path.join(toolPath, 'bin'));
         core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
+        if (useMaster) {
+            yield exec.exec('flutter', ['channel', 'master']);
+            yield exec.exec('flutter', ['upgrade']);
+        }
     });
 }
 exports.getFlutter = getFlutter;
