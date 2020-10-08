@@ -9,8 +9,8 @@ describe('release tests', () => {
   it('getPlatform', () => {
     const platformMap: {[index: string]: string} = {
       linux: 'linux',
-      macos: 'darwin',
-      windows: 'win32'
+      darwin: 'macos',
+      win32: 'windows'
     };
 
     expect(platform).toEqual(platformMap[process.platform]);
