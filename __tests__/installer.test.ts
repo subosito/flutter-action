@@ -17,7 +17,7 @@ describe('installer tests', () => {
   beforeAll(async () => {
     await io.rmRF(toolDir);
     await io.rmRF(tempDir);
-  });
+  }, 100000);
 
   beforeEach(() => {
     const platform = release.getPlatform();
@@ -32,7 +32,7 @@ describe('installer tests', () => {
 
     await io.rmRF(toolDir);
     await io.rmRF(tempDir);
-  });
+  }, 100000);
 
   it('Downloads flutter', async () => {
     await installer.getFlutter('1.0.0', 'stable');
