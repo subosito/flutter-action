@@ -1,4 +1,5 @@
 import io = require('@actions/io');
+import exec = require('@actions/exec');
 import fs = require('fs');
 import path = require('path');
 import nock = require('nock');
@@ -40,6 +41,27 @@ describe('installer tests', () => {
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+  }, 300000);
+
+  it('Downloads flutter from master channel', async () => {
+    await installer.getFlutter('', 'master');
+    const sdkDir = path.join(toolDir, 'flutter', 'master', 'x64');
+
+    let stdout = '';
+
+    const options = {
+      listeners: {
+        stdout: (data: Buffer) => {
+          stdout += data.toString();
+        }
+      }
+    };
+
+    expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
+    expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);
+
+    await exec.exec(path.join(sdkDir, 'bin', 'flutter'), ['channel'], options);
+    expect(stdout).toContain('* master');
   }, 300000);
 
   it('Throws if no location contains correct flutter version', async () => {

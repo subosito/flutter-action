@@ -1,10 +1,9 @@
 import * as core from '@actions/core';
 import * as io from '@actions/io';
+import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
-import {CONNREFUSED} from 'dns';
 import * as fs from 'fs';
 import * as path from 'path';
-import {format} from 'path';
 import * as release from './release';
 
 export async function getFlutter(
@@ -12,14 +11,18 @@ export async function getFlutter(
   channel: string
 ): Promise<void> {
   const platform = release.getPlatform();
+  const useMaster = channel == 'master';
 
   const {version: selected, downloadUrl} = await release.determineVersion(
     version,
-    channel,
+    useMaster ? 'dev' : channel,
     platform
   );
 
-  let cleanver = `${selected.replace('+', '-')}-${channel}`;
+  let cleanver = useMaster
+    ? channel
+    : `${selected.replace('+', '-')}-${channel}`;
+
   let toolPath = tc.find('flutter', cleanver);
 
   if (toolPath) {
@@ -37,6 +40,11 @@ export async function getFlutter(
   core.exportVariable('FLUTTER_HOME', toolPath);
   core.addPath(path.join(toolPath, 'bin'));
   core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
+
+  if (useMaster) {
+    await exec.exec('flutter', ['channel', 'master']);
+    await exec.exec('flutter', ['upgrade']);
+  }
 }
 
 function tmpBaseDir(platform: string): string {
