@@ -1,51 +1,22 @@
 import * as core from '@actions/core';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
+import {CONNREFUSED} from 'dns';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as httpm from '@actions/http-client';
-import * as semver from 'semver';
-
-const IS_WINDOWS = process.platform === 'win32';
-const IS_DARWIN = process.platform === 'darwin';
-const IS_LINUX = process.platform === 'linux';
-
-const storageUrl = 'https://storage.googleapis.com/flutter_infra/releases';
-
-let tempDirectory = process.env['RUNNER_TEMP'] || '';
-
-if (!tempDirectory) {
-  let baseLocation;
-
-  if (IS_WINDOWS) {
-    baseLocation = process.env['USERPROFILE'] || 'C:\\';
-  } else {
-    if (process.platform === 'darwin') {
-      baseLocation = '/Users';
-    } else {
-      baseLocation = '/home';
-    }
-  }
-
-  tempDirectory = path.join(baseLocation, 'actions', 'temp');
-}
+import {format} from 'path';
+import * as release from './release';
 
 export async function getFlutter(
   version: string,
   channel: string
 ): Promise<void> {
-  const versionPart = version.split('.').filter(Boolean);
+  const platform = release.getPlatform();
 
-  if (
-    versionPart.length > 0 &&
-    (versionPart[1] == null || versionPart[2] == null)
-  ) {
-    version = version.concat('.x');
-  }
-
-  const {version: selected, rawVersion, downloadUrl} = await determineVersion(
+  const {version: selected, downloadUrl} = await release.determineVersion(
     version,
-    channel
+    channel,
+    platform
   );
 
   let cleanver = `${selected.replace('+', '-')}-${channel}`;
@@ -54,13 +25,11 @@ export async function getFlutter(
   if (toolPath) {
     core.debug(`Tool found in cache ${toolPath}`);
   } else {
-    core.debug('Downloading Flutter from Google storage');
+    core.debug(`Downloading Flutter from Google storage ${downloadUrl}`);
 
     const sdkFile = await tc.downloadTool(downloadUrl);
-
-    let tempDir: string = generateTempDir();
-    const sdkDir = await extractDownload(sdkFile, tempDir);
-    core.debug(`Flutter sdk extracted to ${sdkDir}`);
+    const sdkCache = await tmpDir(platform);
+    const sdkDir = await extract(sdkFile, sdkCache, path.basename(downloadUrl));
 
     toolPath = await tc.cacheDir(sdkDir, 'flutter', cleanver);
   }
@@ -70,200 +39,65 @@ export async function getFlutter(
   core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
 }
 
-function osName(): string {
-  if (IS_DARWIN) return 'macos';
-  if (IS_WINDOWS) return 'windows';
+function tmpBaseDir(platform: string): string {
+  let tempDirectory = process.env['RUNNER_TEMP'] || '';
 
-  return process.platform;
+  if (tempDirectory) {
+    return tempDirectory;
+  }
+
+  let baseLocation;
+
+  switch (platform) {
+    case 'windows':
+      baseLocation = process.env['USERPROFILE'] || 'C:\\';
+      break;
+    case 'macos':
+      baseLocation = '/Users';
+      break;
+    default:
+      baseLocation = '/home';
+      break;
+  }
+
+  return path.join(baseLocation, 'actions', 'temp');
 }
 
-function extName(): string {
-  if (IS_LINUX) return 'tar.xz';
-
-  return 'zip';
-}
-
-function generateTempDir(): string {
-  return path.join(
-    tempDirectory,
+async function tmpDir(platform: string): Promise<string> {
+  const baseDir = tmpBaseDir(platform);
+  const tempDir = path.join(
+    baseDir,
     'temp_' + Math.floor(Math.random() * 2000000000)
   );
+
+  await io.mkdirP(tempDir);
+  return tempDir;
 }
 
-async function extractDownload(
+async function extract(
   sdkFile: string,
-  destDir: string
+  sdkCache: string,
+  originalFilename: string
 ): Promise<string> {
-  await io.mkdirP(destDir);
+  const fileStats = fs.statSync(path.normalize(sdkFile));
 
-  const sdkPath = path.normalize(sdkFile);
-  const stats = fs.statSync(sdkPath);
+  if (fileStats.isFile()) {
+    const stats = fs.statSync(sdkFile);
 
-  if (stats.isFile()) {
-    await extractFile(sdkFile, destDir);
+    if (!stats) {
+      throw new Error(`Failed to extract ${sdkFile} - it doesn't exist`);
+    } else if (stats.isDirectory()) {
+      throw new Error(`Failed to extract ${sdkFile} - it is a directory`);
+    }
 
-    const sdkDir = path.join(destDir, fs.readdirSync(destDir)[0]);
+    if (originalFilename.endsWith('tar.xz')) {
+      await tc.extractTar(sdkFile, sdkCache, 'x');
+    } else {
+      await tc.extractZip(sdkFile, sdkCache);
+    }
 
-    return sdkDir;
+    return path.join(sdkCache, fs.readdirSync(sdkCache)[0]);
   } else {
     throw new Error(`Flutter sdk argument ${sdkFile} is not a file`);
   }
-}
-
-async function extractFile(file: string, destDir: string): Promise<void> {
-  const stats = fs.statSync(file);
-
-  if (!stats) {
-    throw new Error(`Failed to extract ${file} - it doesn't exist`);
-  } else if (stats.isDirectory()) {
-    throw new Error(`Failed to extract ${file} - it is a directory`);
-  }
-
-  if ('tar.xz' === extName()) {
-    await tc.extractTar(file, destDir, 'x');
-  } else {
-    await tc.extractZip(file, destDir);
-  }
-}
-
-async function determineVersion(
-  version: string,
-  channel: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
-  if (version.endsWith('.x') || version === '') {
-    return await getLatestVersion(version, channel);
-  }
-
-  return await getSelectedVersion(version, channel);
-}
-
-interface IFlutterChannel {
-  [key: string]: string;
-  beta: string;
-  dev: string;
-  stable: string;
-}
-
-interface IFlutterRelease {
-  hash: string;
-  channel: string;
-  version: string;
-  archive: string;
-}
-
-interface IFlutterStorage {
-  current_release: IFlutterChannel;
-  releases: IFlutterRelease[];
-}
-
-async function getReleases(): Promise<IFlutterStorage> {
-  const releasesUrl: string = `${storageUrl}/releases_${osName()}.json`;
-  const http: httpm.HttpClient = new httpm.HttpClient('flutter-action');
-  const storage: IFlutterStorage | null = (
-    await http.getJson<IFlutterStorage | null>(releasesUrl)
-  ).result;
-
-  if (!storage) {
-    throw new Error('unable to get flutter releases');
-  }
-
-  return storage;
-}
-
-async function getSelectedVersion(
-  version: string,
-  channel: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
-  const storage = await getReleases();
-  const release = storage.releases.find(release => {
-    if (release.channel != channel) return false;
-    return compare(version, release.version);
-  });
-
-  if (!release) {
-    throw new Error(`invalid flutter version ${version}, channel ${channel}`);
-  }
-
-  return {
-    version,
-    rawVersion: release.version,
-    downloadUrl: `${storageUrl}/${release.archive}`
-  };
-}
-
-async function getLatestVersion(
-  version: string,
-  channel: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
-  const storage = await getReleases();
-
-  if (version.endsWith('.x')) {
-    const sver = version.slice(0, version.length - 2);
-    const releases = storage.releases.filter(release => {
-      if (release.channel != channel) return false;
-      return prefixCompare(sver, release.version);
-    });
-
-    const versions = releases
-      .map(release => release.version)
-      .map(version =>
-        version.startsWith('v') ? version.slice(1, version.length) : version
-      );
-
-    const sortedVersions = versions.sort(semver.rcompare);
-
-    let cver = sortedVersions[0];
-    let release = releases.find(release => compare(cver, release.version));
-
-    if (!release) {
-      throw new Error(`unable to find release for ${cver}`);
-    }
-
-    core.debug(
-      `latest version of ${version} from channel ${channel} is ${release.version}`
-    );
-
-    return {
-      version: cver,
-      rawVersion: release.version,
-      downloadUrl: `${storageUrl}/${release.archive}`
-    };
-  }
-
-  const channelVersion = storage.releases.find(release => {
-    return (
-      release.hash === storage.current_release[channel] &&
-      release.channel == channel
-    );
-  });
-
-  if (!channelVersion) {
-    throw new Error(`unable to get latest version from channel ${channel}`);
-  }
-
-  let rver = channelVersion.version;
-  let cver = rver.startsWith('v') ? rver.slice(1, rver.length) : rver;
-
-  core.debug(`latest version from channel ${channel} is ${rver}`);
-  return {
-    version: cver,
-    rawVersion: rver,
-    downloadUrl: `${storageUrl}/${channelVersion.archive}`
-  };
-}
-
-function compare(version: string, releaseVersion: string): boolean {
-  if (releaseVersion.startsWith('v')) {
-    return releaseVersion === `v${version}`;
-  }
-
-  return releaseVersion === version;
-}
-
-function prefixCompare(version: string, releaseVersion: string): boolean {
-  if (releaseVersion.startsWith('v')) {
-    return releaseVersion.startsWith(`v${version}`);
-  }
-
-  return releaseVersion.startsWith(version);
 }
