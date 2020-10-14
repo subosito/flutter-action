@@ -6,7 +6,7 @@ This action sets up a flutter environment for use in actions. It works on Linux,
 
 ```yaml
 steps:
-- uses: actions/checkout@v1
+- uses: actions/checkout@v2
 - uses: actions/setup-java@v1
   with:
     java-version: '12.x'
@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
@@ -42,7 +42,7 @@ Use app bundle, instead of APK:
 
 ```yaml
 steps:
-- uses: actions/checkout@v1
+- uses: actions/checkout@v2
 - uses: actions/setup-java@v1
   with:
     java-version: '12.x'
@@ -61,7 +61,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:
         channel: beta
@@ -75,7 +75,7 @@ Use latest release for particular channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v1
+- uses: actions/checkout@v2
 - uses: actions/setup-java@v1
   with:
     java-version: '12.x'
@@ -91,7 +91,7 @@ Use latest release for particular version and/or channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v1
+- uses: actions/checkout@v2
 - uses: actions/setup-java@v1
   with:
     java-version: '12.x'
@@ -115,8 +115,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - uses: actions/checkout@v2
+      - uses: c@v1
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
