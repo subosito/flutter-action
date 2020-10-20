@@ -116,7 +116,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - uses: c@v1
+      - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
@@ -129,4 +129,3 @@ jobs:
       - run: flutter test
       - run: flutter build apk
 ```
-
