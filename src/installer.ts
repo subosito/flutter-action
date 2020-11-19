@@ -37,7 +37,7 @@ export async function getFlutter(
     toolPath = await tc.cacheDir(sdkDir, 'flutter', cleanver);
   }
 
-  core.exportVariable('FLUTTER_HOME', toolPath);
+  core.exportVariable('FLUTTER_ROOT', toolPath);
   core.addPath(path.join(toolPath, 'bin'));
   core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
 
