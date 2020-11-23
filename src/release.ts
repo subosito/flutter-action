@@ -5,6 +5,13 @@ import * as semver from 'semver';
 export const storageUrl =
   'https://storage.googleapis.com/flutter_infra/releases';
 
+interface IFlutterData {
+  channel: string;
+  version: string;
+  rawVersion: string;
+  downloadUrl: string;
+}
+
 interface IFlutterChannel {
   [key: string]: string;
   beta: string;
@@ -42,7 +49,7 @@ export async function determineVersion(
   version: string,
   channel: string,
   platform: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+): Promise<IFlutterData> {
   const storage = await getReleases(platform);
 
   if (version === '') {
@@ -73,11 +80,11 @@ async function getReleases(platform: string): Promise<IFlutterStorage> {
 async function getLatestVersion(
   storage: IFlutterStorage,
   channel: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+): Promise<IFlutterData> {
   const channelVersion = storage.releases.find(release => {
     return (
       release.hash === storage.current_release[channel] &&
-      release.channel == channel
+      validateChannel(release.channel, channel)
     );
   });
 
@@ -90,25 +97,34 @@ async function getLatestVersion(
 
   core.debug(`latest version from channel ${channel} is ${rver}`);
 
-  return {
+  const flutterData: IFlutterData = {
+    channel: channelVersion.channel,
     version: cver,
     rawVersion: rver,
     downloadUrl: `${storageUrl}/${channelVersion.archive}`
   };
+
+  return flutterData;
+}
+
+function validateChannel(releaseChannel: string, channel: string) {
+  return releaseChannel === channel || channel === 'any';
 }
 
 async function getWildcardVersion(
   storage: IFlutterStorage,
   channel: string,
   version: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+): Promise<IFlutterData> {
   let sver = version.endsWith('.x')
     ? version.slice(0, version.length - 2)
     : version;
 
   const releases = storage.releases.filter(release => {
-    if (release.channel != channel) return false;
-    return prefixCompare(sver, release.version);
+    return (
+      validateChannel(release.channel, channel) &&
+      prefixCompare(sver, release.version)
+    );
   });
 
   const versions = releases
@@ -130,32 +146,40 @@ async function getWildcardVersion(
     `latest version of ${version} from channel ${channel} is ${release.version}`
   );
 
-  return {
+  const flutterData = {
+    channel: release.channel,
     version: cver,
     rawVersion: release.version,
     downloadUrl: `${storageUrl}/${release.archive}`
   };
+
+  return flutterData;
 }
 
 async function getVersion(
   storage: IFlutterStorage,
   channel: string,
   version: string
-): Promise<{version: string; rawVersion: string; downloadUrl: string}> {
+): Promise<IFlutterData> {
   const release = storage.releases.find(release => {
-    if (release.channel != channel) return false;
-    return compare(version, release.version);
+    return (
+      validateChannel(release.channel, channel) &&
+      compare(version, release.version)
+    );
   });
 
   if (!release) {
     return getWildcardVersion(storage, channel, version);
   }
 
-  return {
+  const flutterData = {
+    channel: release.channel,
     version,
     rawVersion: release.version,
     downloadUrl: `${storageUrl}/${release.archive}`
   };
+
+  return flutterData;
 }
 
 function compare(version: string, releaseVersion: string): boolean {
