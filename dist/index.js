@@ -105,10 +105,13 @@ function getFlutter(version, channel) {
     return __awaiter(this, void 0, void 0, function* () {
         const platform = release.getPlatform();
         const useMaster = channel == 'master';
-        const { version: selected, downloadUrl } = yield release.determineVersion(version, useMaster ? 'dev' : channel, platform);
+        const { version: selected, downloadUrl, channel: validatedChannel } = yield release.determineVersion(version, useMaster ? 'dev' : channel, platform);
+        if (channel !== validatedChannel) {
+            core.debug(`Channel was identifyed as ${validatedChannel}`);
+        }
         let cleanver = useMaster
-            ? channel
-            : `${selected.replace('+', '-')}-${channel}`;
+            ? validatedChannel
+            : `${selected.replace('+', '-')}-${validatedChannel}`;
         let toolPath = tc.find('flutter', cleanver);
         if (toolPath) {
             core.debug(`Tool found in cache ${toolPath}`);
@@ -263,7 +266,7 @@ function getLatestVersion(storage, channel) {
     return __awaiter(this, void 0, void 0, function* () {
         const channelVersion = storage.releases.find(release => {
             return (release.hash === storage.current_release[channel] &&
-                release.channel == channel);
+                validateChannel(release.channel, channel));
         });
         if (!channelVersion) {
             throw new Error(`unable to get latest version from channel ${channel}`);
@@ -271,12 +274,17 @@ function getLatestVersion(storage, channel) {
         let rver = channelVersion.version;
         let cver = rver.startsWith('v') ? rver.slice(1, rver.length) : rver;
         core.debug(`latest version from channel ${channel} is ${rver}`);
-        return {
+        const flutterData = {
+            channel: channelVersion.channel,
             version: cver,
             rawVersion: rver,
             downloadUrl: `${exports.storageUrl}/${channelVersion.archive}`
         };
+        return flutterData;
     });
+}
+function validateChannel(releaseChannel, channel) {
+    return releaseChannel === channel || channel === 'any';
 }
 function getWildcardVersion(storage, channel, version) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -284,9 +292,8 @@ function getWildcardVersion(storage, channel, version) {
             ? version.slice(0, version.length - 2)
             : version;
         const releases = storage.releases.filter(release => {
-            if (release.channel != channel)
-                return false;
-            return prefixCompare(sver, release.version);
+            return (validateChannel(release.channel, channel) &&
+                prefixCompare(sver, release.version));
         });
         const versions = releases
             .map(release => release.version)
@@ -298,28 +305,31 @@ function getWildcardVersion(storage, channel, version) {
             throw new Error(`unable to find release for ${version}`);
         }
         core.debug(`latest version of ${version} from channel ${channel} is ${release.version}`);
-        return {
+        const flutterData = {
+            channel: release.channel,
             version: cver,
             rawVersion: release.version,
             downloadUrl: `${exports.storageUrl}/${release.archive}`
         };
+        return flutterData;
     });
 }
 function getVersion(storage, channel, version) {
     return __awaiter(this, void 0, void 0, function* () {
         const release = storage.releases.find(release => {
-            if (release.channel != channel)
-                return false;
-            return compare(version, release.version);
+            return (validateChannel(release.channel, channel) &&
+                compare(version, release.version));
         });
         if (!release) {
             return getWildcardVersion(storage, channel, version);
         }
-        return {
+        const flutterData = {
+            channel: release.channel,
             version,
             rawVersion: release.version,
             downloadUrl: `${exports.storageUrl}/${release.archive}`
         };
+        return flutterData;
     });
 }
 function compare(version, releaseVersion) {
