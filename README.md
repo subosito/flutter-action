@@ -12,7 +12,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.9.1+hotfix.6'
+    flutter-version: '1.22.4'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -31,7 +31,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.9.1+hotfix.6'
+        flutter-version: '1.22.4'
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk
@@ -48,7 +48,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.9.1+hotfix.6'
+    flutter-version: '1.22.4'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build appbundle
@@ -81,7 +81,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    channel: 'stable' # or: 'dev' or 'beta'
+    channel: 'stable' # or: 'beta' or 'dev'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -97,7 +97,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.12.x' # you can use 1.12
+    flutter-version: '1.22.x' # you can use 1.22
     channel: 'dev' # optional, default to: 'stable'
 - run: flutter pub get
 - run: flutter test
@@ -121,7 +121,7 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.11.0'
+          flutter-version: '1.20.2'
           channel: 'beta'
       - run: dart --version
       - run: flutter --version
