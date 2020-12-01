@@ -106,11 +106,11 @@ function getFlutter(version, channel) {
         const platform = release.getPlatform();
         const useMaster = channel == 'master';
         const { version: selected, downloadUrl, channel: validatedChannel } = yield release.determineVersion(version, useMaster ? 'dev' : channel, platform);
-        if (channel !== validatedChannel) {
-            core.debug(`Channel was identifyed as ${validatedChannel}`);
+        if (!useMaster && channel !== validatedChannel) {
+            core.debug(`Channel was identified as ${validatedChannel}`);
         }
         let cleanver = useMaster
-            ? validatedChannel
+            ? channel
             : `${selected.replace('+', '-')}-${validatedChannel}`;
         let toolPath = tc.find('flutter', cleanver);
         if (toolPath) {
@@ -123,7 +123,7 @@ function getFlutter(version, channel) {
             const sdkDir = yield extract(sdkFile, sdkCache, path.basename(downloadUrl));
             toolPath = yield tc.cacheDir(sdkDir, 'flutter', cleanver);
         }
-        core.exportVariable('FLUTTER_HOME', toolPath);
+        core.exportVariable('FLUTTER_ROOT', toolPath);
         core.addPath(path.join(toolPath, 'bin'));
         core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
         if (useMaster) {

@@ -23,12 +23,12 @@ export async function getFlutter(
     platform
   );
 
-  if (channel !== validatedChannel) {
-    core.debug(`Channel was identifyed as ${validatedChannel}`);
+  if (!useMaster && channel !== validatedChannel) {
+    core.debug(`Channel was identified as ${validatedChannel}`);
   }
 
   let cleanver = useMaster
-    ? validatedChannel
+    ? channel
     : `${selected.replace('+', '-')}-${validatedChannel}`;
 
   let toolPath = tc.find('flutter', cleanver);
