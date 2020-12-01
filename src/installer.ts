@@ -13,15 +13,23 @@ export async function getFlutter(
   const platform = release.getPlatform();
   const useMaster = channel == 'master';
 
-  const {version: selected, downloadUrl} = await release.determineVersion(
+  const {
+    version: selected,
+    downloadUrl,
+    channel: validatedChannel
+  } = await release.determineVersion(
     version,
     useMaster ? 'dev' : channel,
     platform
   );
 
+  if (channel !== validatedChannel) {
+    core.debug(`Channel was identifyed as ${validatedChannel}`);
+  }
+
   let cleanver = useMaster
-    ? channel
-    : `${selected.replace('+', '-')}-${channel}`;
+    ? validatedChannel
+    : `${selected.replace('+', '-')}-${validatedChannel}`;
 
   let toolPath = tc.find('flutter', cleanver);
 

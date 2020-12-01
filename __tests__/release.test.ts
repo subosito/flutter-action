@@ -113,5 +113,33 @@ describe('release tests', () => {
       expect(result.rawVersion).toEqual('1.17.0-dev.5.0');
       expect(result.downloadUrl).toContain('1.17.0-dev.5.0');
     });
+
+    it('channel: "any", version: "1.17.x"', async () => {
+      const result = await release.determineVersion('1.17.x', 'any', platform);
+
+      expect(result.version).toEqual('1.17.5');
+      expect(result.rawVersion).toEqual('1.17.5');
+      expect(result.downloadUrl).toContain('1.17.5');
+    });
+
+    it('channel: "any", version: "1.19.x"', async () => {
+      const result = await release.determineVersion('1.19.x', 'any', platform);
+
+      expect(result.version).toEqual('1.19.0-5.0.pre');
+      expect(result.rawVersion).toEqual('1.19.0-5.0.pre');
+      expect(result.downloadUrl).toContain('1.19.0-5.0.pre');
+    });
+
+    it('channel: "any", version: "1.19.0-4.x"', async () => {
+      const result = await release.determineVersion(
+        '1.19.0-4.x',
+        'any',
+        platform
+      );
+
+      expect(result.version).toEqual('1.19.0-4.3.pre');
+      expect(result.rawVersion).toEqual('1.19.0-4.3.pre');
+      expect(result.downloadUrl).toContain('1.19.0-4.3.pre');
+    });
   });
 });
