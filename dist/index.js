@@ -126,6 +126,7 @@ function getFlutter(version, channel) {
         core.exportVariable('FLUTTER_ROOT', toolPath);
         core.addPath(path.join(toolPath, 'bin'));
         core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
+        core.addPath(path.join(toolPath, '.pub-cache', 'bin'));
         if (useMaster) {
             yield exec.exec('flutter', ['channel', 'master']);
             yield exec.exec('flutter', ['upgrade']);
