@@ -48,6 +48,7 @@ export async function getFlutter(
   core.exportVariable('FLUTTER_ROOT', toolPath);
   core.addPath(path.join(toolPath, 'bin'));
   core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
+  core.addPath(path.join(toolPath, '.pub-cache', 'bin'));
 
   if (useMaster) {
     await exec.exec('flutter', ['channel', 'master']);
