@@ -67,26 +67,18 @@ steps:
 - run: flutter build web
 ```
 
-Build for Windows and upload artifact:
+Build for Windows:
 
 ```yaml
   windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          channel: dev
+          channel: beta
       - run: flutter config --enable-windows-desktop
-      - run: flutter create .
       - run: flutter build windows
-      - uses: actions/upload-artifact@master
-        with:
-          name: windows
-          path: build\windows\runner\Release
 ```
 
 Use latest release for particular channel:
