@@ -36,8 +36,8 @@ describe('installer tests', () => {
   }, 100000);
 
   it('Downloads flutter', async () => {
-    await installer.getFlutter('1.0.0', 'stable');
-    const sdkDir = path.join(toolDir, 'flutter', '1.0.0-stable', 'x64');
+    await installer.getFlutter('2.0.0', 'stable');
+    const sdkDir = path.join(toolDir, 'flutter', '2.0.0-stable', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
     expect(fs.existsSync(path.join(sdkDir, 'bin'))).toBe(true);

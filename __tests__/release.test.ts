@@ -33,25 +33,25 @@ describe('release tests', () => {
     it('channel: "stable", version: ""', async () => {
       const result = await release.determineVersion('', 'stable', platform);
 
-      expect(result.version).toEqual('1.22.0');
-      expect(result.rawVersion).toEqual('1.22.0');
-      expect(result.downloadUrl).toContain('1.22.0');
+      expect(result.version).toEqual('2.0.5');
+      expect(result.rawVersion).toEqual('2.0.5');
+      expect(result.downloadUrl).toContain('2.0.5');
     });
 
     it('channel: "beta", version: ""', async () => {
       const result = await release.determineVersion('', 'beta', platform);
 
-      expect(result.version).toEqual('1.22.0-12.3.pre');
-      expect(result.rawVersion).toEqual('1.22.0-12.3.pre');
-      expect(result.downloadUrl).toContain('1.22.0-12.3.pre');
+      expect(result.version).toEqual('2.2.0-10.1.pre');
+      expect(result.rawVersion).toEqual('2.2.0-10.1.pre');
+      expect(result.downloadUrl).toContain('2.2.0-10.1.pre');
     });
 
     it('channel: "dev", version: ""', async () => {
       const result = await release.determineVersion('', 'dev', platform);
 
-      expect(result.version).toEqual('1.23.0-7.0.pre');
-      expect(result.rawVersion).toEqual('1.23.0-7.0.pre');
-      expect(result.downloadUrl).toContain('1.23.0-7.0.pre');
+      expect(result.version).toEqual('2.2.0-10.1.pre');
+      expect(result.rawVersion).toEqual('2.2.0-10.1.pre');
+      expect(result.downloadUrl).toContain('2.2.0-10.1.pre');
     });
 
     it('channel: "dev", version: "1.17.x"', async () => {

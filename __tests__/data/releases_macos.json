@@ -1,11 +1,419 @@
 {
   "base_url": "https://storage.googleapis.com/flutter_infra/releases",
   "current_release": {
-    "beta": "d408d302e22179d598f467e11da5dd968dbdc9ec",
-    "dev": "db6e2d8aa5bb9a0bd3e75fc7470268b5a56fd0b0",
-    "stable": "d408d302e22179d598f467e11da5dd968dbdc9ec"
+    "beta": "0941968447ea8058e56e1479f7e53147149b739e",
+    "dev": "0941968447ea8058e56e1479f7e53147149b739e",
+    "stable": "adc687823a831bbebe28bdccfac1a628ca621513"
   },
   "releases": [
+    {
+      "hash": "adc687823a831bbebe28bdccfac1a628ca621513",
+      "channel": "stable",
+      "version": "2.0.5",
+      "release_date": "2021-04-16T17:55:24.241189Z",
+      "archive": "stable/macos/flutter_macos_2.0.5-stable.zip",
+      "sha256": "98cdbab108586c359984c5a5e42f48d9244a3ecb56989111e16f999eae2ae95b"
+    },
+    {
+      "hash": "0941968447ea8058e56e1479f7e53147149b739e",
+      "channel": "beta",
+      "version": "2.2.0-10.1.pre",
+      "release_date": "2021-04-15T22:16:52.425295Z",
+      "archive": "beta/macos/flutter_macos_2.2.0-10.1.pre-beta.zip",
+      "sha256": "4a24be2936dc8c647bd0b09db0cd42bbec82345eb1ae6b47d83e3f1690326161"
+    },
+    {
+      "hash": "0941968447ea8058e56e1479f7e53147149b739e",
+      "channel": "dev",
+      "version": "2.2.0-10.1.pre",
+      "release_date": "2021-04-15T21:29:18.785505Z",
+      "archive": "dev/macos/flutter_macos_2.2.0-10.1.pre-dev.zip",
+      "sha256": "117f2ac95a99bfa9cc9e252de3c94cd00983b21ed456cf73189719f7b30ba972"
+    },
+    {
+      "hash": "b1395592de68cc8ac4522094ae59956dd21a91db",
+      "channel": "stable",
+      "version": "2.0.4",
+      "release_date": "2021-04-02T20:29:37.579992Z",
+      "archive": "stable/macos/flutter_macos_2.0.4-stable.zip",
+      "sha256": "31e4a9f874e9d9743e7c3bb6bc69b3ba1bad122e71a4424e4240f204d0c9b34e"
+    },
+    {
+      "hash": "4d7946a68d26794349189cf21b3f68cc6fe61dcb",
+      "channel": "stable",
+      "version": "2.0.3",
+      "release_date": "2021-03-19T20:10:20.144279Z",
+      "archive": "stable/macos/flutter_macos_2.0.3-stable.zip",
+      "sha256": "f9f7ef2118945252961a738b0d245e41aac289b793ee872735ae546637758551"
+    },
+    {
+      "hash": "5bedb7b1d5698ce2c1c67aaf9afae7b3948b172a",
+      "channel": "beta",
+      "version": "2.1.0-12.2.pre",
+      "release_date": "2021-03-18T21:04:31.772298Z",
+      "archive": "beta/macos/flutter_macos_2.1.0-12.2.pre-beta.zip",
+      "sha256": "aa05713e14b0a7af6a8abeee52b62b3b7bedde1c331418e5e9a8341b75195d17"
+    },
+    {
+      "hash": "8962f6dc68ec8e2206ac2fa874da4a453856c7d3",
+      "channel": "beta",
+      "version": "2.0.2",
+      "release_date": "2021-03-15T16:56:30.689206Z",
+      "archive": "beta/macos/flutter_macos_2.0.2-beta.zip",
+      "sha256": "572022a6f4429f50456ddd2bca098b8843ea6875cdd72f18b1f94df52675944c"
+    },
+    {
+      "hash": "8264cb3e8a797eef39cbcd32bb56fd07790efb7f",
+      "channel": "dev",
+      "version": "2.1.0-12.1.pre",
+      "release_date": "2021-03-13T00:54:32.611915Z",
+      "archive": "dev/macos/flutter_macos_2.1.0-12.1.pre-dev.zip",
+      "sha256": "21cfba6cbb755925952543bd425917023190fa05fb30bfc345ff2ba083951821"
+    },
+    {
+      "hash": "8962f6dc68ec8e2206ac2fa874da4a453856c7d3",
+      "channel": "stable",
+      "version": "2.0.2",
+      "release_date": "2021-03-12T20:10:47.990338Z",
+      "archive": "stable/macos/flutter_macos_2.0.2-stable.zip",
+      "sha256": "0fd76e44c2080e3e9c02e2960628ca3ee0999d4ad13dd4e6b76d0f3fee76379e"
+    },
+    {
+      "hash": "c5a4b4029c0798f37c4a39b479d7cb75daa7b05c",
+      "channel": "beta",
+      "version": "2.0.1",
+      "release_date": "2021-03-04T20:57:52.657482Z",
+      "archive": "beta/macos/flutter_macos_2.0.1-beta.zip",
+      "sha256": "39569c1443311ebc66cff944ce1e58dcf1314c600776e40cbec69b68b523b624"
+    },
+    {
+      "hash": "c5a4b4029c0798f37c4a39b479d7cb75daa7b05c",
+      "channel": "stable",
+      "version": "2.0.1",
+      "release_date": "2021-03-04T19:46:19.886582Z",
+      "archive": "stable/macos/flutter_macos_2.0.1-stable.zip",
+      "sha256": "0d1985d0cc6ef99a51c8b2051aceb07eb654a02973e8e43aaf28ef1d8c3735b4"
+    },
+    {
+      "hash": "60bd88df915880d23877bfc1602e8ddcf4c4dd2a",
+      "channel": "beta",
+      "version": "2.0.0",
+      "release_date": "2021-03-03T19:38:28.814685Z",
+      "archive": "beta/macos/flutter_macos_2.0.0-beta.zip",
+      "sha256": "ac96558264c7cba717b27b5c1f136333a30345f720c0741cc63dfd519a82b3bd"
+    },
+    {
+      "hash": "cc9b78fc5c4a4d2d51316d9626523336230a89a9",
+      "channel": "dev",
+      "version": "2.1.0-10.0.pre",
+      "release_date": "2021-03-03T19:11:03.023654Z",
+      "archive": "dev/macos/flutter_macos_2.1.0-10.0.pre-dev.zip",
+      "sha256": "5b94fa9f1db978aed45baae22ce3b909213077055fbc577c6c0944e67a0eb7c8"
+    },
+    {
+      "hash": "60bd88df915880d23877bfc1602e8ddcf4c4dd2a",
+      "channel": "stable",
+      "version": "2.0.0",
+      "release_date": "2021-03-03T17:46:23.817373Z",
+      "archive": "stable/macos/flutter_macos_2.0.0-stable.zip",
+      "sha256": "e096bf5cdf28401be2d7cf286e561bf70163012be892384b1fe1554b56682d52"
+    },
+    {
+      "hash": "044f2cf5607a26f8818dab0f766400e85c52bdff",
+      "channel": "beta",
+      "version": "1.26.0-17.8.pre",
+      "release_date": "2021-02-25T17:56:33.110706Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.8.pre-beta.zip",
+      "sha256": "ea7b077c525128c4963f8738f8643920fe1d123830c9a923242497300cbd680c"
+    },
+    {
+      "hash": "b7d4806243a4e906bf061f79a0e314ba28111aa6",
+      "channel": "dev",
+      "version": "1.27.0-8.0.pre",
+      "release_date": "2021-02-24T23:13:48.002697Z",
+      "archive": "dev/macos/flutter_macos_1.27.0-8.0.pre-dev.zip",
+      "sha256": "a2d99ca0f9a7559fb2a8e98420fb4126ae8170725ed7a61bfe72eecb3f3866cf"
+    },
+    {
+      "hash": "68e7d2e301e1969275cd11947e900b6b80405052",
+      "channel": "beta",
+      "version": "1.26.0-17.7.pre",
+      "release_date": "2021-02-24T18:23:23.356430Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.7.pre-beta.zip",
+      "sha256": "7bf91dd3f82291d62a0e2ca80289c7a864174b79f69034ac553443b10315d8e7"
+    },
+    {
+      "hash": "f8cd24de95b16b5a1ce6ebc0716154271fbf6252",
+      "channel": "dev",
+      "version": "1.27.0-4.0.pre",
+      "release_date": "2021-02-17T23:12:45.927425Z",
+      "archive": "dev/macos/flutter_macos_1.27.0-4.0.pre-dev.zip",
+      "sha256": "428a7a56719cd246378b431331eb9df42bd9b0c320dfde8deaa36a52342701ac"
+    },
+    {
+      "hash": "a29104a69b102a7485cd00d358eaeab219d258ab",
+      "channel": "beta",
+      "version": "1.26.0-17.6.pre",
+      "release_date": "2021-02-16T19:17:46.516048Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.6.pre-beta.zip",
+      "sha256": "13c8790c37912b691b02823cdb4085f43c1418bfdbc78bb3304ddd4977bc7a25"
+    },
+    {
+      "hash": "1fe38dcb5fc58242c6e0904a318bcc3ed5a4d837",
+      "channel": "beta",
+      "version": "1.26.0-17.5.pre",
+      "release_date": "2021-02-11T17:55:34.991140Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.5.pre-beta.zip",
+      "sha256": "b57b777b1ec3eb8828f3c4d826cb0f3af888211b51be94e08c2a12bc54df2a78"
+    },
+    {
+      "hash": "68c96f100e42ab3dbf43e61e9e2fc875a2d50cb8",
+      "channel": "dev",
+      "version": "1.27.0-1.0.pre",
+      "release_date": "2021-02-10T23:55:52.798135Z",
+      "archive": "dev/macos/flutter_macos_1.27.0-1.0.pre-dev.zip",
+      "sha256": "72d113611665f5f8827e681de709765c558126a649fe71d121a2f1583c350f36"
+    },
+    {
+      "hash": "48c9d3e0e19e8fec84f1d316ce0559f26ca7277d",
+      "channel": "beta",
+      "version": "1.26.0-17.4.pre",
+      "release_date": "2021-02-10T21:36:46.564198Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.4.pre-beta.zip",
+      "sha256": "9d7213066edb463b9c7baaa20c9ef35fec8018f25b899fbfa5281f2e7fcba981"
+    },
+    {
+      "hash": "4b50ca7f7fbf56be72e54cd200825b760416a356",
+      "channel": "beta",
+      "version": "1.26.0-17.3.pre",
+      "release_date": "2021-02-05T06:36:29.008663Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.3.pre-beta.zip",
+      "sha256": "7fe8a8a616bb1379da2442add1be61be21f771bd1bdc7a46832a1959900cf9a0"
+    },
+    {
+      "hash": "79b49b9e1057f90ebf797725233c6b311722de69",
+      "channel": "beta",
+      "version": "1.26.0-17.2.pre",
+      "release_date": "2021-02-04T19:51:12.386458Z",
+      "archive": "beta/macos/flutter_macos_1.26.0-17.2.pre-beta.zip",
+      "sha256": "5188ee1dfceaa715b48d73725cb678320786910f7e3c70f837a1bff1554adbdd"
+    },
+    {
+      "hash": "79b49b9e1057f90ebf797725233c6b311722de69",
+      "channel": "dev",
+      "version": "1.26.0-17.2.pre",
+      "release_date": "2021-02-04T19:19:37.095390Z",
+      "archive": "dev/macos/flutter_macos_1.26.0-17.2.pre-dev.zip",
+      "sha256": "56b8fcaf888efb162ff3e7083fd3d01f13369bf9be326f67c5e17e1e1b84b7a6"
+    },
+    {
+      "hash": "c40e5294dda34d04cd222dfdf765f171e12e4a8d",
+      "channel": "dev",
+      "version": "1.26.0-17.1.pre",
+      "release_date": "2021-01-29T18:19:51.959907Z",
+      "archive": "dev/macos/flutter_macos_1.26.0-17.1.pre-dev.zip",
+      "sha256": "01fd7b347b09b544c3a1ce4f6536032b43a70bd5c12def3ad4dc8ddcf050c701"
+    },
+    {
+      "hash": "9b2d32b605630f28625709ebd9d78ab3016b2bf6",
+      "channel": "stable",
+      "version": "1.22.6",
+      "release_date": "2021-01-25T19:46:48.527913Z",
+      "archive": "stable/macos/flutter_macos_1.22.6-stable.zip",
+      "sha256": "a5a7b66c1e4ac4058c72714d67bb863a80170749fe6f11f541e314474c899b05"
+    },
+    {
+      "hash": "a706cd211240f27be3b61f06d70f958c7a4156fe",
+      "channel": "dev",
+      "version": "1.26.0-12.0.pre",
+      "release_date": "2021-01-21T18:36:13.095509Z",
+      "archive": "dev/macos/flutter_macos_1.26.0-12.0.pre-dev.zip",
+      "sha256": "fd556bd98c92b492e0be64045c4cdef32859b44e50b999303f3e5dbbbc7ecbe1"
+    },
+    {
+      "hash": "5d36f2e7f5387b6c751449258ade8e4e6edf99be",
+      "channel": "beta",
+      "version": "1.25.0-8.3.pre",
+      "release_date": "2021-01-15T19:58:18.410060Z",
+      "archive": "beta/macos/flutter_macos_1.25.0-8.3.pre-beta.zip",
+      "sha256": "4db727d6850339a9ecc5067e421f28975e3a25718691eeedfea0f1411b97237f"
+    },
+    {
+      "hash": "b9d06fffb2db263ab7021fc39adde7f2bf988a4a",
+      "channel": "dev",
+      "version": "1.26.0-8.0.pre",
+      "release_date": "2021-01-13T17:24:07.151253Z",
+      "archive": "dev/macos/flutter_macos_1.26.0-8.0.pre-dev.zip",
+      "sha256": "91c707752b831d38621f489106a433269424c2ce01f353ea0f74fd7ddd157db1"
+    },
+    {
+      "hash": "b0a22998593fc605c723dee8ff4d9315c32cfe2c",
+      "channel": "beta",
+      "version": "1.25.0-8.2.pre",
+      "release_date": "2021-01-06T00:06:41.437421Z",
+      "archive": "beta/macos/flutter_macos_1.25.0-8.2.pre-beta.zip",
+      "sha256": "92d8100cb405cbc480d9020bbfca3b862d1201438ae786934fb6852cab645170"
+    },
+    {
+      "hash": "63062a64432cce03315d6b5196fda7912866eb37",
+      "channel": "dev",
+      "version": "1.26.0-1.0.pre",
+      "release_date": "2020-12-16T22:06:33.259580Z",
+      "archive": "dev/macos/flutter_macos_1.26.0-1.0.pre-dev.zip",
+      "sha256": "8695c838ada2c26a5cd6659539ef326e8257966374daad51e39f73728f03b5d7"
+    },
+    {
+      "hash": "8f89f6505b941329a864fef1527243a72800bf4d",
+      "channel": "beta",
+      "version": "1.25.0-8.1.pre",
+      "release_date": "2020-12-16T21:54:56.493375Z",
+      "archive": "beta/macos/flutter_macos_1.25.0-8.1.pre-beta.zip",
+      "sha256": "cfff47f305cf66aa16c0c5e8798820efcacd9a014ee907ae35db7e65ee283856"
+    },
+    {
+      "hash": "78910062997c3a836feee883712c241a5fd22983",
+      "channel": "stable",
+      "version": "1.22.5",
+      "release_date": "2020-12-10T22:56:49.884409Z",
+      "archive": "stable/macos/flutter_macos_1.22.5-stable.zip",
+      "sha256": "a64f5df488b95ac41036559bf436189037a868b393b1c050649cbb61d7d3b932"
+    },
+    {
+      "hash": "a12e2a473a3214b4556ca589d2d9bd311ac7c6f1",
+      "channel": "dev",
+      "version": "1.25.0-8.0.pre",
+      "release_date": "2020-12-10T19:30:02.854836Z",
+      "archive": "dev/macos/flutter_macos_1.25.0-8.0.pre-dev.zip",
+      "sha256": "e4838460a0f96e2b2f75e380425bc1666c3bdcde2f7f59717d52b9ecac1f5e29"
+    },
+    {
+      "hash": "a7f5fd5360007518644597c60a1f2169eacccc2b",
+      "channel": "dev",
+      "version": "1.25.0-4.0.pre",
+      "release_date": "2020-12-02T17:04:11.861712Z",
+      "archive": "dev/macos/flutter_macos_1.25.0-4.0.pre-dev.zip",
+      "sha256": "0c117e343a40183a1da45f7496cea16fbdd26ff5efeb4272037387a4db95bafe"
+    },
+    {
+      "hash": "022b333a089afb81c471ec43d1f1f4f26305d876",
+      "channel": "beta",
+      "version": "1.24.0-10.2.pre",
+      "release_date": "2020-11-19T15:19:01.250780Z",
+      "archive": "beta/macos/flutter_macos_1.24.0-10.2.pre-beta.zip",
+      "sha256": "b8d961d58434da269b0b2563b17327a6543ea7ad2aeb368e837a957ef601d4aa"
+    },
+    {
+      "hash": "022b333a089afb81c471ec43d1f1f4f26305d876",
+      "channel": "dev",
+      "version": "1.24.0-10.2.pre",
+      "release_date": "2020-11-18T22:20:28.675722Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-10.2.pre-dev.zip",
+      "sha256": "4f4ec35069ccd9d8ea98064b63046cebe6cfd39ee9abc55a179afec49f778ac6"
+    },
+    {
+      "hash": "405c85fe7ee688156028e87a623c9153d05591b2",
+      "channel": "dev",
+      "version": "1.24.0-10.1.pre",
+      "release_date": "2020-11-16T20:50:22.337009Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-10.1.pre-dev.zip",
+      "sha256": "4ae245929ad26ea505d65c3089eac65b1aaf0a4ef4f9e7dc19b2d32676f64508"
+    },
+    {
+      "hash": "1aafb3a8b9b0c36241c5f5b34ee914770f015818",
+      "channel": "stable",
+      "version": "1.22.4",
+      "release_date": "2020-11-13T20:05:41.373223Z",
+      "archive": "stable/macos/flutter_macos_1.22.4-stable.zip",
+      "sha256": "d73b71316e883f36e02d412ed237c712c7942902bdb84ad0ebfa1fa431b75b88"
+    },
+    {
+      "hash": "a0860f6e87ba4f9031bee4d6f56c08b970606bee",
+      "channel": "dev",
+      "version": "1.24.0-7.0.pre",
+      "release_date": "2020-11-05T00:15:56.102329Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-7.0.pre-dev.zip",
+      "sha256": "7d470f6106f87be91193aa832e37aa792d1d0f2e007ffd017b98e5ccd70274ec"
+    },
+    {
+      "hash": "13896b3bd1858687a06b1639d60c877206170df8",
+      "channel": "dev",
+      "version": "1.24.0-6.0.pre",
+      "release_date": "2020-10-30T19:25:59.884849Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-6.0.pre-dev.zip",
+      "sha256": "eff9f38fa75dbc8debaf60919ec8678a48716fe2b56370ade00de61f95b77b10"
+    },
+    {
+      "hash": "8874f21e79d7ec66d0457c7ab338348e31b17f1d",
+      "channel": "stable",
+      "version": "1.22.3",
+      "release_date": "2020-10-30T16:28:31.874818Z",
+      "archive": "stable/macos/flutter_macos_1.22.3-stable.zip",
+      "sha256": "7cad68c2e678c9f7e59214c036558d7caa627577452be759efa8e4ff82a9a703"
+    },
+    {
+      "hash": "2783f8e2e14efec8b7e08f668dde61c40d128c24",
+      "channel": "dev",
+      "version": "1.24.0-3.0.pre",
+      "release_date": "2020-10-22T22:09:15.844161Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-3.0.pre-dev.zip",
+      "sha256": "f2e8e6c173010d278c1bf40b1a5d4f65bc6b3d085a791ce000f35c1b7f453814"
+    },
+    {
+      "hash": "12bea61c2902784fec73b7f5f2ff3415f873fead",
+      "channel": "dev",
+      "version": "1.24.0-1.0.pre",
+      "release_date": "2020-10-20T02:40:12.415504Z",
+      "archive": "dev/macos/flutter_macos_1.24.0-1.0.pre-dev.zip",
+      "sha256": "c774b6314f74b0222ab102c91eb0a9edab854613b4846a15b66e27d167d11e7b"
+    },
+    {
+      "hash": "84f3d28555368a70270e9ac8390a9441df95e752",
+      "channel": "stable",
+      "version": "1.22.2",
+      "release_date": "2020-10-16T18:14:45.745723Z",
+      "archive": "stable/macos/flutter_macos_1.22.2-stable.zip",
+      "sha256": "1b749721d4e9c9d6712ae1701972a87c69743c25cf369b966dc2626af165db84"
+    },
+    {
+      "hash": "198df796aa80073ef22bdf249e614e2ff33c6895",
+      "channel": "beta",
+      "version": "1.23.0-18.1.pre",
+      "release_date": "2020-10-15T23:20:28.007326Z",
+      "archive": "beta/macos/flutter_macos_1.23.0-18.1.pre-beta.zip",
+      "sha256": "56fc0e77c3b14410ab88286e3c39b16c87671ac5fe90f68a4a5d82a79f67b56e"
+    },
+    {
+      "hash": "37ebe3d82a9d5faeda7d3c1a6ad193030210a2cc",
+      "channel": "dev",
+      "version": "1.23.0-18.0.pre",
+      "release_date": "2020-10-14T00:35:37.881637Z",
+      "archive": "dev/macos/flutter_macos_1.23.0-18.0.pre-dev.zip",
+      "sha256": "b0a4d3f4a13e94c07f6234aade20b022b37a55ea7c8d6f673921bfab3dd6c166"
+    },
+    {
+      "hash": "4fa4f91d5cc65a5a98c7ccd91bb7d47814048a57",
+      "channel": "dev",
+      "version": "1.23.0-13.0.pre",
+      "release_date": "2020-10-12T18:09:26.197680Z",
+      "archive": "dev/macos/flutter_macos_1.23.0-13.0.pre-dev.zip",
+      "sha256": "b5ab26da91aa2972d79c32990fa45e6b66ddfb834a70ed5d90a7a68d11f6cf4f"
+    },
+    {
+      "hash": "f30b7f4db93ee747cd727df747941a28ead25ff5",
+      "channel": "stable",
+      "version": "1.22.1",
+      "release_date": "2020-10-08T22:00:51.454777Z",
+      "archive": "stable/macos/flutter_macos_1.22.1-stable.zip",
+      "sha256": "04f5b8a1af40814ff496d48c7a71fa8ff10ef396fca6a9feb2d231a3f7776b9a"
+    },
+    {
+      "hash": "f30b7f4db93ee747cd727df747941a28ead25ff5",
+      "channel": "beta",
+      "version": "1.22.0-12.4.pre",
+      "release_date": "2020-10-08T21:32:12.523357Z",
+      "archive": "beta/macos/flutter_macos_1.22.0-12.4.pre-beta.zip",
+      "sha256": "74cf038c15f73403b204fac0991f6863c65be454b7def6c1f099f405bedcab00"
+    },
     {
       "hash": "db6e2d8aa5bb9a0bd3e75fc7470268b5a56fd0b0",
       "channel": "dev",
