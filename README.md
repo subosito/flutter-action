@@ -12,7 +12,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.22.4'
+    flutter-version: '2.0.5'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -31,7 +31,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.22.4'
+        flutter-version: '2.0.5'
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk
@@ -48,7 +48,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.22.4'
+    flutter-version: '2.0.5'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build appbundle
@@ -57,18 +57,14 @@ steps:
 Build for the web:
 
 ```yaml
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: beta
-    - run: flutter config --enable-web
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build web
+steps:
+- uses: actions/checkout@v2
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-version: '2.0.5'
+- run: flutter pub get
+- run: flutter test
+- run: flutter build web
 ```
 
 Use latest release for particular channel:
@@ -81,7 +77,7 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    channel: 'stable' # or: 'beta' or 'dev'
+    channel: 'stable' # or: 'beta', 'dev' or 'master'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -97,8 +93,8 @@ steps:
     java-version: '12.x'
 - uses: subosito/flutter-action@v1
   with:
-    flutter-version: '1.22.x' # you can use 1.22
-    channel: 'dev' # optional, default to: 'stable'
+    flutter-version: '1.22.x' # or, you can use 1.22
+    channel: 'dev'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
