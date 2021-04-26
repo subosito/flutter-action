@@ -15,70 +15,6 @@ steps:
     flutter-version: '2.0.5'
 - run: flutter pub get
 - run: flutter test
-- run: flutter build apk
-```
-
-Build for iOS too (macOS only):
-
-```yaml
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    - uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '2.0.5'
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build apk
-    - run: flutter build ios --release --no-codesign
-```
-
-Use app bundle, instead of APK:
-
-```yaml
-steps:
-- uses: actions/checkout@v2
-- uses: actions/setup-java@v1
-  with:
-    java-version: '12.x'
-- uses: subosito/flutter-action@v1
-  with:
-    flutter-version: '2.0.5'
-- run: flutter pub get
-- run: flutter test
-- run: flutter build appbundle
-```
-
-Build for the web:
-
-```yaml
-steps:
-- uses: actions/checkout@v2
-- uses: subosito/flutter-action@v1
-  with:
-    flutter-version: '2.0.5'
-- run: flutter pub get
-- run: flutter test
-- run: flutter build web
-```
-
-Build for Windows:
-
-```yaml
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: beta
-      - run: flutter config --enable-windows-desktop
-      - run: flutter build windows
 ```
 
 Use latest release for particular channel:
@@ -111,7 +47,86 @@ steps:
     channel: 'dev'
 - run: flutter pub get
 - run: flutter test
+```
+
+Use particular version on any channel:
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: actions/setup-java@v1
+  with:
+    java-version: '12.x'
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-version: '2.x'
+    channel: 'any'
+- run: flutter pub get
+- run: flutter test
+```
+
+Build Android APK and app bundle:
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: actions/setup-java@v1
+  with:
+    java-version: '12.x'
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-version: '2.0.5'
+- run: flutter pub get
+- run: flutter test
 - run: flutter build apk
+- run: flutter build appbundle
+```
+
+Build for iOS too (macOS only):
+
+```yaml
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '2.0.5'
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter build apk
+    - run: flutter build ios --release --no-codesign
+```
+
+Build for the web:
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-version: '2.0.5'
+- run: flutter pub get
+- run: flutter test
+- run: flutter build web
+```
+
+Build for Windows:
+
+```yaml
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: beta
+      - run: flutter config --enable-windows-desktop
+      - run: flutter build windows
 ```
 
 Matrix Testing:
@@ -135,7 +150,4 @@ jobs:
           channel: 'beta'
       - run: dart --version
       - run: flutter --version
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build apk
 ```
