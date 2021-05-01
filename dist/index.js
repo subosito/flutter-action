@@ -123,9 +123,14 @@ function getFlutter(version, channel) {
             toolPath = yield tc.cacheDir(sdkDir, 'flutter', cleanver);
         }
         core.exportVariable('FLUTTER_ROOT', toolPath);
+        let pubCachePath = process.env['PUB_CACHE'] || '';
+        if (!pubCachePath) {
+            pubCachePath = path.join(toolPath, '.pub-cache');
+            core.exportVariable('PUB_CACHE', pubCachePath);
+        }
         core.addPath(path.join(toolPath, 'bin'));
         core.addPath(path.join(toolPath, 'bin', 'cache', 'dart-sdk', 'bin'));
-        core.addPath(path.join(toolPath, '.pub-cache', 'bin'));
+        core.addPath(path.join(pubCachePath, 'bin'));
         if (useMaster) {
             yield exec.exec('flutter', ['channel', 'master']);
             yield exec.exec('flutter', ['upgrade']);
