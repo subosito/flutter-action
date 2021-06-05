@@ -9,6 +9,9 @@ inputs:
     description: 'The Flutter build release channel'
     required: false
     default: 'stable'
+  parse:
+    description: 'Parse the Flutter version from the specified config'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

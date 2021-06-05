@@ -1,4 +1,3 @@
-import fs = require('fs');
 import path = require('path');
 import nock = require('nock');
 import * as release from '../src/release';
