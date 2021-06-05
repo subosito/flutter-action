@@ -6,29 +6,26 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as release from './release';
 
-export async function getFlutter(
-  version: string,
-  channel: string
-): Promise<void> {
+export async function getFlutter(version: IFlutterVersion): Promise<void> {
   const platform = release.getPlatform();
-  const useMaster = channel == 'master';
+  const useMaster = version.channel == 'master';
 
   const {
     version: selected,
     downloadUrl,
     channel: validatedChannel
   } = await release.determineVersion(
-    version,
-    useMaster ? 'dev' : channel,
+    version.version,
+    useMaster ? 'dev' : version.channel,
     platform
   );
 
-  if (!useMaster && channel !== validatedChannel) {
+  if (!useMaster && version.channel !== validatedChannel) {
     core.debug(`Channel was identified as ${validatedChannel}`);
   }
 
   let cleanver = useMaster
-    ? channel
+    ? version.channel
     : `${selected.replace('+', '-')}-${validatedChannel}`;
 
   let toolPath = tc.find('flutter', cleanver);

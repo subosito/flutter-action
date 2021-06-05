@@ -65,6 +65,36 @@ steps:
 - run: flutter test
 ```
 
+Use version specified in `pubspec.yaml` (Does NOT support version ranges!):
+
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v1
+    with:
+      java-version: '12.x'
+  - uses: subosito/flutter-action@v1
+    with:
+      parse: 'pubspec'
+  - run: flutter pub get
+  - run: flutter test
+```
+
+Use version specified via [FVM](https://github.com/leoafarias/fvm) in `.fvm/fvm_config.json`:
+
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v1
+    with:
+      java-version: '12.x'
+  - uses: subosito/flutter-action@v1
+    with:
+      parse: 'fvm'
+  - run: flutter pub get
+  - run: flutter test
+```
+
 Build Android APK and app bundle:
 
 ```yaml

@@ -36,7 +36,7 @@ describe('installer tests', () => {
   }, 100000);
 
   it('Downloads flutter', async () => {
-    await installer.getFlutter('2.0.0', 'stable');
+    await installer.getFlutter({version: '2.0.0', channel: 'stable'});
     const sdkDir = path.join(toolDir, 'flutter', '2.0.0-stable', 'x64');
 
     expect(fs.existsSync(`${sdkDir}.complete`)).toBe(true);
@@ -44,7 +44,7 @@ describe('installer tests', () => {
   }, 300000);
 
   it('Downloads flutter from master channel', async () => {
-    await installer.getFlutter('', 'master');
+    await installer.getFlutter({version: '', channel: 'master'});
     const sdkDir = path.join(toolDir, 'flutter', 'master', 'x64');
 
     let stdout = '';
@@ -67,7 +67,7 @@ describe('installer tests', () => {
   it('Throws if no location contains correct flutter version', async () => {
     let thrown = false;
     try {
-      await installer.getFlutter('1000.0', 'dev');
+      await installer.getFlutter({version: '1000.0', channel: 'dev'});
     } catch {
       thrown = true;
     }
