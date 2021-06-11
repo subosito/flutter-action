@@ -3,7 +3,7 @@ import * as httpm from '@actions/http-client';
 import * as semver from 'semver';
 
 export const storageUrl =
-  'https://storage.googleapis.com/flutter_infra_release/releases';
+  'https://storage.googleapis.com/flutter_infra/releases';
 
 interface IFlutterData {
   channel: string;

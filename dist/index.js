@@ -231,7 +231,7 @@ exports.determineVersion = exports.getPlatform = exports.storageUrl = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const httpm = __importStar(__nccwpck_require__(9925));
 const semver = __importStar(__nccwpck_require__(1383));
-exports.storageUrl = 'https://storage.googleapis.com/flutter_infra_release/releases';
+exports.storageUrl = 'https://storage.googleapis.com/flutter_infra/releases';
 function getPlatform() {
     const platform = process.platform;
     if (platform == 'win32') {
