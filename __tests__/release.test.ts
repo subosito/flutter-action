@@ -21,7 +21,7 @@ describe('release tests', () => {
       const dataDir = path.join(__dirname, 'data');
 
       nock('https://storage.googleapis.com', {allowUnmocked: true})
-        .get(`/flutter_infra/releases/releases_${platform}.json`)
+        .get(`/flutter_infra_release/releases/releases_${platform}.json`)
         .replyWithFile(200, path.join(dataDir, `releases_${platform}.json`));
     });
 

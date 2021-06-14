@@ -1,5 +1,5 @@
 {
-  "base_url": "https://storage.googleapis.com/flutter_infra/releases",
+  "base_url": "https://storage.googleapis.com/flutter_infra_release/releases",
   "current_release": {
     "beta": "0941968447ea8058e56e1479f7e53147149b739e",
     "dev": "0941968447ea8058e56e1479f7e53147149b739e",
