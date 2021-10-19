@@ -65,6 +65,21 @@ steps:
 - run: flutter test
 ```
 
+Use version specified in a file created by [flutter_versio_frigidus](https://github.com/stelynx/flutter_versio_frigidus):
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: actions/setup-java@v1
+  with:
+    java-version: '12.x'
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-versio-frigidus: true
+- run: flutter pub get
+- run: flutter test
+```
+
 Build Android APK and app bundle:
 
 ```yaml

@@ -9,6 +9,9 @@ inputs:
     description: 'The Flutter build release channel'
     required: false
     default: 'stable'
+  flutter-versio-frigidus:
+    description: 'Use Flutter version located in file created by flutter_versio_frigidus?'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

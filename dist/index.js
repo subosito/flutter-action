@@ -1,6 +1,41 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 865:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getVersion = void 0;
+const fs = __importStar(__nccwpck_require__(5747));
+function getVersion() {
+    return fs.readFileSync('flutter_versio_frigidus', 'ascii');
+}
+exports.getVersion = getVersion;
+
+
+/***/ }),
+
 /***/ 4822:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -36,16 +71,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
+const fvf = __importStar(__nccwpck_require__(865));
 const installer = __importStar(__nccwpck_require__(1480));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const version = core.getInput('flutter-version') || '';
+            const flutterVersion = core.getInput('flutter-version') || '';
             const channel = core.getInput('channel') || 'stable';
-            if (channel == 'master' && version != '') {
-                core.setFailed('using `flutter-version` with master channel is not supported.');
+            const useFvf = core.getInput('flutter-versio-frigidus') || false;
+            if (useFvf != '' && (channel != 'stable' || flutterVersion != '')) {
+                core.setFailed('using `flutter-versio-frigidus` with `channel` or `flutter-version` is not supported.');
                 return;
             }
+            if (channel == 'master' && flutterVersion != '') {
+                core.setFailed('using `flutter-version` and `flutter-versio-frigidus` with master channel is not supported.');
+                return;
+            }
+            const version = useFvf ? fvf.getVersion() : flutterVersion;
             yield installer.getFlutter(version, channel);
         }
         catch (error) {
