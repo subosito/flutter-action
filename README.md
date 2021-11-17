@@ -7,9 +7,10 @@ This action sets up a flutter environment for use in actions. It works on Linux,
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v1
+- uses: actions/setup-java@v2
   with:
-    java-version: '12.x'
+    distribution: 'zulu'
+    java-version: '11'
 - uses: subosito/flutter-action@v1
   with:
     flutter-version: '2.0.5'
@@ -22,9 +23,10 @@ Use latest release for particular channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v1
+- uses: actions/setup-java@v2
   with:
-    java-version: '12.x'
+    distribution: 'zulu'
+    java-version: '11'
 - uses: subosito/flutter-action@v1
   with:
     channel: 'stable' # or: 'beta', 'dev' or 'master'
@@ -38,9 +40,10 @@ Use latest release for particular version and/or channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v1
+- uses: actions/setup-java@v2
   with:
-    java-version: '12.x'
+    distribution: 'zulu'
+    java-version: '11'
 - uses: subosito/flutter-action@v1
   with:
     flutter-version: '1.22.x' # or, you can use 1.22
@@ -54,9 +57,10 @@ Use particular version on any channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v1
+- uses: actions/setup-java@v2
   with:
-    java-version: '12.x'
+    distribution: 'zulu'
+    java-version: '11'
 - uses: subosito/flutter-action@v1
   with:
     flutter-version: '2.x'
@@ -70,9 +74,10 @@ Build Android APK and app bundle:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v1
+- uses: actions/setup-java@v2
   with:
-    java-version: '12.x'
+    distribution: 'zulu'
+    java-version: '11'
 - uses: subosito/flutter-action@v1
   with:
     flutter-version: '2.0.5'
@@ -90,9 +95,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
+    - uses: actions/setup-java@v2
       with:
-        java-version: '12.x'
+        distribution: 'zulu'
+        java-version: '11'
     - uses: subosito/flutter-action@v1
       with:
         flutter-version: '2.0.5'
@@ -141,9 +147,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
-          java-version: '12.x'
+          distribution: 'zulu'
+          java-version: '11'
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.20.2'
