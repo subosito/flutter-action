@@ -1,8 +1,7 @@
 name: Main workflow
 on: [push]
 jobs:
-  run:
-    name: Run
+  test_channel:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -20,6 +19,24 @@ jobs:
     - name: Print PUBCACHE
       shell: bash
       run: echo "PUBCACHE set to $PUBCACHE"
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
+  test_version:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ 2.5.3, 2.x, 1, v1.12 ]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: stable
+        flutter-version: ${{ matrix.version }}
     - name: Run dart --version
       shell: bash
       run: dart --version
