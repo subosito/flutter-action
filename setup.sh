@@ -59,22 +59,20 @@ download_archive() {
 
 CHANNEL="$1"
 VERSION="$2"
-VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
 
-if [[ $VERSION_MANIFEST == null ]]; then
-  echo "Unable to determine Flutter version for $CHANNEL $VERSION"
-  exit 1
+if [[ $CHANNEL == master ]]; then
+  git clone -b master https://github.com/flutter/flutter.git "$RUNNER_TOOL_CACHE/flutter"
+else
+  VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
+
+  if [[ $VERSION_MANIFEST == null ]]; then
+    echo "Unable to determine Flutter version for $CHANNEL $VERSION"
+    exit 1
+  fi
+
+  ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
+  download_archive "$ARCHIVE_PATH" "$RUNNER_TOOL_CACHE"
 fi
-
-echo $OS_NAME
-echo $MANIFEST_URL
-echo $CHANNEL
-echo $VERSION
-echo $VERSION_MANIFEST
-
-ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
-
-download_archive "$ARCHIVE_PATH" "$RUNNER_TOOL_CACHE"
 
 if [[ $OS_NAME == windows ]]; then
   FLUTTER_ROOT="${RUNNER_TOOL_CACHE}\\flutter"
