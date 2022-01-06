@@ -1,6 +1,9 @@
 name: 'Flutter action'
 description: 'Setup your runner with Flutter environment'
 author: 'Alif Rachmawadi'
+branding:
+  icon: 'maximize'
+  color: 'blue'
 inputs:
   flutter-version:
     description: 'The Flutter version to make available on the path'
@@ -10,8 +13,7 @@ inputs:
     required: false
     default: 'stable'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
-branding:
-  icon: 'maximize'
-  color: 'blue'
+  using: 'composite'
+  steps:
+    - run: $GITHUB_ACTION_PATH/setup.sh ${{ inputs.channel }} ${{ inputs.flutter-version }}
+      shell: bash
