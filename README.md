@@ -124,6 +124,9 @@ jobs:
      - uses: subosito/flutter-action@v2
        with:
          channel: beta
+     - run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ninja-build libgtk-3-dev
      - run: flutter config --enable-linux-desktop
      - run: flutter build linux
 ```
