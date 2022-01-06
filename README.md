@@ -113,22 +113,3 @@ jobs:
      - run: flutter build windows
 ```
 
-Matrix Testing:
-
-```yaml
-jobs:
-  test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '1.20.2'
-          channel: 'beta'
-      - run: dart --version
-      - run: flutter --version
-```
