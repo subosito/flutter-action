@@ -80,15 +80,15 @@ fi
 
 if [[ $OS_NAME == windows ]]; then
   FLUTTER_ROOT="${RUNNER_TOOL_CACHE}\\flutter"
-  PUBCACHE="${USERPROFILE}\\.pub-cache"
+  PUB_CACHE="${USERPROFILE}\\.pub-cache"
 else
   FLUTTER_ROOT="${RUNNER_TOOL_CACHE}/flutter"
-  PUBCACHE="${HOME}/.pub-cache"
+  PUB_CACHE="${HOME}/.pub-cache"
 fi
 
 echo "FLUTTER_ROOT=${FLUTTER_ROOT}" >>$GITHUB_ENV
-echo "PUB_CACHE=${PUBCACHE}" >>$GITHUB_ENV
+echo "PUB_CACHE=${PUB_CACHE}" >>$GITHUB_ENV
 
 echo "${FLUTTER_ROOT}/bin" >>$GITHUB_PATH
 echo "${FLUTTER_ROOT}/bin/cache/dart-sdk/bin" >>$GITHUB_PATH
-echo "${PUBCACHE}/bin" >>$GITHUB_PATH
+echo "${PUB_CACHE}/bin" >>$GITHUB_PATH

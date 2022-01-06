@@ -16,9 +16,9 @@ jobs:
     - name: Print FLUTTER_ROOT
       shell: bash
       run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
-    - name: Print PUBCACHE
+    - name: Print PUB_CACHE
       shell: bash
-      run: echo "PUBCACHE set to $PUBCACHE"
+      run: echo "PUB_CACHE set to $PUB_CACHE"
     - name: Run dart --version
       shell: bash
       run: dart --version
