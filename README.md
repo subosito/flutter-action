@@ -4,18 +4,16 @@ This action sets up a flutter environment for use in actions. It works on Linux,
 
 # Usage
 
+Use specific version and channel:
+
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.0.5'
-- run: flutter pub get
-- run: flutter test
+    flutter-version: '2.8.0'
+    channel: 'stable'
+- run: flutter --version
 ```
 
 Use latest release for particular channel:
@@ -23,16 +21,10 @@ Use latest release for particular channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable' # or: 'beta', 'dev' or 'master'
-- run: flutter pub get
-- run: flutter test
-- run: flutter build apk
+- run: flutter --version
 ```
 
 Use latest release for particular version and/or channel:
@@ -40,16 +32,11 @@ Use latest release for particular version and/or channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '1.22.x' # or, you can use 1.22
     channel: 'dev'
-- run: flutter pub get
-- run: flutter test
+- run: flutter --version
 ```
 
 Use particular version on any channel:
@@ -57,16 +44,11 @@ Use particular version on any channel:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.x'
     channel: 'any'
-- run: flutter pub get
-- run: flutter test
+- run: flutter --version
 ```
 
 Build Android APK and app bundle:
@@ -80,14 +62,14 @@ steps:
     java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.0.5'
+    flutter-version: '2.5.3'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
 - run: flutter build appbundle
 ```
 
-Build for iOS too (macOS only):
+Build for iOS (macOS only):
 
 ```yaml
 jobs:
@@ -95,16 +77,11 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.0.5'
+        flutter-version: '2.5.3'
     - run: flutter pub get
     - run: flutter test
-    - run: flutter build apk
     - run: flutter build ios --release --no-codesign
 ```
 
@@ -115,7 +92,7 @@ steps:
 - uses: actions/checkout@v2
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.0.5'
+    flutter-version: '2.5.3'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build web
@@ -124,15 +101,16 @@ steps:
 Build for Windows:
 
 ```yaml
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: beta
-      - run: flutter config --enable-windows-desktop
-      - run: flutter build windows
+jobs:
+ build:
+   runs-on: windows-latest
+   steps:
+     - uses: actions/checkout@v2
+     - uses: subosito/flutter-action@v2
+       with:
+         channel: beta
+     - run: flutter config --enable-windows-desktop
+     - run: flutter build windows
 ```
 
 Matrix Testing:
@@ -147,10 +125,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '1.20.2'
