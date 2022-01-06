@@ -18,7 +18,11 @@ latest_version() {
 }
 
 wildcard_version() {
-  jq --arg channel "$1" --arg version "^$2" '.releases | map(select(.channel==$channel) | select(.version | test($version))) | first'
+  if [[ $1 == any ]]; then
+    jq --arg version "^$2" '.releases | map(select(.version | test($version))) | first'
+  else
+    jq --arg channel "$1" --arg version "^$2" '.releases | map(select(.channel==$channel) | select(.version | test($version))) | first'
+  fi
 }
 
 get_version() {

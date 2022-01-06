@@ -43,7 +43,7 @@ jobs:
     - name: Run flutter --version
       shell: bash
       run: flutter --version
-  test_master:
+  test_master_channel:
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -51,6 +51,21 @@ jobs:
     - uses: ./
       with:
         channel: master
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
+  test_any_channel:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: any
+        flutter-version: 2
     - name: Run dart --version
       shell: bash
       run: dart --version
