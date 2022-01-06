@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OS_NAME=$(echo "$OS" | awk '{print tolower($0)}')
+OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_URL="https://storage.googleapis.com/flutter_infra_release/releases/releases_$OS_NAME.json"
 
 # convert version like 2.5.x to 2.5
