@@ -11,7 +11,7 @@ steps:
   with:
     distribution: 'zulu'
     java-version: '11'
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.0.5'
 - run: flutter pub get
@@ -27,7 +27,7 @@ steps:
   with:
     distribution: 'zulu'
     java-version: '11'
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     channel: 'stable' # or: 'beta', 'dev' or 'master'
 - run: flutter pub get
@@ -44,7 +44,7 @@ steps:
   with:
     distribution: 'zulu'
     java-version: '11'
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     flutter-version: '1.22.x' # or, you can use 1.22
     channel: 'dev'
@@ -61,7 +61,7 @@ steps:
   with:
     distribution: 'zulu'
     java-version: '11'
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.x'
     channel: 'any'
@@ -78,7 +78,7 @@ steps:
   with:
     distribution: 'zulu'
     java-version: '11'
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.0.5'
 - run: flutter pub get
@@ -99,7 +99,7 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '11'
-    - uses: subosito/flutter-action@v1
+    - uses: subosito/flutter-action@v2
       with:
         flutter-version: '2.0.5'
     - run: flutter pub get
@@ -113,7 +113,7 @@ Build for the web:
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: subosito/flutter-action@v1
+- uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.0.5'
 - run: flutter pub get
@@ -128,7 +128,7 @@ Build for Windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: beta
       - run: flutter config --enable-windows-desktop
@@ -151,7 +151,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '1.20.2'
           channel: 'beta'
