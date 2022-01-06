@@ -14,9 +14,12 @@ jobs:
     - uses: ./
       with:
         channel: ${{ matrix.channel }}
-    - name: Run FLUTTER_ROOT
+    - name: Print FLUTTER_ROOT
       shell: bash
       run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
     - name: Run flutter --version
       shell: bash
       run: flutter --version

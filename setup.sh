@@ -84,3 +84,4 @@ fi
 
 echo "FLUTTER_ROOT=${FLUTTER_ROOT}" >>$GITHUB_ENV
 echo "${FLUTTER_ROOT}/bin" >>$GITHUB_PATH
+echo "${FLUTTER_ROOT}/bin/cache/dart-sdk/bin" >>$GITHUB_PATH
