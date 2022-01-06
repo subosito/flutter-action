@@ -1,7 +1,8 @@
 #!/bin/bash
 
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
-MANIFEST_URL="https://storage.googleapis.com/flutter_infra_release/releases/releases_$OS_NAME.json"
+MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
+MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
 
 # convert version like 2.5.x to 2.5
 normalize_version() {
@@ -40,9 +41,30 @@ get_version_manifest() {
   fi
 }
 
+download_archive() {
+  archive_url="$MANIFEST_BASE_URL/$1"
+  archive_name=$(basename $1)
+  archive_local="$HOME/$archive_name"
+
+  curl --connect-timeout 15 --retry 5 $archive_url >$archive_local
+
+  if [[ $archive_name == *zip ]]; then
+    unzip -o "$archive_local" -d "$2"
+  else
+    tar xf "$archive_local" -C "$2"
+  fi
+
+  rm $archive_local
+}
+
 CHANNEL="$1"
 VERSION="$2"
 VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
+
+if [[ $VERSION_MANIFEST == null ]]; then
+  echo "Unable to determine Flutter version for $CHANNEL $VERSION"
+  exit 1
+fi
 
 echo $OS_NAME
 echo $MANIFEST_URL
@@ -50,3 +72,15 @@ echo $CHANNEL
 echo $VERSION
 echo $VERSION_MANIFEST
 
+ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
+
+download_archive "$ARCHIVE_PATH" "$RUNNER_TOOL_CACHE"
+
+if [[ $OS_NAME == windows ]]; then
+  FLUTTER_ROOT="${RUNNER_TOOL_CACHE}\\flutter"
+else
+  FLUTTER_ROOT="${RUNNER_TOOL_CACHE}/flutter"
+fi
+
+echo "FLUTTER_ROOT=${FLUTTER_ROOT}" >>$GITHUB_ENV
+echo "${FLUTTER_ROOT}/bin" >>$GITHUB_PATH
