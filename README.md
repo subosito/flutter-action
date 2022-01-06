@@ -1,8 +1,8 @@
 # flutter-action
 
-This action sets up a flutter environment for use in actions. It works on Linux, Windows, and macOS.
+Flutter environment for use in GitHub Actions. It works on Linux, Windows, and macOS.
 
-# Usage
+## Usage
 
 Use specific version and channel:
 
