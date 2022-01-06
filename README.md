@@ -113,3 +113,33 @@ jobs:
      - run: flutter build windows
 ```
 
+Build for Linux desktop:
+
+```yaml
+jobs:
+ build:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2
+     - uses: subosito/flutter-action@v2
+       with:
+         channel: beta
+     - run: flutter config --enable-linux-desktop
+     - run: flutter build linux
+```
+
+Build for macOS desktop:
+
+```yaml
+jobs:
+ build:
+   runs-on: macos-latest
+   steps:
+     - uses: actions/checkout@v2
+     - uses: subosito/flutter-action@v2
+       with:
+         channel: beta
+     - run: flutter config --enable-macos-desktop
+     - run: flutter build macos
+```
+
