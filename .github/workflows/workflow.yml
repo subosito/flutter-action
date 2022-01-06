@@ -17,6 +17,9 @@ jobs:
     - name: Print FLUTTER_ROOT
       shell: bash
       run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
+    - name: Print PUBCACHE
+      shell: bash
+      run: echo "PUBCACHE set to $PUBCACHE"
     - name: Run dart --version
       shell: bash
       run: dart --version
