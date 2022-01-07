@@ -72,3 +72,22 @@ jobs:
     - name: Run flutter --version
       shell: bash
       run: flutter --version
+  test_with_cache:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: ${{ runner.tool_cache }}/flutter
+        key: flutter-2.5.0-stable
+    - uses: ./
+      with:
+        channel: stable
+        flutter-version: 2.5.0
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
