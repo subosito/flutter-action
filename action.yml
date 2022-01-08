@@ -12,8 +12,20 @@ inputs:
     description: 'The Flutter build release channel'
     required: false
     default: 'stable'
+  cache:
+    description: 'Cache the Flutter SDK'
+    required: false
+  cache-key:
+    description: 'Identifier for the Flutter SDK cache'
+    required: false
+    default: 'flutter'
 runs:
   using: 'composite'
   steps:
+    - if: ${{ inputs.cache == 'true' }}
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.tool_cache }}/flutter
+        key: ${{ inputs.cache-key }}-${{ inputs.channel }}-${{ inputs.flutter-version }}
     - run: $GITHUB_ACTION_PATH/setup.sh ${{ inputs.channel }} ${{ inputs.flutter-version }}
       shell: bash

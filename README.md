@@ -146,18 +146,16 @@ jobs:
      - run: flutter build macos
 ```
 
-Integration with actions/cache:
+Integration with `actions/cache`:
 
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: actions/cache@v2
-  with:
-    path: ${{ runner.tool_cache }}/flutter
-    key: flutter-2.5.0-stable
 - uses: subosito/flutter-action@v2
   with:
     channel: stable
     flutter-version: 2.5.0
+    cache: true
+    cache-key: flutter # optional, change this to force refresh cache
 - run: flutter --version
 ```
