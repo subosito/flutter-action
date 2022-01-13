@@ -157,5 +157,6 @@ steps:
     flutter-version: 2.5.0
     cache: true
     cache-key: flutter # optional, change this to force refresh cache
+    cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
 - run: flutter --version
 ```

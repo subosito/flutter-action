@@ -53,28 +53,48 @@ download_archive() {
   curl --connect-timeout 15 --retry 5 $archive_url >$archive_local
 
   if [[ $archive_name == *zip ]]; then
-    unzip -o "$archive_local" -d "$2"
+    unzip -o "$archive_local" -d "$HOME"
+    shopt -s dotglob
+    mv ${HOME}/flutter/* "$2"
+    shopt -u dotglob
   else
-    tar xf "$archive_local" -C "$2"
+    tar xf "$archive_local" -C "$2" --strip-components=1
   fi
 
   rm $archive_local
 }
 
-CHANNEL="$1"
-VERSION="$2"
+transform_path() {
+  if [[ $OS_NAME == windows ]]; then
+    echo $1 | sed -e 's/^\///' -e 's/\//\\/g'
+  else
+    echo $1
+  fi
+}
+
+SDK_CACHE=""
+
+while getopts 'c:' flag; do
+  case "${flag}" in
+  c) SDK_CACHE="$(transform_path $OPTARG)" ;;
+  ?) exit 2 ;;
+  esac
+done
+
+CHANNEL="${@:$OPTIND:1}"
+VERSION="${@:$OPTIND+1:1}"
 
 if [[ $OS_NAME == windows ]]; then
-  FLUTTER_ROOT="${RUNNER_TOOL_CACHE}\\flutter"
   PUB_CACHE="${USERPROFILE}\\.pub-cache"
 else
-  FLUTTER_ROOT="${RUNNER_TOOL_CACHE}/flutter"
   PUB_CACHE="${HOME}/.pub-cache"
 fi
 
-if [[ ! -x "${FLUTTER_ROOT}/bin/flutter" ]]; then
+mkdir -p "$SDK_CACHE"
+
+if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   if [[ $CHANNEL == master ]]; then
-    git clone -b master https://github.com/flutter/flutter.git "$RUNNER_TOOL_CACHE/flutter"
+    git clone -b master https://github.com/flutter/flutter.git "$SDK_CACHE"
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
 
@@ -84,13 +104,13 @@ if [[ ! -x "${FLUTTER_ROOT}/bin/flutter" ]]; then
     fi
 
     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
-    download_archive "$ARCHIVE_PATH" "$RUNNER_TOOL_CACHE"
+    download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
   fi
 fi
 
-echo "FLUTTER_ROOT=${FLUTTER_ROOT}" >>$GITHUB_ENV
+echo "FLUTTER_ROOT=${SDK_CACHE}" >>$GITHUB_ENV
 echo "PUB_CACHE=${PUB_CACHE}" >>$GITHUB_ENV
 
-echo "${FLUTTER_ROOT}/bin" >>$GITHUB_PATH
-echo "${FLUTTER_ROOT}/bin/cache/dart-sdk/bin" >>$GITHUB_PATH
+echo "${SDK_CACHE}/bin" >>$GITHUB_PATH
+echo "${SDK_CACHE}/bin/cache/dart-sdk/bin" >>$GITHUB_PATH
 echo "${PUB_CACHE}/bin" >>$GITHUB_PATH

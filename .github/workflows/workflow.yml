@@ -85,7 +85,8 @@ jobs:
         channel: stable
         flutter-version: 2.5.0
         cache: true
-        cache-key: key-20220110
+        cache-key: key-20220113
+        cache-path: ${{ runner.tool_cache }}/flutter/2.5.0-stable
     - name: Run dart --version
       shell: bash
       run: dart --version
