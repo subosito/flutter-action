@@ -53,7 +53,7 @@ download_archive() {
   curl --connect-timeout 15 --retry 5 $archive_url >$archive_local
 
   if [[ $archive_name == *zip ]]; then
-    unzip -o "$archive_local" -d "$HOME"
+    unzip -q -o "$archive_local" -d "$HOME"
     shopt -s dotglob
     mv ${HOME}/flutter/* "$2"
     shopt -u dotglob
