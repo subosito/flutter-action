@@ -48,14 +48,14 @@ get_version_manifest() {
 download_archive() {
   archive_url="$MANIFEST_BASE_URL/$1"
   archive_name=$(basename $1)
-  archive_local="$HOME/$archive_name"
+  archive_local="$RUNNER_TEMP/$archive_name"
 
   curl --connect-timeout 15 --retry 5 $archive_url >$archive_local
 
   if [[ $archive_name == *zip ]]; then
-    unzip -q -o "$archive_local" -d "$HOME"
+    unzip -q -o "$archive_local" -d "$RUNNER_TEMP"
     shopt -s dotglob
-    mv ${HOME}/flutter/* "$2"
+    mv ${RUNNER_TEMP}/flutter/* "$2"
     shopt -u dotglob
   else
     tar xf "$archive_local" -C "$2" --strip-components=1
