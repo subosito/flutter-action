@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
-        channel: [stable, beta, dev]
+        channel: [stable, beta]
     steps:
     - name: Checkout
       uses: actions/checkout@v2

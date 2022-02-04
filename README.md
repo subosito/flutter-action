@@ -23,7 +23,7 @@ steps:
 - uses: actions/checkout@v2
 - uses: subosito/flutter-action@v2
   with:
-    channel: 'stable' # or: 'beta', 'dev' or 'master'
+    channel: 'stable' # or: 'beta' or 'master'
 - run: flutter --version
 ```
 
@@ -108,7 +108,7 @@ jobs:
      - uses: actions/checkout@v2
      - uses: subosito/flutter-action@v2
        with:
-         channel: beta
+         channel: 'beta'
      - run: flutter config --enable-windows-desktop
      - run: flutter build windows
 ```
@@ -123,7 +123,7 @@ jobs:
      - uses: actions/checkout@v2
      - uses: subosito/flutter-action@v2
        with:
-         channel: beta
+         channel: 'beta'
      - run: |
         sudo apt-get update -y
         sudo apt-get install -y ninja-build libgtk-3-dev
@@ -141,7 +141,7 @@ jobs:
      - uses: actions/checkout@v2
      - uses: subosito/flutter-action@v2
        with:
-         channel: beta
+         channel: 'beta'
      - run: flutter config --enable-macos-desktop
      - run: flutter build macos
 ```
@@ -154,7 +154,7 @@ steps:
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: 2.5.0
-    channel: stable
+    channel: 'stable'
     cache: true
     cache-key: flutter # optional, change this to force refresh cache
     cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
