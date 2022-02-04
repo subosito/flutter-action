@@ -52,11 +52,17 @@ download_archive() {
 
   curl --connect-timeout 15 --retry 5 $archive_url >$archive_local
 
+  # Create the target folder
+  mkdir -p "$2"
+
   if [[ $archive_name == *zip ]]; then
     unzip -q -o "$archive_local" -d "$RUNNER_TEMP"
-    shopt -s dotglob
-    mv ${RUNNER_TEMP}/flutter/* "$2"
-    shopt -u dotglob
+    # Remove the folder again so that the move command can do a simple rename
+    # instead of moving the content into the target folder.
+    # This is a little bit of a hack since the "mv --no-target-directory"
+    # linux option is not available here
+    rm -r "$2"
+    mv ${RUNNER_TEMP}/flutter "$2"
   else
     tar xf "$archive_local" -C "$2" --strip-components=1
   fi
@@ -89,8 +95,6 @@ if [[ $OS_NAME == windows ]]; then
 else
   PUB_CACHE="${HOME}/.pub-cache"
 fi
-
-mkdir -p "$SDK_CACHE"
 
 if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   if [[ $CHANNEL == master ]]; then
