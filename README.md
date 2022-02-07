@@ -153,7 +153,7 @@ steps:
 - uses: actions/checkout@v2
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: 2.5.0
+    flutter-version: '2.5.0'
     channel: 'stable'
     cache: true
     cache-key: flutter # optional, change this to force refresh cache
