@@ -98,6 +98,25 @@ steps:
 - run: flutter build web
 ```
 
+Build for the web as github-page:
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: subosito/flutter-action@v2
+  with:
+    flutter-version: '2.5.3'
+- run: flutter pub get
+- run: flutter test
+- run: flutter build web --base-href '/${{ github.event.repository.name }}/'
+
+- name: Deploy 🚀
+  uses: JamesIves/github-pages-deploy-action@4.1.4
+  with:
+    branch: gh-pages
+    folder: build/web
+```
+
 Build for Windows:
 
 ```yaml
