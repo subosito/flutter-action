@@ -1,12 +1,11 @@
 name: Main workflow
-on: 
+on:
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
-
 jobs:
   test_channel:
     runs-on: ${{ matrix.operating-system }}

@@ -78,11 +78,11 @@ transform_path() {
   fi
 }
 
-SDK_CACHE=""
+CACHE_PATH=""
 
 while getopts 'c:' flag; do
   case "${flag}" in
-  c) SDK_CACHE="$(transform_path $OPTARG)" ;;
+  c) CACHE_PATH="$OPTARG" ;;
   ?) exit 2 ;;
   esac
 done
@@ -90,11 +90,8 @@ done
 CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
 
-if [[ $OS_NAME == windows ]]; then
-  PUB_CACHE="${USERPROFILE}\\.pub-cache"
-else
-  PUB_CACHE="${HOME}/.pub-cache"
-fi
+SDK_CACHE="$(transform_path ${CACHE_PATH})"
+PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
 
 if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   if [[ $CHANNEL == master ]]; then
