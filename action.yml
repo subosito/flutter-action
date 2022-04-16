@@ -24,7 +24,7 @@ inputs:
     required: false
     default: ${{ runner.tool_cache }}/flutter
   architecture:
-    description: 'The architecture of Flutter SDK executable'
+    description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
     default: 'x64'
 runs:

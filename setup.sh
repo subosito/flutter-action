@@ -100,7 +100,7 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
 
      if [[ $VERSION_MANIFEST == null ]]; then
-       echo "Unable to determine Flutter version for $CHANNEL $VERSION"
+       echo "Unable to determine Flutter version for $CHANNEL $VERSION $ARCHITECTURE"
        exit 1
      fi
 
