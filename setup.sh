@@ -3,7 +3,6 @@
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
-
 # convert version like 2.5.x to 2.5
 normalize_version() {
   if [[ $1 == *x ]]; then
@@ -21,7 +20,7 @@ wildcard_version() {
   if [[ $1 == any ]]; then
     jq --arg version "^$2" '.releases | map(select(.version | test($version))) | first'
   else
-    jq --arg channel "$1" --arg version "^$2" '.releases | map(select(.channel==$channel) | select(.version | test($version))) | first'
+    jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" --arg version "^$2" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
   fi
 }
 
@@ -34,8 +33,8 @@ get_version() {
 }
 
 get_version_manifest() {
-  releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
-  version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
+ releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
+ version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
 
   if [[ $version_manifest == null ]]; then
     # fallback through legacy version format
@@ -89,6 +88,7 @@ done
 
 CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
+ARCHITECTURE="${@:$OPTIND+2:1}"
 
 SDK_CACHE="$(transform_path ${CACHE_PATH})"
 PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
@@ -99,13 +99,13 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
 
-    if [[ $VERSION_MANIFEST == null ]]; then
-      echo "Unable to determine Flutter version for $CHANNEL $VERSION"
-      exit 1
-    fi
+     if [[ $VERSION_MANIFEST == null ]]; then
+       echo "Unable to determine Flutter version for $CHANNEL $VERSION"
+       exit 1
+     fi
 
-    ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
-    download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
+     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
+     download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
   fi
 fi
 
