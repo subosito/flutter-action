@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+OS_NAME=linux
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
 
@@ -14,20 +14,20 @@ normalize_version() {
 }
 
 latest_version() {
-  jq --arg channel "$1" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+  jq --arg channel "$1" --arg arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
 }
 
 wildcard_version() {
-  if [[ $2 == *"v"* ]] || [[ $2 == 1 ]] || [[ $2 == 0 ]]; then  # is legacy version format
+  if [ $2 == *"v"* ]; then  # is legacy version format
     if [[ $1 == any ]]; then
     jq --arg version "$2" '.releases | map(select(.version | startswith($version) )) | first'
     else
     jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) )) | first'
     fi
   elif [[ $1 == any ]]; then
-    jq --arg version "$2" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'    
+    jq --arg version "$2" --arg arch "$ARCH" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'    
   else
-    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+    jq --arg channel "$1" --arg version "$2" --arg arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
   fi
 }
 
@@ -42,7 +42,7 @@ get_version() {
 get_version_manifest() {
   releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
   version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
-
+  
   if [[ $version_manifest == null ]]; then
     # fallback through legacy version format
     echo $releases_manifest | wildcard_version $1 "v$(normalize_version $2)"
@@ -105,6 +105,7 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
     git clone -b master https://github.com/flutter/flutter.git "$SDK_CACHE"
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
+    echo $VERSION_MANIFEST
     if [[ $VERSION_MANIFEST == null ]]; then
       echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCH"
       exit 1
