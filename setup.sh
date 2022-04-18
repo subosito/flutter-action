@@ -14,7 +14,7 @@ normalize_version() {
 }
 
 latest_version() {
-  jq --arg channel --arg dart_sdk_arch "$ARCHITECTURE" "$1" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch | test($dart_sdk_arch)) | first'
+  jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch)) | first'
 }
 
 wildcard_version() {
@@ -26,7 +26,7 @@ wildcard_version() {
 }
 
 get_version() {
-  if [[ -z $2 ]]; then
+  if [[ $2 == any ]]; then
     latest_version $1
   else
     wildcard_version $1 $2
@@ -36,7 +36,6 @@ get_version() {
 get_version_manifest() {
  releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
  version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
-
   if [[ $version_manifest == null ]]; then
     # fallback through legacy version format
     echo $releases_manifest | wildcard_version $1 "v$(normalize_version $2)"
@@ -101,12 +100,11 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
 
      if [[ $VERSION_MANIFEST == null ]]; then
-       echo "Unable to determine Flutter version for $CHANNEL $VERSION $ARCHITECTURE"
+       echo "Unable to determine Flutter version for channel:$CHANNEL version:$VERSION architecture:$ARCHITECTURE"
        exit 1
      fi
-
-     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
-     download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
+    ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
+    download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
   fi
 fi
 
