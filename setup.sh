@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OS_NAME=linux
+OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
 
