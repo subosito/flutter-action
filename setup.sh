@@ -40,8 +40,9 @@ get_version() {
 }
 
 get_version_manifest() {
- releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
- version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
+  releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
+  version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
+
   if [[ $version_manifest == null ]]; then
     # fallback through legacy version format
     echo $releases_manifest | wildcard_version $1 "v$(normalize_version $2)"
@@ -104,9 +105,9 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
     git clone -b master https://github.com/flutter/flutter.git "$SDK_CACHE"
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
-     if [[ $VERSION_MANIFEST == null ]]; then
-       echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCH"
-       exit 1
+    if [[ $VERSION_MANIFEST == null ]]; then
+      echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCH"
+      exit 1
      fi
     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
     download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
