@@ -1,4 +1,4 @@
-name: Main workflow
+ name: Main workflow
 on:
   push:
     branches:
@@ -10,95 +10,92 @@ jobs:
   test_channel:
     runs-on: ${{ matrix.operating-system }}
     strategy:
-      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         channel: [stable, beta]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: ./
-        with:
-          channel: ${{ matrix.channel }}
-      - name: Print FLUTTER_ROOT
-        shell: bash
-        run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
-      - name: Print PUB_CACHE
-        shell: bash
-        run: echo "PUB_CACHE set to $PUB_CACHE"
-      - name: Run dart --version
-        shell: bash
-        run: dart --version
-      - name: Run flutter --version
-        shell: bash
-        run: flutter --version
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: ${{ matrix.channel }}
+    - name: Print FLUTTER_ROOT
+      shell: bash
+      run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
+    - name: Print PUB_CACHE
+      shell: bash
+      run: echo "PUB_CACHE set to $PUB_CACHE"
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
   test_version:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        version: [2.5.3, 2.x, 1, v1.12]
+        version: [ 2.5.3, 2.x, 1, v1.12 ]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: ./
-        with:
-          channel: stable
-          flutter-version: ${{ matrix.version }}
-      - name: Run dart --version
-        shell: bash
-        run: dart --version
-      - name: Run flutter --version
-        shell: bash
-        run: flutter --version
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: stable
+        flutter-version: ${{ matrix.version }}
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
   test_master_channel:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: ./
-        with:
-          channel: master
-      - name: Run dart --version
-        shell: bash
-        run: dart --version
-      - name: Run flutter --version
-        shell: bash
-        run: flutter --version
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: master
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
   test_any_channel:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: ./
-        with:
-          channel: any
-          flutter-version: 2
-      - name: Run dart --version
-        shell: bash
-        run: dart --version
-      - name: Run flutter --version
-        shell: bash
-        run: flutter --version
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: any
+        flutter-version: 2
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
   test_cache:
     runs-on: ${{ matrix.operating-system }}
     strategy:
-      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: ./
-        with:
-          channel: stable
-          flutter-version: 2.5.0
-          cache: true
-          cache-key: key-20220113
-          cache-path: ${{ runner.tool_cache }}/flutter/2.5.0-stable
-      - name: Run dart --version
-        shell: bash
-        run: dart --version
-      - name: Run flutter --version
-        shell: bash
-        run: flutter --version
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: ./
+      with:
+        channel: stable
+        flutter-version: 2.5.0
+        cache: true
+        cache-key: key-20220113
+        cache-path: ${{ runner.tool_cache }}/flutter/2.5.0-stable
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
