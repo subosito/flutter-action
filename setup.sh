@@ -3,6 +3,7 @@
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
+
 # convert version like 2.5.x to 2.5
 normalize_version() {
   if [[ $1 == *x ]]; then
@@ -13,14 +14,14 @@ normalize_version() {
 }
 
 latest_version() {
-  jq --arg channel "$1" '.releases | map(select(.channel==$channel)) | first'
+  jq --arg channel --arg dart_sdk_arch "$ARCHITECTURE" "$1" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch | test($dart_sdk_arch)) | first'
 }
 
 wildcard_version() {
   if [[ $1 == any ]]; then
-    jq --arg version "^$2" '.releases | map(select(.version | test($version))) | first'
+    jq --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | test($version) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
   else
-    jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" --arg version "^$2" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
+    jq --arg channel "$1" --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
   fi
 }
 
