@@ -14,14 +14,14 @@ normalize_version() {
 }
 
 latest_version() {
-  jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch)) | first'
+  jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
 }
 
 wildcard_version() {
   if [[ $1 == any ]]; then
-    jq --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | test($version) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
+    jq --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | test($version) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
   else
-    jq --arg channel "$1" --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch | test($dart_sdk_arch))) | first'
+    jq --arg channel "$1" --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
   fi
 }
 
@@ -98,7 +98,6 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
     git clone -b master https://github.com/flutter/flutter.git "$SDK_CACHE"
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
-
      if [[ $VERSION_MANIFEST == null ]]; then
        echo "Unable to determine Flutter version for channel:$CHANNEL version:$VERSION architecture:$ARCHITECTURE"
        exit 1
