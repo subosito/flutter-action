@@ -18,12 +18,16 @@ latest_version() {
 }
 
 wildcard_version() {
-  if [[ $1 == any ]]; then
-    jq --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | contains($version) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
-  elif [[ $2 == *"v"* ]]; then  # is legacy version format
-    jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | contains($version) )) | first'
+  if [[ $2 == *"v"* ]] || [[ $2 == 1 ]] || [[ $2 == 0 ]]; then  # is legacy version format
+    if [[ $1 == any ]]; then
+    jq --arg version "$2" '.releases | map(select(.version | startswith($version) )) | first'
+    else
+    jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) )) | first'
+    fi
+  elif [[ $1 == any ]]; then
+    jq --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'    
   else
-    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | contains($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
   fi
 }
 
