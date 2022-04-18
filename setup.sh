@@ -14,7 +14,7 @@ normalize_version() {
 }
 
 latest_version() {
-  jq --arg channel "$1" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+  jq --arg channel "$1" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
 }
 
 wildcard_version() {
@@ -25,9 +25,9 @@ wildcard_version() {
     jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) )) | first'
     fi
   elif [[ $1 == any ]]; then
-    jq --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'    
+    jq --arg version "$2" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'    
   else
-    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
   fi
 }
 
@@ -94,7 +94,7 @@ done
 
 CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
-ARCHITECTURE="${@:$OPTIND+2:1}"
+ARCH="${@:$OPTIND+2:1}"
 
 SDK_CACHE="$(transform_path ${CACHE_PATH})"
 PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
@@ -105,7 +105,7 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
      if [[ $VERSION_MANIFEST == null ]]; then
-       echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCHITECTURE"
+       echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCH"
        exit 1
      fi
     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
