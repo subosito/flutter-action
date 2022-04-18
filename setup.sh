@@ -19,9 +19,11 @@ latest_version() {
 
 wildcard_version() {
   if [[ $1 == any ]]; then
-    jq --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | test($version) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+    jq --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.version | contains($version) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+  elif [[ $2 == *"v"* ]]; then  # is legacy version format
+    jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | contains($version) )) | first'
   else
-    jq --arg channel "$1" --arg version "^$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | test($version)) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
+    jq --arg channel "$1" --arg version "$2" --arg dart_sdk_arch "$ARCHITECTURE" '.releases | map(select(.channel==$channel) | select(.version | contains($version) ) | select(.dart_sdk_arch==$dart_sdk_arch)) | first'
   fi
 }
 
@@ -99,7 +101,7 @@ if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   else
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
      if [[ $VERSION_MANIFEST == null ]]; then
-       echo "Unable to determine Flutter version for channel:$CHANNEL version:$VERSION architecture:$ARCHITECTURE"
+       echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCHITECTURE"
        exit 1
      fi
     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
