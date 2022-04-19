@@ -62,7 +62,7 @@ steps:
     java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.5.3'
+    flutter-version: '2.10.4'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -79,7 +79,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.5.3'
+        flutter-version: '2.10.4'
+        architecture: x64
     - run: flutter pub get
     - run: flutter test
     - run: flutter build ios --release --no-codesign
@@ -92,7 +93,7 @@ steps:
 - uses: actions/checkout@v2
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.5.3'
+    flutter-version: '2.10.4'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build web
@@ -142,6 +143,7 @@ jobs:
      - uses: subosito/flutter-action@v2
        with:
          channel: 'beta'
+         architecture: x64
      - run: flutter config --enable-macos-desktop
      - run: flutter build macos
 ```
@@ -153,10 +155,11 @@ steps:
 - uses: actions/checkout@v2
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.5.0'
+    flutter-version: '2.10.x'
     channel: 'stable'
     cache: true
     cache-key: flutter # optional, change this to force refresh cache
     cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
+    architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
