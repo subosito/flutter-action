@@ -15,7 +15,7 @@ jobs:
         channel: [stable, beta]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./
       with:
         channel: ${{ matrix.channel }}
@@ -38,7 +38,7 @@ jobs:
         version: [ 2.5.3, 2.x, 1, v1.12 ]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./
       with:
         channel: stable
@@ -53,7 +53,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./
       with:
         channel: master
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./
       with:
         channel: any
@@ -85,7 +85,7 @@ jobs:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: ./
       with:
         channel: stable
