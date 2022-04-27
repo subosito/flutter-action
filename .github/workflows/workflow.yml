@@ -42,7 +42,7 @@ jobs:
     - uses: ./
       with:
         channel: stable
-        flutter-version: ${{ matrix.version }}
+        version: ${{ matrix.version }}
     - name: Run dart --version
       shell: bash
       run: dart --version
@@ -71,7 +71,7 @@ jobs:
     - uses: ./
       with:
         channel: any
-        flutter-version: 2
+        version: 2
     - name: Run dart --version
       shell: bash
       run: dart --version
@@ -89,7 +89,7 @@ jobs:
     - uses: ./
       with:
         channel: stable
-        flutter-version: 2.5.0
+        version: 2.5.0
         cache: true
         cache-key: key-20220113
         cache-path: ${{ runner.tool_cache }}/flutter/2.5.0-stable
