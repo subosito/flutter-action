@@ -32,7 +32,7 @@ runs:
   using: 'composite'
   steps:
     - if: ${{ inputs.cache == 'true' }}
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ inputs.cache-path }}
         key: ${{ inputs.cache-key }}-${{ inputs.channel }}-${{ inputs.flutter-version }}
