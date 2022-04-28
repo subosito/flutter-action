@@ -95,8 +95,7 @@ done
 
 CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
-ARCH="${@:$OPTIND+2:1}"
-ARCH=$(echo "$ARCH" | awk '{print tolower($0)}')
+ARCH=$(echo "${@:$OPTIND+2:1}" | awk '{print tolower($0)}')
 
 SDK_CACHE="$(transform_path ${CACHE_PATH})"
 PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
