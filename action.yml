@@ -27,7 +27,7 @@ inputs:
   architecture:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
-    default: 'x64'
+    default: ${{ runner.arch }}
 runs:
   using: 'composite'
   steps:
