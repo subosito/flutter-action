@@ -25,7 +25,7 @@ wildcard_version() {
     jq --arg channel "$1" --arg version "$2" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) )) | first'
     fi
   elif [[ $1 == any ]]; then
-    jq --arg version "$2" --arg arch "$ARCH" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'    
+    jq --arg version "$2" --arg arch "$ARCH" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
   else
     jq --arg channel "$1" --arg version "$2" --arg arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
   fi
@@ -96,6 +96,7 @@ done
 CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
 ARCH="${@:$OPTIND+2:1}"
+ARCH=$(echo "$ARCH" | awk '{print tolower($0)}')
 
 SDK_CACHE="$(transform_path ${CACHE_PATH})"
 PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
