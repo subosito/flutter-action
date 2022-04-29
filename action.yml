@@ -35,6 +35,6 @@ runs:
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache-path }}
-        key: ${{ inputs.cache-key }}-${{ inputs.channel }}-${{ inputs.flutter-version }}
+        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ inputs.architecture }}-${{ inputs.channel }}-${{ inputs.flutter-version }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c "${{ inputs.cache-path }}" ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }}
       shell: bash
