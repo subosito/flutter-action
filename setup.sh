@@ -14,6 +14,10 @@ normalize_version() {
 }
 
 latest_version() {
+  jq --arg arch "$ARCH" '.releases | map(select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
+}
+
+latest_channel_version() {
   jq --arg channel "$1" --arg arch "$ARCH" '.releases | map(select(.channel==$channel) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
 }
 
@@ -32,8 +36,10 @@ wildcard_version() {
 }
 
 get_version() {
-  if [[ $2 == any ]]; then
-    latest_version $1
+  if [[ $1 == any && $2 == any ]]; then
+    latest_version
+  elif [[ $2 == any ]]; then
+    latest_channel_version $1
   else
     wildcard_version $1 $2
   fi
