@@ -65,13 +65,16 @@ jobs:
       run: flutter --version
   test_any_channel:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ 2, any ]
     steps:
     - name: Checkout
       uses: actions/checkout@v3
     - uses: ./
       with:
         channel: any
-        flutter-version: 2
+        flutter-version: ${{ matrix.version }}
     - name: Run dart --version
       shell: bash
       run: dart --version
