@@ -163,3 +163,33 @@ steps:
     architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
+
+Publish packages/plugins:
+
+```yaml
+runs-on: ubuntu-latest
+steps:
+  - uses: actions/checkout@v3
+  - uses: subosito/flutter-action@v2
+    with:
+      channel: 'stable'
+  - name: Run pub.dev/inject-credentials@shell
+    env:
+      CREDENTIALS: ${{ secrets.CREDENTIALS_JSON }}
+    run: |
+      if [ -z $PUB_CACHE ];then
+        PUB_CACHE=~/.pub-cache
+      fi
+      mkdir -p $PUB_CACHE
+      echo $CREDENTIALS > $PUB_CACHE/credentials.json
+  - run: flutter --version
+  - run: flutter pub get
+  - run: flutter format --dry-run --set-exit-if-changed .
+  - run: echo "y" | flutter pub publish
+  - name: Run pub.dev/update-credentials@shell
+    env:
+      UPDATE_SECRETS_PAT_TOKEN: ${{ secrets.UPDATE_SECRETS_PAT_TOKEN }} # scopes: repo, admin:org
+    run: |
+      gh auth login --with-token <<< $UPDATE_SECRETS_PAT_TOKEN
+      gh secret set CREDENTIALS_JSON < $PUB_CACHE/credentials.json
+```
