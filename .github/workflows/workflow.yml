@@ -102,3 +102,23 @@ jobs:
     - name: Run flutter --version
       shell: bash
       run: flutter --version
+  test_false_positive_cache:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: ./
+      with:
+        channel: stable
+        flutter-version: 2.5.0
+        cache: true
+        false-positive-cache: true
+    - name: Run dart --version
+      shell: bash
+      run: dart --version
+    - name: Run flutter --version
+      shell: bash
+      run: flutter --version
