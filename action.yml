@@ -45,7 +45,7 @@ runs:
           shopt -s expand_aliases
           alias shasum='sha256sum'
         fi
-        echo "manifest_hash=$(echo -n $release_manifest | shasum | cut -c -7)" >>$GITHUB_ENV       
+        echo "manifest_hash=$(echo -n $releases_manifest | shasum | cut -c -7)" >>$GITHUB_ENV
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
