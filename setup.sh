@@ -90,6 +90,11 @@ transform_path() {
   fi
 }
 
+if ! command -v jq; then
+  echo "jq not found, please install it, https://stedolan.github.io/jq/download/"
+  exit 1
+fi
+
 CACHE_PATH=""
 
 while getopts 'c:' flag; do
