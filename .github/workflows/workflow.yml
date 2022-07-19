@@ -12,93 +12,96 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
-        channel: [stable, beta]
+        channel: [stable, beta, master]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - uses: ./
       with:
         channel: ${{ matrix.channel }}
-    - name: Print FLUTTER_ROOT
+    - run: dart --version
       shell: bash
-      run: echo "FLUTTER_ROOT set to $FLUTTER_ROOT"
-    - name: Print PUB_CACHE
+    - run: flutter --version
       shell: bash
-      run: echo "PUB_CACHE set to $PUB_CACHE"
-    - name: Run dart --version
-      shell: bash
-      run: dart --version
-    - name: Run flutter --version
-      shell: bash
-      run: flutter --version
-  test_version:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [ 2.5.3, 2.x, 1, v1.12 ]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: ./
-      with:
-        channel: stable
-        flutter-version: ${{ matrix.version }}
-    - name: Run dart --version
-      shell: bash
-      run: dart --version
-    - name: Run flutter --version
-      shell: bash
-      run: flutter --version
-  test_master_channel:
-    runs-on: windows-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: ./
-      with:
-        channel: master
-    - name: Run dart --version
-      shell: bash
-      run: dart --version
-    - name: Run flutter --version
-      shell: bash
-      run: flutter --version
-  test_any_channel:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [ 2, any ]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: ./
-      with:
-        channel: any
-        flutter-version: ${{ matrix.version }}
-    - name: Run dart --version
-      shell: bash
-      run: dart --version
-    - name: Run flutter --version
-      shell: bash
-      run: flutter --version
   test_cache:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - uses: ./
       with:
         channel: stable
-        flutter-version: 2.5.0
         cache: true
-        cache-key: key-20220113
-        cache-path: ${{ runner.tool_cache }}/flutter/2.5.0-stable
-    - name: Run dart --version
+    - run: dart --version
       shell: bash
-      run: dart --version
-    - name: Run flutter --version
+    - run: flutter --version
       shell: bash
-      run: flutter --version
+  test_version:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: ./setup.sh -p version                    | grep -x 'stable:any:x64|stable:3.0.5:x64'
+      shell: bash
+    - run: ./setup.sh -p version stable             | grep -x 'stable:any:x64|stable:3.0.5:x64'
+      shell: bash
+    - run: ./setup.sh -p version beta               | grep -x 'beta:any:x64|beta:3.1.0-9.0.pre:x64'
+      shell: bash
+    - run: ./setup.sh -p version master             | grep -x 'master:master:x64|master:master:x64'
+      shell: bash
+    - run: ./setup.sh -p version stable 2           | grep -x 'stable:2:x64|stable:2.10.5:x64'
+      shell: bash
+    - run: ./setup.sh -p version beta 2             | grep -x 'beta:2:x64|beta:2.13.0-0.4.pre:x64'
+      shell: bash
+    - run: ./setup.sh -p version any 2              | grep -x 'any:2:x64|beta:2.13.0-0.4.pre:x64'
+      shell: bash
+    - run: ./setup.sh -p version any 3              | grep -x 'any:3:x64|stable:3.0.5:x64'
+      shell: bash
+    - run: ./setup.sh -p version any 3 arm64        | grep -x 'any:3:arm64|stable:3.0.5:arm64'
+      shell: bash
+    - run: ./setup.sh -p version stable any arm64   | grep -x 'stable:any:arm64|stable:3.0.5:arm64'
+      shell: bash
+    - run: ./setup.sh -p version stable 1           | grep -x 'stable:1:x64|stable:1.22.6:x64'
+      shell: bash
+    - run: ./setup.sh -p version stable v1          | grep -x 'stable:v1:x64|stable:v1.12.13+hotfix.9:x64'
+      shell: bash
+    - run: ./setup.sh -p version any 0              | grep -x 'any:0:x64|beta:v0.11.13:x64'
+      shell: bash
+    - run: ./setup.sh -p version any v0             | grep -x 'any:v0:x64|beta:v0.11.13:x64'
+      shell: bash
+  test_cache_key:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: ./setup.sh -p cache-key                  | grep -x 'flutter-macos-x64-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key stable           | grep -x 'flutter-macos-x64-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key beta             | grep -x 'flutter-macos-x64-beta-3.1.0-9.0.pre-f28e570c8cb12a004fae2d796d0d9cd46603bde9'
+      shell: bash
+    - run: ./setup.sh -p cache-key master           | grep -x 'flutter-macos-x64-master-master-master'
+      shell: bash
+    - run: ./setup.sh -p cache-key stable 2         | grep -x 'flutter-macos-x64-stable-2.10.5-5464c5bac742001448fe4fc0597be939379f88ea'
+      shell: bash
+    - run: ./setup.sh -p cache-key beta 2           | grep -x 'flutter-macos-x64-beta-2.13.0-0.4.pre-25caf1461b8f643092a9f6f5b224453b5c057d10'
+      shell: bash
+    - run: ./setup.sh -p cache-key any 2            | grep -x 'flutter-macos-x64-beta-2.13.0-0.4.pre-25caf1461b8f643092a9f6f5b224453b5c057d10'
+      shell: bash
+    - run: ./setup.sh -p cache-key any 3            | grep -x 'flutter-macos-x64-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key any 3 arm64      | grep -x 'flutter-macos-arm64-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key stable any arm64 | grep -x 'flutter-macos-arm64-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key stable 1         | grep -x 'flutter-macos-x64-stable-1.22.6-9b2d32b605630f28625709ebd9d78ab3016b2bf6'
+      shell: bash
+    - run: ./setup.sh -p cache-key stable v1        | grep -x 'flutter-macos-x64-stable-v1.12.13+hotfix.9-f139b11009aeb8ed2a3a3aa8b0066e482709dde3'
+      shell: bash
+    - run: ./setup.sh -p cache-key any 0            | grep -x 'flutter-macos-x64-beta-v0.11.13-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
+      shell: bash
+    - run: ./setup.sh -p cache-key any v0           | grep -x 'flutter-macos-x64-beta-v0.11.13-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
+      shell: bash
+    - run: ./setup.sh -p cache-key -k 'custom-:channel:-:version:-:hash:'   | grep -x 'custom-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+      shell: bash
+    - run: ./setup.sh -p cache-key -k 'custom-:channel:-:version:-:sha256:' | grep -x 'custom-stable-3.0.5-e79a04dcfd1b583e5831433fc200800ba0d1e9fe4567cb661479bd2542d4c685'
+      shell: bash
