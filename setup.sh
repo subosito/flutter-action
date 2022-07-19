@@ -90,7 +90,11 @@ transform_path() {
   fi
 }
 
-if ! command -v jq; then
+check_command() {
+  command -v "$1" > /dev/null 2>&1
+}
+
+if ! check_command jq; then
   echo "jq not found, please install it, https://stedolan.github.io/jq/download/"
   exit 1
 fi
