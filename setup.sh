@@ -3,13 +3,16 @@
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="${MANIFEST_BASE_URL}/releases_${OS_NAME}.json"
+MANIFEST_TEST_PATH="test/releases_${OS_NAME}.json"
+RELEASE_MANIFEST=""
+VERSION_MANIFEST=null
 
 # convert version like 2.5.x to 2.5
 normalize_version() {
-  if [[ $1 == *x ]]; then
-    echo ${1::-2}
+  if [[ $1 == *.x ]]; then
+    echo "${1/.x/}"
   else
-    echo $1
+    echo "$1"
   fi
 }
 
@@ -22,7 +25,7 @@ latest_channel_version() {
 }
 
 wildcard_version() {
-  if [ $2 == *"v"* ]; then  # is legacy version format
+  if [[ $2 == *"v"* ]]; then  # is legacy version format
     if [[ $1 == any ]]; then
     jq --arg version "$2" '.releases | map(select(.version | startswith($version) )) | first'
     else
@@ -46,14 +49,19 @@ get_version() {
 }
 
 get_version_manifest() {
-  releases_manifest=$(curl --silent --connect-timeout 15 --retry 5 $MANIFEST_URL)
-  version_manifest=$(echo $releases_manifest | get_version $1 $(normalize_version $2))
+  version_manifest=$(echo $RELEASE_MANIFEST | get_version $1 $(normalize_version $2))
 
   if [[ $version_manifest == null ]]; then
     # fallback through legacy version format
-    echo $releases_manifest | wildcard_version $1 "v$(normalize_version $2)"
+    version_manifest=$(echo "$RELEASE_MANIFEST" | wildcard_version $1 "v$(normalize_version $2)")
+  fi
+
+  version_arch=$(echo "$version_manifest" | jq -r '.dart_sdk_arch')
+
+  if [[ "$version_arch" == null ]]; then
+    echo "$version_manifest" | jq --arg dart_sdk_arch x64 '.+={dart_sdk_arch:$dart_sdk_arch}'
   else
-    echo $version_manifest
+    echo "$version_manifest"
   fi
 }
 
@@ -84,14 +92,35 @@ download_archive() {
 
 transform_path() {
   if [[ $OS_NAME == windows ]]; then
-    echo $1 | sed -e 's/^\///' -e 's/\//\\/g'
+    echo "$1" | sed -e 's/^\///' -e 's/\//\\/g'
   else
-    echo $1
+    echo "$1"
   fi
 }
 
+expand_key() {
+  version_channel=$(echo "$VERSION_MANIFEST" | jq -r '.channel')
+  version_version=$(echo "$VERSION_MANIFEST" | jq -r '.version')
+  version_arch=$(echo "$VERSION_MANIFEST" | jq -r '.dart_sdk_arch')
+  version_hash=$(echo "$VERSION_MANIFEST" | jq -r '.hash')
+  version_sha_256=$(echo "$VERSION_MANIFEST" | jq -r '.sha256')
+
+  expanded_key="${1/:channel:/$version_channel}"
+  expanded_key="${expanded_key/:version:/$version_version}"
+  expanded_key="${expanded_key/:arch:/$version_arch}"
+  expanded_key="${expanded_key/:hash:/$version_hash}"
+  expanded_key="${expanded_key/:sha256:/$version_sha_256}"
+  expanded_key="${expanded_key/:os:/$OS_NAME}"
+
+  echo "$expanded_key"
+}
+
+not_found_error() {
+  echo "Unable to determine Flutter version for channel: $1 version: $2 architecture: $3"
+}
+
 check_command() {
-  command -v "$1" > /dev/null 2>&1
+  command -v "$1" >/dev/null 2>&1
 }
 
 if ! check_command jq; then
@@ -100,10 +129,14 @@ if ! check_command jq; then
 fi
 
 CACHE_PATH=""
+CACHE_KEY=""
+PRINT_MODE=""
 
-while getopts 'c:' flag; do
+while getopts 'c:k:p:' flag; do
   case "${flag}" in
   c) CACHE_PATH="$OPTARG" ;;
+  k) CACHE_KEY="$OPTARG"  ;;
+  p) PRINT_MODE="$OPTARG" ;;
   ?) exit 2 ;;
   esac
 done
@@ -112,18 +145,78 @@ CHANNEL="${@:$OPTIND:1}"
 VERSION="${@:$OPTIND+1:1}"
 ARCH=$(echo "${@:$OPTIND+2:1}" | awk '{print tolower($0)}')
 
-SDK_CACHE="$(transform_path ${CACHE_PATH})"
-PUB_CACHE="$(transform_path ${CACHE_PATH}/.pub-cache)"
+# default values
+[[ -z $CHANNEL ]] && CHANNEL=stable
+[[ -z $VERSION ]] && VERSION=any
+[[ -z $ARCH ]] && ARCH=x64
+[[ -z $CACHE_PATH ]] && CACHE_PATH=/tmp
+[[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:arch:-:channel:-:version:-:hash:"
+
+if [[ -n "$PRINT_MODE" ]]; then
+  if [[ "$CHANNEL" == master ]]; then
+    if [[ "$PRINT_MODE" == version ]]; then
+      echo "master:master:$ARCH|master:master:$ARCH"
+      exit 0
+    fi
+
+    if [[ "$PRINT_MODE" == cache-key ]]; then
+      # MASTER_HASH=$(git ls-remote https://github.com/flutter/flutter.git | head -n 1 | awk '{print $1}')
+
+      VERSION_MANIFEST="{
+        \"channel\":\"$CHANNEL\",
+        \"version\":\"$CHANNEL\",
+        \"dart_sdk_arch\":\"$ARCH\",
+        \"hash\":\"$CHANNEL\",
+        \"sha256\":\"$CHANNEL\"
+      }"
+
+      EXPANDED_KEY=$(expand_key "$CACHE_KEY")
+      echo "$EXPANDED_KEY"
+      exit 0
+    fi
+
+    exit 1
+  fi
+
+  RELEASE_MANIFEST=$(cat "$MANIFEST_TEST_PATH")
+  VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
+
+  if [[ $VERSION_MANIFEST == null ]]; then
+    not_found_error $CHANNEL $VERSION $ARCH
+    exit 1
+  fi
+
+  if [[ "$PRINT_MODE" == version ]]; then
+    VERSION_DEBUG=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch')
+
+    echo "$CHANNEL:$VERSION:$ARCH|$VERSION_DEBUG"
+    exit $?
+  fi
+
+  if [[ "$PRINT_MODE" == cache-key ]]; then
+    EXPANDED_KEY=$(expand_key "$CACHE_KEY")
+
+    echo "$EXPANDED_KEY"
+    exit 0
+  fi
+
+  exit 1
+fi
+
+CACHE_PATH=$(transform_path "$CACHE_PATH")
+SDK_CACHE=$(expand_key "$CACHE_PATH")
+PUB_CACHE=$(expand_key "${SDK_CACHE}/.pub-cache")
 
 if [[ ! -x "${SDK_CACHE}/bin/flutter" ]]; then
   if [[ $CHANNEL == master ]]; then
     git clone -b master https://github.com/flutter/flutter.git "$SDK_CACHE"
   else
+    RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
     VERSION_MANIFEST=$(get_version_manifest $CHANNEL $VERSION)
     if [[ $VERSION_MANIFEST == null ]]; then
-      echo "Unable to determine Flutter version for channel: $CHANNEL version: $VERSION architecture: $ARCH"
+      not_found_error $CHANNEL $VERSION $ARCH
       exit 1
-     fi
+    fi
     ARCHIVE_PATH=$(echo $VERSION_MANIFEST | jq -r '.archive')
     download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
   fi
