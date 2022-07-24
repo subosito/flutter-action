@@ -4,9 +4,15 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+    paths:
+      - setup.sh
+      - action.yml
 jobs:
+  lint_shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ludeeus/action-shellcheck@master
   test_channel:
     runs-on: ${{ matrix.operating-system }}
     strategy:
