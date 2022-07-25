@@ -23,9 +23,7 @@ legacy_wildcard_version() {
 }
 
 wildcard_version() {
-	if [[ "${2::1}" == v ]]; then
-		legacy_wildcard_version "$1" "$2"
-	elif [[ $1 == any ]]; then
+	if [[ $1 == any ]]; then
 		jq --arg version "$2" --arg arch "$3" '.releases | map(select(.version | startswith($version)) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
 	else
 		jq --arg channel "$1" --arg version "$2" --arg arch "$3" '.releases | map(select(.channel==$channel) | select(.version | startswith($version) ) | select(.dart_sdk_arch == null or .dart_sdk_arch == $arch)) | first'
@@ -118,12 +116,15 @@ RELEASE_MANIFEST=""
 VERSION_MANIFEST=""
 
 get_version_manifest() {
-	version_manifest=$(echo "$RELEASE_MANIFEST" | get_version "$CHANNEL" "$(normalize_version "$VERSION")" "$ARCH")
+	version_normalized=$(normalize_version "$VERSION")
+	version_manifest=$(echo "$RELEASE_MANIFEST" | get_version "$CHANNEL" "$version_normalized" "$ARCH")
+
 	if [[ "$version_manifest" == null ]]; then
-		exit 1
+		version_manifest=$(echo "$RELEASE_MANIFEST" | legacy_wildcard_version "$CHANNEL" "v$version_normalized")
 	fi
 
 	version_arch=$(echo "$version_manifest" | jq -r '.dart_sdk_arch')
+
 	if [[ "$version_arch" == null ]]; then
 		if [[ "$ARCH" == x64 ]]; then
 			echo "$version_manifest" | jq --arg dart_sdk_arch x64 '.+={dart_sdk_arch:$dart_sdk_arch}'
