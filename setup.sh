@@ -153,6 +153,11 @@ expand_key() {
 	echo "$expanded_key"
 }
 
+print_version() {
+	version_debug=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch')
+	echo "$CHANNEL:$VERSION:$ARCH|$version_debug"
+}
+
 if [[ -n "$PRINT_MODE" ]]; then
 	if [[ "$CHANNEL" == master ]]; then
 		if [[ "$PRINT_MODE" == version ]]; then
@@ -180,10 +185,8 @@ if [[ -n "$PRINT_MODE" ]]; then
 	fi
 
 	if [[ "$PRINT_MODE" == version ]]; then
-		VERSION_DEBUG=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch')
-
-		echo "$CHANNEL:$VERSION:$ARCH|$VERSION_DEBUG"
-		exit $?
+		print_version
+		exit 0
 	fi
 
 	if [[ "$PRINT_MODE" == cache-key ]]; then
@@ -214,6 +217,7 @@ if [[ ! -x "$SDK_CACHE/bin/flutter" ]]; then
 
 		ARCHIVE_PATH=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
 		download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
+		print_version
 	fi
 fi
 
