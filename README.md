@@ -11,7 +11,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.8.0'
+    flutter-version: '3.0.5'
     channel: 'stable'
 - run: flutter --version
 ```
@@ -62,7 +62,7 @@ steps:
     java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.10.4'
+    flutter-version: '3.0.5'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -79,7 +79,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.10.4'
+        channel: 'stable'
         architecture: x64
     - run: flutter pub get
     - run: flutter test
@@ -93,7 +93,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.10.4'
+    channel: 'stable'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build web
@@ -124,7 +124,7 @@ jobs:
      - uses: actions/checkout@v3
      - uses: subosito/flutter-action@v2
        with:
-         channel: 'beta'
+         channel: 'stable'
      - run: |
         sudo apt-get update -y
         sudo apt-get install -y ninja-build libgtk-3-dev
@@ -142,7 +142,7 @@ jobs:
      - uses: actions/checkout@v3
      - uses: subosito/flutter-action@v2
        with:
-         channel: 'beta'
+         channel: 'stable'
          architecture: x64
      - run: flutter config --enable-macos-desktop
      - run: flutter build macos
@@ -155,7 +155,6 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.10.x'
     channel: 'stable'
     cache: true
     cache-key: 'flutter-:os:-:arch:-:channel:-:version:-:hash:' # optional, change this to force refresh cache
@@ -163,3 +162,12 @@ steps:
     architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
+
+Note: `cache-key` has support for several dynamic values:
+
+- `:os:`
+- `:arch:`
+- `:channel:`
+- `:version:`
+- `:hash:`
+- `:sha256:`
