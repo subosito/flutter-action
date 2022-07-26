@@ -157,17 +157,17 @@ steps:
   with:
     channel: 'stable'
     cache: true
-    cache-key: 'flutter-:os:-:arch:-:channel:-:version:-:hash:' # optional, change this to force refresh cache
-    cache-path: ${{ runner.tool_cache }}/flutter # optional, change this to specify the cache path
+    cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+    cache-path: ${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch: # optional, change this to specify the cache path
     architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
 
-Note: `cache-key` has support for several dynamic values:
+Note: `cache-key` and `cache-path` has support for several dynamic values:
 
 - `:os:`
-- `:arch:`
 - `:channel:`
 - `:version:`
+- `:arch:`
 - `:hash:`
 - `:sha256:`

@@ -109,8 +109,8 @@ ARCH=$(echo "${ARR_ARCH[0]}" | awk '{print tolower($0)}')
 [[ -z $CHANNEL ]] && CHANNEL=stable
 [[ -z $VERSION ]] && VERSION=any
 [[ -z $ARCH ]] && ARCH=x64
-[[ -z $CACHE_PATH ]] && CACHE_PATH=/tmp
-[[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:arch:-:channel:-:version:-:hash:"
+[[ -z $CACHE_PATH ]] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
+[[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 
 RELEASE_MANIFEST=""
 VERSION_MANIFEST=""
@@ -165,11 +165,20 @@ if [[ -n "$PRINT_MODE" ]]; then
 			exit 0
 		fi
 
-		if [[ "$PRINT_MODE" == cache-key ]]; then
-			VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$CHANNEL\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
-			EXPANDED_KEY=$(expand_key "$CACHE_KEY")
+		VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$CHANNEL\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
 
-			echo "$EXPANDED_KEY"
+		if [[ "$PRINT_MODE" == cache-key ]]; then
+			expanded_key=$(expand_key "$CACHE_KEY")
+
+			echo "$expanded_key"
+			exit 0
+		fi
+
+		if [[ "$PRINT_MODE" == cache-path ]]; then
+			cache_path=$(transform_path "$CACHE_PATH")
+			expanded_path=$(expand_key "$cache_path")
+
+			echo "$expanded_path"
 			exit 0
 		fi
 
@@ -190,9 +199,17 @@ if [[ -n "$PRINT_MODE" ]]; then
 	fi
 
 	if [[ "$PRINT_MODE" == cache-key ]]; then
-		EXPANDED_KEY=$(expand_key "$CACHE_KEY")
+		expanded_key=$(expand_key "$CACHE_KEY")
 
-		echo "$EXPANDED_KEY"
+		echo "$expanded_key"
+		exit 0
+	fi
+
+	if [[ "$PRINT_MODE" == cache-path ]]; then
+		cache_path=$(transform_path "$CACHE_PATH")
+		expanded_path=$(expand_key "$cache_path")
+
+		echo "$expanded_path"
 		exit 0
 	fi
 
