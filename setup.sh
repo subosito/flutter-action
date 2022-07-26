@@ -12,7 +12,7 @@ fi
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_URL="$MANIFEST_BASE_URL/releases_$OS_NAME.json"
-MANIFEST_TEST_FIXTURE="test/releases_$OS_NAME.json"
+MANIFEST_TEST_FIXTURE="$(dirname -- "${BASH_SOURCE[0]}")/test/releases_$OS_NAME.json"
 
 legacy_wildcard_version() {
 	if [[ $1 == any ]]; then
@@ -88,12 +88,14 @@ download_archive() {
 CACHE_PATH=""
 CACHE_KEY=""
 PRINT_MODE=""
+USE_TEST_FIXTURE=false
 
-while getopts 'c:k:p:' flag; do
+while getopts 'tc:k:p:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
 	p) PRINT_MODE="$OPTARG" ;;
+	t) USE_TEST_FIXTURE=true ;;
 	?) exit 2 ;;
 	esac
 done
@@ -185,7 +187,12 @@ if [[ -n "$PRINT_MODE" ]]; then
 		exit 1
 	fi
 
-	RELEASE_MANIFEST=$(cat "$MANIFEST_TEST_FIXTURE")
+	if [[ "$USE_TEST_FIXTURE" == true ]]; then
+		RELEASE_MANIFEST=$(cat "$MANIFEST_TEST_FIXTURE")
+	else
+		RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
+	fi
+
 	VERSION_MANIFEST=$(get_version_manifest)
 
 	if [[ -z "$VERSION_MANIFEST" ]]; then
