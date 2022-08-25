@@ -16,6 +16,7 @@ inputs:
   cache:
     description: 'Cache the Flutter SDK'
     required: false
+    default: false
   cache-key:
     description: 'Identifier for the Flutter SDK cache'
     required: false
@@ -32,16 +33,16 @@ runs:
   using: 'composite'
   steps:
     - id: flutter-action-cache-path-builder
-      run: echo "::set-output name=cache-path::$($GITHUB_ACTION_PATH/setup.sh -p cache-path -c '${{ inputs.cache-path }}' ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }})"
+      run: echo "::set-output name=cache-path::$($GITHUB_ACTION_PATH/setup.sh -p cache-path -c '${{ inputs.cache-path }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }})"
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       id: flutter-action-cache-key-builder
-      run: echo "::set-output name=cache-key::$($GITHUB_ACTION_PATH/setup.sh -p cache-key -k ${{ inputs.cache-key }} ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }})"
+      run: echo "::set-output name=cache-key::$($GITHUB_ACTION_PATH/setup.sh -p cache-key -k ${{ inputs.cache-key }} -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }})"
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
         path: ${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}
         key: ${{ steps.flutter-action-cache-key-builder.outputs.cache-key }}
-    - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}' ${{ inputs.channel }} ${{ inputs.flutter-version }} ${{ inputs.architecture }}
+    - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash

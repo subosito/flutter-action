@@ -89,24 +89,23 @@ CACHE_PATH=""
 CACHE_KEY=""
 PRINT_MODE=""
 USE_TEST_FIXTURE=false
+ARCH=""
+VERSION=""
 
-while getopts 'tc:k:p:' flag; do
+while getopts 'tc:k:p:a:n:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
 	p) PRINT_MODE="$OPTARG" ;;
 	t) USE_TEST_FIXTURE=true ;;
+	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
+	n) VERSION="$OPTARG" ;;
 	?) exit 2 ;;
 	esac
 done
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
-ARR_VERSION=("${@:$OPTIND+1:1}")
-ARR_ARCH=("${@:$OPTIND+2:1}")
-
 CHANNEL="${ARR_CHANNEL[0]}"
-VERSION="${ARR_VERSION[0]}"
-ARCH=$(echo "${ARR_ARCH[0]}" | awk '{print tolower($0)}')
 
 [[ -z $CHANNEL ]] && CHANNEL=stable
 [[ -z $VERSION ]] && VERSION=any

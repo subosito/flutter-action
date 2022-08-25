@@ -55,25 +55,25 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p version master             | grep -x 'master:master:x64|master:master:x64'
       shell: bash
-    - run: ./setup.sh -t -p version stable 2           | grep -x 'stable:2:x64|stable:2.10.5:x64'
+    - run: ./setup.sh -t -p version -n 2 stable        | grep -x 'stable:2:x64|stable:2.10.5:x64'
       shell: bash
-    - run: ./setup.sh -t -p version beta 2             | grep -x 'beta:2:x64|beta:2.13.0-0.4.pre:x64'
+    - run: ./setup.sh -t -p version -n 2 beta          | grep -x 'beta:2:x64|beta:2.13.0-0.4.pre:x64'
       shell: bash
-    - run: ./setup.sh -t -p version any 2              | grep -x 'any:2:x64|beta:2.13.0-0.4.pre:x64'
+    - run: ./setup.sh -t -p version -n 2 any           | grep -x 'any:2:x64|beta:2.13.0-0.4.pre:x64'
       shell: bash
-    - run: ./setup.sh -t -p version any 3              | grep -x 'any:3:x64|stable:3.0.5:x64'
+    - run: ./setup.sh -t -p version -n 3 any           | grep -x 'any:3:x64|stable:3.0.5:x64'
       shell: bash
-    - run: ./setup.sh -t -p version any 3 arm64        | grep -x 'any:3:arm64|stable:3.0.5:arm64'
+    - run: ./setup.sh -t -p version -n 3 -a arm64 any  | grep -x 'any:3:arm64|stable:3.0.5:arm64'
       shell: bash
-    - run: ./setup.sh -t -p version stable any arm64   | grep -x 'stable:any:arm64|stable:3.0.5:arm64'
+    - run: ./setup.sh -t -p version -n any -a arm64 stable | grep -x 'stable:any:arm64|stable:3.0.5:arm64'
       shell: bash
-    - run: ./setup.sh -t -p version stable 1           | grep -x 'stable:1:x64|stable:1.22.6:x64'
+    - run: ./setup.sh -t -p version -n 1 stable        | grep -x 'stable:1:x64|stable:1.22.6:x64'
       shell: bash
-    - run: ./setup.sh -t -p version stable v1          | grep -x 'stable:v1:x64|stable:v1.12.13+hotfix.9:x64'
+    - run: ./setup.sh -t -p version -n v1 stable       | grep -x 'stable:v1:x64|stable:v1.12.13+hotfix.9:x64'
       shell: bash
-    - run: ./setup.sh -t -p version any 0              | grep -x 'any:0:x64|beta:v0.11.13:x64'
+    - run: ./setup.sh -t -p version -n 0 any           | grep -x 'any:0:x64|beta:v0.11.13:x64'
       shell: bash
-    - run: ./setup.sh -t -p version any v0             | grep -x 'any:v0:x64|beta:v0.11.13:x64'
+    - run: ./setup.sh -t -p version -n v0 any          | grep -x 'any:v0:x64|beta:v0.11.13:x64'
       shell: bash
   test_cache_key:
     runs-on: macos-latest
@@ -87,29 +87,29 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p cache-key master           | grep -x 'flutter-macos-master-master-x64-master'
       shell: bash
-    - run: ./setup.sh -t -p cache-key stable 2         | grep -x 'flutter-macos-stable-2.10.5-x64-5464c5bac742001448fe4fc0597be939379f88ea'
+    - run: ./setup.sh -t -p cache-key -n 2 stable      | grep -x 'flutter-macos-stable-2.10.5-x64-5464c5bac742001448fe4fc0597be939379f88ea'
       shell: bash
-    - run: ./setup.sh -t -p cache-key beta 2           | grep -x 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
+    - run: ./setup.sh -t -p cache-key -n 2 beta        | grep -x 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
-    - run: ./setup.sh -t -p cache-key any 2            | grep -x 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
+    - run: ./setup.sh -t -p cache-key -n 2 any         | grep -x 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
-    - run: ./setup.sh -t -p cache-key any 3            | grep -x 'flutter-macos-stable-3.0.5-x64-f1875d570e39de09040c8f79aa13cc56baab8db1'
+    - run: ./setup.sh -t -p cache-key -n 3 any         | grep -x 'flutter-macos-stable-3.0.5-x64-f1875d570e39de09040c8f79aa13cc56baab8db1'
       shell: bash
-    - run: ./setup.sh -t -p cache-key any 3 arm64      | grep -x 'flutter-macos-stable-3.0.5-arm64-f1875d570e39de09040c8f79aa13cc56baab8db1'
+    - run: ./setup.sh -t -p cache-key -n 3 -a arm64 any      | grep -x 'flutter-macos-stable-3.0.5-arm64-f1875d570e39de09040c8f79aa13cc56baab8db1'
       shell: bash
-    - run: ./setup.sh -t -p cache-key stable any arm64 | grep -x 'flutter-macos-stable-3.0.5-arm64-f1875d570e39de09040c8f79aa13cc56baab8db1'
+    - run: ./setup.sh -t -p cache-key -n any -a arm64 stable | grep -x 'flutter-macos-stable-3.0.5-arm64-f1875d570e39de09040c8f79aa13cc56baab8db1'
       shell: bash
-    - run: ./setup.sh -t -p cache-key stable 1         | grep -x 'flutter-macos-stable-1.22.6-x64-9b2d32b605630f28625709ebd9d78ab3016b2bf6'
+    - run: ./setup.sh -t -p cache-key -n 1 stable            | grep -x 'flutter-macos-stable-1.22.6-x64-9b2d32b605630f28625709ebd9d78ab3016b2bf6'
       shell: bash
-    - run: ./setup.sh -t -p cache-key stable v1        | grep -x 'flutter-macos-stable-v1.12.13+hotfix.9-x64-f139b11009aeb8ed2a3a3aa8b0066e482709dde3'
+    - run: ./setup.sh -t -p cache-key -n v1 stable           | grep -x 'flutter-macos-stable-v1.12.13+hotfix.9-x64-f139b11009aeb8ed2a3a3aa8b0066e482709dde3'
       shell: bash
-    - run: ./setup.sh -t -p cache-key any 0            | grep -x 'flutter-macos-beta-v0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
+    - run: ./setup.sh -t -p cache-key -n 0 any               | grep -x 'flutter-macos-beta-v0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
       shell: bash
-    - run: ./setup.sh -p cache-key any v0              | grep -x 'flutter-macos-beta-v0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
+    - run: ./setup.sh -t -p cache-key -n v0 any              | grep -x 'flutter-macos-beta-v0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
       shell: bash
-    - run: ./setup.sh -p cache-key -k 'custom-:channel:-:version:-:hash:'   | grep -x 'custom-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
+    - run: ./setup.sh -t -p cache-key -k 'custom-:channel:-:version:-:hash:'   | grep -x 'custom-stable-3.0.5-f1875d570e39de09040c8f79aa13cc56baab8db1'
       shell: bash
-    - run: ./setup.sh -p cache-key -k 'custom-:channel:-:version:-:sha256:' | grep -x 'custom-stable-3.0.5-e79a04dcfd1b583e5831433fc200800ba0d1e9fe4567cb661479bd2542d4c685'
+    - run: ./setup.sh -t -p cache-key -k 'custom-:channel:-:version:-:sha256:' | grep -x 'custom-stable-3.0.5-e79a04dcfd1b583e5831433fc200800ba0d1e9fe4567cb661479bd2542d4c685'
       shell: bash
   test_cache_path:
     runs-on: ubuntu-latest
