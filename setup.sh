@@ -67,7 +67,6 @@ download_archive() {
 
 	curl --connect-timeout 15 --retry 5 "$archive_url" >"$archive_local"
 
-	# Create the target folder
 	mkdir -p "$2"
 
 	if [[ "$archive_name" == *zip ]]; then
@@ -92,11 +91,11 @@ USE_TEST_FIXTURE=false
 ARCH=""
 VERSION=""
 
-while getopts 'tc:k:p:a:n:' flag; do
+while getopts 'tc:k:pa:n:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
-	p) PRINT_MODE="$OPTARG" ;;
+	p) PRINT_MODE=true ;;
 	t) USE_TEST_FIXTURE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	n) VERSION="$OPTARG" ;;
@@ -154,72 +153,43 @@ expand_key() {
 	echo "$expanded_key"
 }
 
-print_version() {
-	version_debug=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch')
-	echo "$CHANNEL:$VERSION:$ARCH|$version_debug"
-}
-
-if [[ -n "$PRINT_MODE" ]]; then
-	if [[ "$CHANNEL" == master ]]; then
-		if [[ "$PRINT_MODE" == version ]]; then
-			echo "master:master:$ARCH|master:master:$ARCH"
-			exit 0
-		fi
-
-		VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$CHANNEL\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
-
-		if [[ "$PRINT_MODE" == cache-key ]]; then
-			expanded_key=$(expand_key "$CACHE_KEY")
-
-			echo "$expanded_key"
-			exit 0
-		fi
-
-		if [[ "$PRINT_MODE" == cache-path ]]; then
-			cache_path=$(transform_path "$CACHE_PATH")
-			expanded_path=$(expand_key "$cache_path")
-
-			echo "$expanded_path"
-			exit 0
-		fi
-
-		exit 1
-	fi
-
+if [[ "$PRINT_MODE" == true ]]; then
 	if [[ "$USE_TEST_FIXTURE" == true ]]; then
 		RELEASE_MANIFEST=$(cat "$MANIFEST_TEST_FIXTURE")
 	else
 		RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 	fi
 
-	VERSION_MANIFEST=$(get_version_manifest)
+	if [[ "$CHANNEL" == master ]]; then
+		VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$CHANNEL\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
+	else
+		VERSION_MANIFEST=$(get_version_manifest)
+	fi
 
 	if [[ -z "$VERSION_MANIFEST" ]]; then
 		not_found_error "$CHANNEL" "$VERSION" "$ARCH"
 		exit 1
 	fi
 
-	if [[ "$PRINT_MODE" == version ]]; then
-		print_version
-		exit 0
+	version_info=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch')
+
+	if [[ "$version_info" == *null* ]]; then
+		not_found_error "$CHANNEL" "$VERSION" "$ARCH"
+		exit 1
 	fi
 
-	if [[ "$PRINT_MODE" == cache-key ]]; then
-		expanded_key=$(expand_key "$CACHE_KEY")
+	echo "::set-output name=channel::$(echo "$version_info" | awk -F ':' '{print $1}')"
+	echo "::set-output name=version::$(echo "$version_info" | awk -F ':' '{print $2}')"
+	echo "::set-output name=architecture::$(echo "$version_info" | awk -F ':' '{print $3}')"
 
-		echo "$expanded_key"
-		exit 0
-	fi
+	expanded_key=$(expand_key "$CACHE_KEY")
+	echo "::set-output name=cache-key::$expanded_key"
 
-	if [[ "$PRINT_MODE" == cache-path ]]; then
-		cache_path=$(transform_path "$CACHE_PATH")
-		expanded_path=$(expand_key "$cache_path")
+	cache_path=$(transform_path "$CACHE_PATH")
+	expanded_path=$(expand_key "$cache_path")
 
-		echo "$expanded_path"
-		exit 0
-	fi
-
-	exit 1
+	echo "::set-output name=cache-path::$expanded_path"
+	exit 0
 fi
 
 CACHE_PATH=$(transform_path "$CACHE_PATH")
@@ -240,7 +210,6 @@ if [[ ! -x "$SDK_CACHE/bin/flutter" ]]; then
 
 		ARCHIVE_PATH=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
 		download_archive "$ARCHIVE_PATH" "$SDK_CACHE"
-		print_version
 	fi
 fi
 

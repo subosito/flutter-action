@@ -28,21 +28,17 @@ inputs:
   architecture:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
-    default: ${{ runner.arch }}
+    default: '${{ runner.arch }}'
 runs:
   using: 'composite'
   steps:
-    - id: flutter-action-cache-path-builder
-      run: echo "::set-output name=cache-path::$($GITHUB_ACTION_PATH/setup.sh -p cache-path -c '${{ inputs.cache-path }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }})"
-      shell: bash
-    - if: ${{ inputs.cache == 'true' }}
-      id: flutter-action-cache-key-builder
-      run: echo "::set-output name=cache-key::$($GITHUB_ACTION_PATH/setup.sh -p cache-key -k ${{ inputs.cache-key }} -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }})"
+    - id: flutter-action
+      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
-        path: ${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}
-        key: ${{ steps.flutter-action-cache-key-builder.outputs.cache-key }}
-    - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action-cache-path-builder.outputs.cache-path }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
+        path: ${{ steps.flutter-action.outputs.cache-path }}
+        key: ${{ steps.flutter-action.outputs.cache-key }}
+    - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action.outputs.cache-path }}' -n '${{ steps.flutter-action.outputs.version }}' -a '${{ steps.flutter-action.outputs.architecture }}' ${{ steps.flutter-action.outputs.channel }}
       shell: bash
