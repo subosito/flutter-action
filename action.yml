@@ -29,6 +29,17 @@ inputs:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
     default: '${{ runner.arch }}'
+outputs:
+  cache-path:
+    value: '${{ steps.flutter-action.outputs.cache-path }}'
+  cache-key:
+    value: '${{ steps.flutter-action.outputs.cache-key }}'
+  channel:
+    value: '${{ steps.flutter-action.outputs.channel }}'
+  version:
+    value: '${{ steps.flutter-action.outputs.version }}'
+  architecture:
+    value: '${{ steps.flutter-action.outputs.architecture }}'
 runs:
   using: 'composite'
   steps:

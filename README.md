@@ -171,3 +171,21 @@ Note: `cache-key` and `cache-path` has support for several dynamic values:
 - `:arch:`
 - `:hash:`
 - `:sha256:`
+
+Use outputs from `flutter-action`:
+
+```yaml
+steps:
+- uses: actions/checkout@v3
+- id: flutter-action
+  uses: subosito/flutter-action@v2
+  with:
+    channel: 'stable'
+- run: |
+    echo cache-path=${{ steps.flutter-action.outputs.cache-path }}
+    echo cache-key=${{ steps.flutter-action.outputs.cache-key }}
+    echo channel=${{ steps.flutter-action.outputs.channel }}
+    echo version=${{ steps.flutter-action.outputs.version }}
+    echo architecture=${{ steps.flutter-action.outputs.architecture }}
+  shell: bash
+```
