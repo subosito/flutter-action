@@ -28,11 +28,11 @@ jobs:
         channel: ${{ matrix.channel }}
     - name: Echo outputs
       run: |
-        echo cache-path=${{ steps.flutter-action.outputs.cache-path }}
-        echo cache-key=${{ steps.flutter-action.outputs.cache-key }}
-        echo channel=${{ steps.flutter-action.outputs.channel }}
-        echo version=${{ steps.flutter-action.outputs.version }}
-        echo architecture=${{ steps.flutter-action.outputs.architecture }}
+        echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
+        echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
+        echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
+        echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+        echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
       shell: bash
     - run: dart --version
       shell: bash
