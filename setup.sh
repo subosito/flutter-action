@@ -178,14 +178,26 @@ if [[ "$PRINT_MODE" == true ]]; then
 		exit 1
 	fi
 
+	info_channel=$(echo "$version_info" | awk -F ':' '{print $1}')
+	info_version=$(echo "$version_info" | awk -F ':' '{print $2}')
+	info_architecture=$(echo "$version_info" | awk -F ':' '{print $3}')
 	expanded_key=$(expand_key "$CACHE_KEY")
 	cache_path=$(transform_path "$CACHE_PATH")
 	expanded_path=$(expand_key "$cache_path")
 
+	if [[ "$USE_TEST_FIXTURE" == true ]]; then
+		echo "CHANNEL=$info_channel"
+		echo "VERSION=$info_version"
+		echo "ARCHITECTURE=$info_architecture"
+		echo "CACHE-KEY=$expanded_key"
+		echo "CACHE-PATH=$expanded_path"
+		exit 0
+	fi
+
 	{
-		echo "CHANNEL=$(echo "$version_info" | awk -F ':' '{print $1}')"
-		echo "VERSION=$(echo "$version_info" | awk -F ':' '{print $2}')"
-		echo "ARCHITECTURE=$(echo "$version_info" | awk -F ':' '{print $3}')"
+		echo "CHANNEL=$info_channel"
+		echo "VERSION=$info_version"
+		echo "ARCHITECTURE=$info_architecture"
 		echo "CACHE-KEY=$expanded_key"
 		echo "CACHE-PATH=$expanded_path"
 	} >> "$GITHUB_OUTPUT"
