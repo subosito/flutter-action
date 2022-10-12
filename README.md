@@ -182,10 +182,10 @@ steps:
   with:
     channel: 'stable'
 - run: |
-    echo cache-path=${{ steps.flutter-action.outputs.cache-path }}
-    echo cache-key=${{ steps.flutter-action.outputs.cache-key }}
-    echo channel=${{ steps.flutter-action.outputs.channel }}
-    echo version=${{ steps.flutter-action.outputs.version }}
-    echo architecture=${{ steps.flutter-action.outputs.architecture }}
+    echo cache-path=${{ steps.flutter-action.outputs.CACHE-PATH }}
+    echo cache-key=${{ steps.flutter-action.outputs.CACHE-KEY }}
+    echo channel=${{ steps.flutter-action.outputs.CHANNEL }}
+    echo version=${{ steps.flutter-action.outputs.VERSION }}
+    echo architecture=${{ steps.flutter-action.outputs.ARCHITECTURE }}
   shell: bash
 ```
