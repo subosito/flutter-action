@@ -69,6 +69,10 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p beta                   | grep '3.9.0-0.1.pre'
       shell: bash
+    - run: ./setup.sh -t -p -n 3.3.10 stable       | grep '3.3.10'
+      shell: bash
+    - run: ./setup.sh -t -p -n 3.3.1 stable        | grep '3.3.1'
+      shell: bash
     - run: ./setup.sh -t -p -n 2 stable            | grep '2.10.5'
       shell: bash
     - run: ./setup.sh -t -p -n 2 beta              | grep '2.13.0-0.4.pre'
