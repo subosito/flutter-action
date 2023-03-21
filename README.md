@@ -11,7 +11,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '3.0.5'
+    flutter-version: '3.7.7'
     channel: 'stable'
 - run: flutter --version
 ```
@@ -23,7 +23,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    channel: 'stable' # or: 'beta', 'dev' or 'master'
+    channel: 'stable' # or: 'beta' or 'dev'
 - run: flutter --version
 ```
 
@@ -34,7 +34,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '1.22.x' # or, you can use 1.22
+    flutter-version: '1.22.x'
     channel: 'dev'
 - run: flutter --version
 ```
@@ -62,7 +62,7 @@ steps:
     java-version: '11'
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '3.0.5'
+    flutter-version: '3.7.7'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
