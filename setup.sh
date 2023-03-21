@@ -143,7 +143,7 @@ if [[ "$PRINT_ONLY" == true ]]; then
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
 		echo "ARCHITECTURE=$info_architecture"
-		echo "CACHE-KEY=$expanded_key"
+		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
 	} >>"$GITHUB_OUTPUT"
 
