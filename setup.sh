@@ -146,6 +146,8 @@ if [[ "$PRINT_ONLY" == true ]]; then
 		echo "CACHE-KEY=$expanded_key"
 		echo "CACHE-PATH=$CACHE_PATH"
 	} >>"$GITHUB_OUTPUT"
+
+	exit 0
 fi
 
 if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
