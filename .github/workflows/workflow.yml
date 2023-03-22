@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
-        channel: [stable, beta]
+        channel: [stable, beta, master]
     steps:
     - uses: actions/checkout@v3
     - id: flutter-action
@@ -105,6 +105,10 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p beta                   | grep 'flutter-macos-beta-3.9.0-0.1.pre-x64-f732038a8cf4562ce38a1d7debb30209ae3da896'
       shell: bash
+    - run: ./setup.sh -t -p dev                    | grep 'flutter-macos-dev-2.11.0-0.1.pre-x64-b101bfe32f634566e7cb2791a9efe19cf8828b15'
+      shell: bash
+    - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-master-x64-master'
+      shell: bash
     - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
     - run: ./setup.sh -t -p -n 1 any               | grep 'flutter-macos-beta-1.26.0-17.8.pre-x64-044f2cf5607a26f8818dab0f766400e85c52bdff'
@@ -116,6 +120,10 @@ jobs:
     - run: ./setup.sh -t -p stable                 | grep '/Users/runner/work/_temp/flutter/stable-3.7.7-x64'
       shell: bash
     - run: ./setup.sh -t -p beta                   | grep '/Users/runner/work/_temp/flutter/beta-3.9.0-0.1.pre-x64'
+      shell: bash
+    - run: ./setup.sh -t -p dev                    | grep '/Users/runner/work/_temp/flutter/dev-2.11.0-0.1.pre-x64'
+      shell: bash
+    - run: ./setup.sh -t -p master                 | grep '/Users/runner/work/_temp/flutter/master-master-x64'
       shell: bash
     - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:hash:'       | grep 'custom-stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
       shell: bash
