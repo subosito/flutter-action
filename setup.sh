@@ -19,7 +19,7 @@ filter_by_channel() {
 }
 
 filter_by_arch() {
-	jq --arg dart_sdk_arch "$1" '[.[] | select(.dart_sdk_arch? | (., "x64") | index($dart_sdk_arch))]'
+	jq --arg arch "$1" '[.[] | select(.dart_sdk_arch == $arch or ($arch == "x64" and (has("dart_sdk_arch") | not)))]'
 }
 
 filter_by_version() {
