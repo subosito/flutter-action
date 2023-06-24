@@ -158,7 +158,7 @@ steps:
     channel: 'stable'
     cache: true
     cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
-    cache-path: ${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch: # optional, change this to specify the cache path
+    cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
     architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
