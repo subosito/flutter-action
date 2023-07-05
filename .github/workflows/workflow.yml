@@ -111,6 +111,10 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-macos-master-5b12b74-x64-master'
       shell: bash
+    - run: ./setup.sh -t -p -n 3.12.0-12.0.pre master     | grep 'flutter-macos-master-3.12.0-12.0.pre-x64-master'
+      shell: bash
+    - run: ./setup.sh -t -p -n stable master       | grep 'flutter-macos-master-stable-x64-master'
+      shell: bash
     - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
     - run: ./setup.sh -t -p -n 1 any               | grep 'flutter-macos-beta-1.26.0-17.8.pre-x64-044f2cf5607a26f8818dab0f766400e85c52bdff'

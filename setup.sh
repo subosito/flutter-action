@@ -158,7 +158,8 @@ if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
 	if [[ "$CHANNEL" == "master" ]]; then
 		git clone -b master https://github.com/flutter/flutter.git "$CACHE_PATH"
 		if [[ "$VERSION" != "any" ]]; then
-		  git checkout "$VERSION"
+	    git config --global --add safe.directory "$CACHE_PATH"
+		  (cd "$CACHE_PATH" && git checkout "$VERSION")
 		fi
 	else
 		archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')

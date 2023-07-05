@@ -58,7 +58,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '5b12b7467fcbbdc7351d76690ce8a8693e804179' # tag, commit or branch
+    flutter-version: '5b12b74' # tag, commit or branch
     channel: 'master'
 - run: flutter --version
 ```
