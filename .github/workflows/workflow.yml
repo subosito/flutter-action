@@ -109,7 +109,7 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-any-x64-master'
       shell: bash
-    - run: ./setup.sh -t -p master -n 5b12b74      | grep 'flutter-macos-master-5b12b74-x64-master'
+    - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-macos-master-5b12b74-x64-master'
       shell: bash
     - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
