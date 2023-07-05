@@ -97,7 +97,7 @@ else
 fi
 
 if [[ "$CHANNEL" == "master" ]]; then
-	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$CHANNEL\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
+	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION,\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
 else
 	VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
 fi
@@ -157,6 +157,9 @@ fi
 if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
 	if [[ "$CHANNEL" == "master" ]]; then
 		git clone -b master https://github.com/flutter/flutter.git "$CACHE_PATH"
+		if [[ "$VERSION" != "any" ]]; then
+		  git checkout $VERSION
+		fi
 	else
 		archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
 		download_archive "$archive_url" "$CACHE_PATH"
