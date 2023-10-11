@@ -107,7 +107,13 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p dev                    | grep 'flutter-macos-dev-2.11.0-0.1.pre-x64-b101bfe32f634566e7cb2791a9efe19cf8828b15'
       shell: bash
-    - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-master-x64-master'
+    - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-any-x64-master'
+      shell: bash
+    - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-macos-master-5b12b74-x64-master'
+      shell: bash
+    - run: ./setup.sh -t -p -n 3.12.0-12.0.pre master     | grep 'flutter-macos-master-3.12.0-12.0.pre-x64-master'
+      shell: bash
+    - run: ./setup.sh -t -p -n stable master       | grep 'flutter-macos-master-stable-x64-master'
       shell: bash
     - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
       shell: bash
@@ -123,7 +129,7 @@ jobs:
       shell: bash
     - run: ./setup.sh -t -p dev                    | grep '/Users/runner/work/_temp/flutter/dev-2.11.0-0.1.pre-x64'
       shell: bash
-    - run: ./setup.sh -t -p master                 | grep '/Users/runner/work/_temp/flutter/master-master-x64'
+    - run: ./setup.sh -t -p master                 | grep '/Users/runner/work/_temp/flutter/master-any-x64'
       shell: bash
     - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:hash:'       | grep 'custom-stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
       shell: bash

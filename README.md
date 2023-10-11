@@ -51,6 +51,18 @@ steps:
 - run: flutter --version
 ```
 
+Use particular git reference on master channel:
+
+```yaml
+steps:
+- uses: actions/checkout@v3
+- uses: subosito/flutter-action@v2
+  with:
+    flutter-version: '5b12b74' # tag, commit or branch
+    channel: 'master'
+- run: flutter --version
+```
+
 Build Android APK and app bundle:
 
 ```yaml
