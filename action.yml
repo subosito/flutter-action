@@ -49,9 +49,13 @@ runs:
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
-        path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
-        key: ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
-        restore-keys: |
+        path: ${CACHE_PATH}
+        key: ${CACHE_KEY}
+        restore-keys: ${CACHE_RESTORE_KEYS}
+      env:
+        CACHE_PATH: ${{ steps.flutter-action.outputs.CACHE-PATH }}
+        CACHE_KEY: ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
+        CACHE_RESTORE_KEYS: |
           ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
           ${{ steps.flutter-action.outputs.CACHE-KEY }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' -n '${{ steps.flutter-action.outputs.VERSION }}' -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' ${{ steps.flutter-action.outputs.CHANNEL }}
