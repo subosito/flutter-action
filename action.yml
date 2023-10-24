@@ -49,9 +49,9 @@ runs:
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v3
       with:
-        path: ${CACHE_PATH}
-        key: ${CACHE_KEY}
-        restore-keys: ${CACHE_RESTORE_KEYS}
+        path: ${{ env.CACHE_PATH }}
+        key: ${{ env.CACHE_KEY }}
+        restore-keys: ${{ env.CACHE_RESTORE_KEYS }}
       env:
         CACHE_PATH: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         CACHE_KEY: ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
