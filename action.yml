@@ -43,6 +43,8 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
+      shell: bash
     - id: flutter-action
       run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
