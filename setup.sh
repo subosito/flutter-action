@@ -48,13 +48,15 @@ download_archive() {
 	mkdir -p "$2"
 
 	if [[ "$archive_name" == *zip ]]; then
-		unzip -q -o "$archive_local" -d "$RUNNER_TEMP"
-		# Remove the folder again so that the move command can do a simple rename
+		EXTRACT_PATH="$RUNNER_TEMP/_unzip_temp"
+		unzip -q -o "$archive_local" -d "$EXTRACT_PATH"
+		# Remove the folder again so that the move command can do a simple rename\
 		# instead of moving the content into the target folder.
 		# This is a little bit of a hack since the "mv --no-target-directory"
 		# linux option is not available here
 		rm -r "$2"
-		mv "$RUNNER_TEMP"/flutter "$2"
+		mv "$EXTRACT_PATH"/flutter "$2"
+		rm -r "$EXTRACT_PATH"
 	else
 		tar xf "$archive_local" -C "$2" --strip-components=1
 	fi
