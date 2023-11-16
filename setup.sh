@@ -98,7 +98,7 @@ else
 	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
-if [[ "$CHANNEL" == "master" ]]; then
+if [[ "$CHANNEL" == "master" || "$CHANNEL" == "main" ]]; then
 	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
 else
 	VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
@@ -157,8 +157,8 @@ if [[ "$PRINT_ONLY" == true ]]; then
 fi
 
 if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
-	if [[ "$CHANNEL" == "master" ]]; then
-		git clone -b master https://github.com/flutter/flutter.git "$CACHE_PATH"
+	if [[ "$CHANNEL" == "master" || "$CHANNEL" == "main" ]]; then
+		git clone -b "$CHANNEL" https://github.com/flutter/flutter.git "$CACHE_PATH"
 		if [[ "$VERSION" != "any" ]]; then
 			git config --global --add safe.directory "$CACHE_PATH"
 			(cd "$CACHE_PATH" && git checkout "$VERSION")
