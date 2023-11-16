@@ -23,7 +23,7 @@ steps:
 - uses: actions/checkout@v3
 - uses: subosito/flutter-action@v2
   with:
-    channel: 'stable' # or: 'beta', 'dev' or 'master'
+    channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
 - run: flutter --version
 ```
 
