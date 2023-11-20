@@ -20,6 +20,9 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         channel: [stable, beta, master]
+        include:
+          - operating-system: ubuntu-latest
+            channel: main
     steps:
     - uses: actions/checkout@v3
     - id: flutter-action
