@@ -8,7 +8,7 @@ Use specific version and channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '3.7.7'
@@ -20,7 +20,7 @@ Use latest release for particular channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
@@ -31,7 +31,7 @@ Use latest release for particular version and/or channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '1.22.x'
@@ -43,7 +43,7 @@ Use particular version on any channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '2.x'
@@ -55,7 +55,7 @@ Use particular git reference on master channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '5b12b74' # tag, commit or branch
@@ -67,7 +67,7 @@ Build Android APK and app bundle:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: actions/setup-java@v2
   with:
     distribution: 'zulu'
@@ -88,7 +88,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
@@ -102,7 +102,7 @@ Build for the web:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable'
@@ -118,7 +118,7 @@ jobs:
  build:
    runs-on: windows-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
          channel: 'beta'
@@ -133,7 +133,7 @@ jobs:
  build:
    runs-on: ubuntu-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
          channel: 'stable'
@@ -151,7 +151,7 @@ jobs:
  build:
    runs-on: macos-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
          channel: 'stable'
@@ -164,7 +164,7 @@ Integration with `actions/cache`:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable'
@@ -188,7 +188,7 @@ Use outputs from `flutter-action`:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - id: flutter-action
   uses: subosito/flutter-action@v2
   with:
