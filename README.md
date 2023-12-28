@@ -188,8 +188,8 @@ Use outputs from `flutter-action`:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
 - id: flutter-action
+- uses: actions/checkout@v3
   uses: subosito/flutter-action@v2
   with:
     channel: 'stable'
