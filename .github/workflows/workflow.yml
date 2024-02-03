@@ -12,7 +12,7 @@ jobs:
   lint_shellcheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ludeeus/action-shellcheck@master
   test_channel:
     runs-on: ${{ matrix.operating-system }}
@@ -24,7 +24,7 @@ jobs:
           - operating-system: ubuntu-latest
             channel: main
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - id: flutter-action
       uses: ./
       with:
@@ -50,7 +50,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         channel: stable
@@ -63,7 +63,7 @@ jobs:
   test_print_output:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: ./setup.sh -t -p                        | grep 'stable'
       shell: bash
     - run: ./setup.sh -t -p                        | grep '3.7.7'
