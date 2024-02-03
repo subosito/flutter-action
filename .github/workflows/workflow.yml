@@ -31,6 +31,9 @@ jobs:
         channel: ${{ matrix.channel }}
     - name: Echo outputs
       run: |
+        echo RUNNER-OS=${{ runner.os }}
+        echo RUNNER-ARCH=${{ runner.arch }}
+
         echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
         echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
         echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
