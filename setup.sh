@@ -10,6 +10,7 @@ if ! check_command jq; then
 fi
 
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+ARCH_NAME=$(echo "$RUNNER_ARCH" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
 MANIFEST_JSON_PATH="releases_$OS_NAME.json"
 MANIFEST_URL="$MANIFEST_BASE_URL/$MANIFEST_JSON_PATH"
@@ -82,6 +83,8 @@ while getopts 'tc:k:pa:n:' flag; do
 	?) exit 2 ;;
 	esac
 done
+
+[[ -z $ARCH ]] && ARCH="$ARCH_NAME"
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
 CHANNEL="${ARR_CHANNEL[0]}"
