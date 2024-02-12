@@ -94,6 +94,7 @@ CHANNEL="${ARR_CHANNEL[0]}"
 [[ -z $CACHE_PATH ]] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
 [[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 [[ -z $PUB_CACHE_KEY ]] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+# Here we specifically use `PUB_CACHE` (and not `PUB_CACHE_PATH`), because `PUB_CACHE` is what dart (and flutter) looks for in the environment
 [[ -z $PUB_CACHE ]] && PUB_CACHE="$HOME/.pub-cache"
 
 if [[ "$TEST_MODE" == true ]]; then
