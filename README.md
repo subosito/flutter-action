@@ -34,7 +34,7 @@ steps:
 - uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '3.16.x'
+    flutter-version: '1.22.x'
     channel: 'dev'
 - run: flutter --version
 ```
