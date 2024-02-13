@@ -162,10 +162,12 @@ steps:
     cache: true
     cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
     cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
+    pub-cache-key: 'flutter-pub:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache of dart pub get dependencies
+    pub-cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
 - run: flutter --version
 ```
 
-Note: `cache-key` and `cache-path` has support for several dynamic values:
+Note: `cache-key`, `pub-cache-key`, and `cache-path` has support for several dynamic values:
 
 - `:os:`
 - `:channel:`
@@ -189,5 +191,7 @@ steps:
     echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
     echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
     echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
+    echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
+    echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
   shell: bash
 ```
