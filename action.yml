@@ -16,11 +16,15 @@ inputs:
   cache:
     description: 'Cache the Flutter SDK'
     required: false
-    default: false
+    default: 'false'
   cache-key:
     description: 'Identifier for the Flutter SDK cache'
     required: false
     default: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+  pub-cache-key:
+    description: 'Identifier for the Dart .pub-cache cache'
+    required: false
+    default: 'flutter-pub:os:-:channel:-:version:-:arch:-:hash:'
   cache-path:
     description: 'Flutter SDK cache path'
     required: false
@@ -40,21 +44,32 @@ outputs:
     value: '${{ steps.flutter-action.outputs.VERSION }}'
   ARCHITECTURE:
     value: '${{ steps.flutter-action.outputs.ARCHITECTURE }}'
+  PUB-CACHE-KEY:
+    value: '${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}'
+  PUB-CACHE-PATH:
+    value: '${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}'
 runs:
   using: 'composite'
   steps:
     - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
       shell: bash
     - id: flutter-action
-      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
+      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
-        key: ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
+        key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
         restore-keys: |
-          ${{ steps.flutter-action.outputs.CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
           ${{ steps.flutter-action.outputs.CACHE-KEY }}
+    - if: ${{ inputs.cache == 'true' }}
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
+        key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
+          ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' -n '${{ steps.flutter-action.outputs.VERSION }}' -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' ${{ steps.flutter-action.outputs.CHANNEL }}
       shell: bash
