@@ -8,10 +8,10 @@ Use specific version and channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '3.7.7'
+    flutter-version: '3.16.9'
     channel: 'stable'
 - run: flutter --version
 ```
@@ -20,7 +20,7 @@ Use latest release for particular channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable' # or: 'beta', 'dev', 'master' (or 'main')
@@ -31,7 +31,7 @@ Use latest release for particular version and/or channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '1.22.x'
@@ -43,10 +43,10 @@ Use particular version on any channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '2.x'
+    flutter-version: '3.x'
     channel: 'any'
 - run: flutter --version
 ```
@@ -55,7 +55,7 @@ Use particular git reference on master channel:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: '5b12b74' # tag, commit or branch
@@ -67,14 +67,10 @@ Build Android APK and app bundle:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
-- uses: actions/setup-java@v2
-  with:
-    distribution: 'zulu'
-    java-version: '11'
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
-    flutter-version: '3.7.7'
+    flutter-version: '3.16.9'
 - run: flutter pub get
 - run: flutter test
 - run: flutter build apk
@@ -88,11 +84,10 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        architecture: x64
     - run: flutter pub get
     - run: flutter test
     - run: flutter build ios --release --no-codesign
@@ -102,7 +97,7 @@ Build for the web:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable'
@@ -118,11 +113,10 @@ jobs:
  build:
    runs-on: windows-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
-         channel: 'beta'
-     - run: flutter config --enable-windows-desktop
+         channel: 'stable'
      - run: flutter build windows
 ```
 
@@ -133,14 +127,13 @@ jobs:
  build:
    runs-on: ubuntu-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
          channel: 'stable'
      - run: |
         sudo apt-get update -y
         sudo apt-get install -y ninja-build libgtk-3-dev
-     - run: flutter config --enable-linux-desktop
      - run: flutter build linux
 ```
 
@@ -151,12 +144,10 @@ jobs:
  build:
    runs-on: macos-latest
    steps:
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v4
      - uses: subosito/flutter-action@v2
        with:
          channel: 'stable'
-         architecture: x64
-     - run: flutter config --enable-macos-desktop
      - run: flutter build macos
 ```
 
@@ -164,7 +155,7 @@ Integration with `actions/cache`:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - uses: subosito/flutter-action@v2
   with:
     channel: 'stable'
@@ -173,7 +164,6 @@ steps:
     cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
     pub-cache-key: 'flutter-pub:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache of dart pub get dependencies
     pub-cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
-    architecture: x64 # optional, x64 or arm64
 - run: flutter --version
 ```
 
@@ -190,7 +180,7 @@ Use outputs from `flutter-action`:
 
 ```yaml
 steps:
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
 - id: flutter-action
   uses: subosito/flutter-action@v2
   with:
