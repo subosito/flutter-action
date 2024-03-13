@@ -29,6 +29,10 @@ inputs:
     description: 'Flutter SDK cache path'
     required: false
     default: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  pub-cache-path:
+    description: 'Flutter pub cache path'
+    required: false
+    default: 'default'
   architecture:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
@@ -54,7 +58,7 @@ runs:
     - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
       shell: bash
     - id: flutter-action
-      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
+      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-path }}' -l '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4

@@ -51,7 +51,7 @@ download_archive() {
 	if [[ "$archive_name" == *zip ]]; then
 		EXTRACT_PATH="$RUNNER_TEMP/_unzip_temp"
 		unzip -q -o "$archive_local" -d "$EXTRACT_PATH"
-		# Remove the folder again so that the move command can do a simple rename\
+		# Remove the folder again so that the move command can do a simple rename
 		# instead of moving the content into the target folder.
 		# This is a little bit of a hack since the "mv --no-target-directory"
 		# linux option is not available here
@@ -67,17 +67,19 @@ download_archive() {
 
 CACHE_PATH=""
 CACHE_KEY=""
+PUB_CACHE_PATH=""
 PUB_CACHE_KEY=""
 PRINT_ONLY=""
 TEST_MODE=false
 ARCH=""
 VERSION=""
 
-while getopts 'tc:k:d:pa:n:' flag; do
+while getopts 'tc:k:d:l:pa:n:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
-	d) PUB_CACHE_KEY="$OPTARG" ;;
+	d) PUB_CACHE_PATH="$OPTARG" ;;
+	l) PUB_CACHE_KEY="$OPTARG" ;;
 	p) PRINT_ONLY=true ;;
 	t) TEST_MODE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
@@ -97,8 +99,23 @@ CHANNEL="${ARR_CHANNEL[0]}"
 [[ -z $CACHE_PATH ]] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
 [[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 [[ -z $PUB_CACHE_KEY ]] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
-# Here we specifically use `PUB_CACHE` (and not `PUB_CACHE_PATH`), because `PUB_CACHE` is what dart (and flutter) looks for in the environment
-[[ -z $PUB_CACHE ]] && PUB_CACHE="$HOME/.pub-cache"
+[[ -z $PUB_CACHE_PATH ]] && PUB_CACHE_PATH="default"
+
+# `PUB_CACHE` is what Dart and Flutter looks for in the environment, while
+# `PUB_CACHE_PATH` is passed in from the action.
+#
+# If `PUB_CACHE` is set already, then it should continue to be used. Otherwise, satisfy it
+# if the action requests a custom path, or set to the Dart default values depending
+# on the operating system.
+if [ -z "$PUB_CACHE" ]; then
+	if [ "$PUB_CACHE_PATH" != "default" ]; then
+		PUB_CACHE="$PUB_CACHE_PATH"
+	elif [ "$OS_NAME" == "windows" ]; then
+		PUB_CACHE="$LOCALAPPDATA\\Pub\\Cache"
+	else
+		PUB_CACHE="$HOME/.pub-cache"
+	fi
+fi
 
 if [[ "$TEST_MODE" == true ]]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
