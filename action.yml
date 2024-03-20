@@ -37,6 +37,10 @@ inputs:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
     default: '${{ runner.arch }}'
+  dry-run:
+    description: 'If true, get outputs but do not install Flutter'
+    required: false
+    default: false
 outputs:
   CACHE-PATH:
     value: '${{ steps.flutter-action.outputs.CACHE-PATH }}'
@@ -76,4 +80,5 @@ runs:
           ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
           ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
     - run: $GITHUB_ACTION_PATH/setup.sh -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' -n '${{ steps.flutter-action.outputs.VERSION }}' -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' ${{ steps.flutter-action.outputs.CHANNEL }}
+      if: ${{ inputs.dry-run != 'true' }}
       shell: bash
