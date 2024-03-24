@@ -37,6 +37,10 @@ inputs:
     description: 'The architecture of Flutter SDK executable (x64 or arm64)'
     required: false
     default: '${{ runner.arch }}'
+  precache:
+    description: 'Whether to call flutter precache after download'
+    required: false
+    default: 'false'
 outputs:
   CACHE-PATH:
     value: '${{ steps.flutter-action.outputs.CACHE-PATH }}'
@@ -58,7 +62,7 @@ runs:
     - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
       shell: bash
     - id: flutter-action
-      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-path }}' -l '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
+      run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-path }}' -l '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -x '${{ inputs.precache }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
     - if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
