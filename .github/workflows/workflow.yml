@@ -61,6 +61,22 @@ jobs:
       shell: bash
     - run: flutter --version
       shell: bash
+  test_precache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          channel: stable
+          flutter-version: "3.10.6"
+          cache: true
+          precache: true
+      - run: dart --version
+        shell: bash
+      - run: flutter --version
+        shell: bash
+      - run: ls -la /tmp/flutter
+        shell: test -d $FLUTTER_ROOT/bin/cache/artifacts/engine/linux-amd64-release
   test_print_output:
     runs-on: macos-latest
     steps:
