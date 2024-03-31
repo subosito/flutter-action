@@ -282,6 +282,30 @@ steps:
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
 ```
 
+If you don't need to install Flutter and just want the output, you can use
+the `dry-run` option:
+
+```yaml
+steps:
+  - name: Clone repository
+  - uses: actions/checkout@v4
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    id: flutter-action
+    with:
+      channel: stable
+      dry-run: "true"
+  - run: |
+      echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
+      echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
+      echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
+      echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+      echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
+      echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
+      echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
+    shell: bash
+```
+
 ## Maintainers
 
 - [Alif Rachmawadi] (original creator)
