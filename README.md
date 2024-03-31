@@ -52,7 +52,8 @@ Use particular version on any channel:
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - name: Clone repository
+    uses: actions/checkout@v4
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -65,7 +66,8 @@ Use particular git reference on master channel:
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - name: Clone repository
+    uses: actions/checkout@v4
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
