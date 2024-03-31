@@ -48,6 +48,7 @@ outputs:
     value: '${{ steps.flutter-action.outputs.CACHE-KEY }}'
   CHANNEL:
     value: '${{ steps.flutter-action.outputs.CHANNEL }}'
+    description: 'The Flutter build release channel'
   VERSION:
     value: '${{ steps.flutter-action.outputs.VERSION }}'
   ARCHITECTURE:

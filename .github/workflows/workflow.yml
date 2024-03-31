@@ -68,25 +68,30 @@ jobs:
       - uses: ./
         with:
           channel: stable
-          flutter-version: "3.10.6"
+          flutter-version: 3.10.6
           cache: true
           precache: true
       - run: dart --version
         shell: bash
       - run: flutter --version
         shell: bash
-      - run: ls -la $FLUTTER_ROOT
+      - name: Run first test
+        run: |
+          cd $FLUTTER_ROOT/bin/cache/artifacts
+          test -d material_fonts
         shell: bash
-      - run: ls -la $FLUTTER_ROOT/bin
-        shell: bash
-      - run: ls -la $FLUTTER_ROOT/bin/cache
-        shell: bash
-      - run: ls -la $FLUTTER_ROOT/bin/cache/artifacts
-        shell: bash
-      - run: ls -la $FLUTTER_ROOT/bin/cache/artifacts/engine
-        shell: bash
-      - run: test -d $FLUTTER_ROOT/bin/cache/artifacts/engine/linux-amd64-release
-        shell: bash
+      - name: Run more tests
+        run: |
+          cd $FLUTTER_ROOT/bin/cache/artifacts/engine
+          test -d android-arm
+          test -d android-arm-profile
+          test -d android-arm-release
+          test -d android-arm64
+          test -d android-arm64-profile
+          test -d android-arm64-release
+          test -d linux-x64
+          test -d linux-x64-profile
+          test -d linux-x64-release
   test_print_output:
     runs-on: macos-latest
     steps:
