@@ -68,7 +68,7 @@ jobs:
       - uses: ./
         with:
           channel: stable
-          flutter-version: 3.10.6
+          flutter-version: 3.19.0
           cache: false
           precache: false
       - run: dart --version
@@ -100,7 +100,7 @@ jobs:
       - uses: ./
         with:
           channel: stable
-          flutter-version: 3.10.6
+          flutter-version: 3.19.0
           cache: false
           precache: true
       - run: dart --version
