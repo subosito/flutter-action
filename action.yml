@@ -38,36 +38,47 @@ inputs:
     required: false
     default: "${{ runner.arch }}"
 outputs:
-  CACHE-PATH:
-    value: "${{ steps.flutter-action.outputs.CACHE-PATH }}"
   CACHE-KEY:
     value: "${{ steps.flutter-action.outputs.CACHE-KEY }}"
+    description: Key used to cache the Flutter SDK
+  CACHE-PATH:
+    value: "${{ steps.flutter-action.outputs.CACHE-PATH }}"
+    description: Path to Flutter SDK
   CHANNEL:
     value: "${{ steps.flutter-action.outputs.CHANNEL }}"
+    description: The selected Flutter release channel
   VERSION:
     value: "${{ steps.flutter-action.outputs.VERSION }}"
+    description: The selected Flutter version
   ARCHITECTURE:
     value: "${{ steps.flutter-action.outputs.ARCHITECTURE }}"
+    description: The selected Flutter CPU architecture
   PUB-CACHE-KEY:
     value: "${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}"
+    description: Key used to cache the pub dependencies
   PUB-CACHE-PATH:
     value: "${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}"
+    description: Path to pub cache
 runs:
   using: composite
   steps:
-    - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
+    - name: Make setup script executable
+      run: chmod +x "$GITHUB_ACTION_PATH/setup.sh"
       shell: bash
-    - id: flutter-action
+    - name: Print configuration
+      id: flutter-action
       run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-path }}' -l '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
-    - if: ${{ inputs.cache == 'true' }}
+    - name: Cache Flutter
+      if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
         restore-keys: |
           ${{ steps.flutter-action.outputs.CACHE-KEY }}
-    - if: ${{ inputs.cache == 'true' }}
+    - name: Cache pub dependencies
+      if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
