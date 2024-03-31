@@ -32,7 +32,7 @@ not_found_error() {
 }
 
 transform_path() {
-	if [[ "$OS_NAME" == windows ]]; then
+	if [ "$OS_NAME" = windows ]; then
 		echo "$1" | sed -e 's/^\///' -e 's/\//\\/g'
 	else
 		echo "$1"
@@ -48,7 +48,8 @@ download_archive() {
 
 	mkdir -p "$2"
 
-	if [[ "$archive_name" == *zip ]]; then
+	case "$archive_name" in
+	*.zip)
 		EXTRACT_PATH="$RUNNER_TEMP/_unzip_temp"
 		unzip -q -o "$archive_local" -d "$EXTRACT_PATH"
 		# Remove the folder again so that the move command can do a simple rename
@@ -58,9 +59,11 @@ download_archive() {
 		rm -r "$2"
 		mv "$EXTRACT_PATH"/flutter "$2"
 		rm -r "$EXTRACT_PATH"
-	else
+		;;
+	*)
 		tar xf "$archive_local" -C "$2" --strip-components=1
-	fi
+		;;
+	esac
 
 	rm "$archive_local"
 }
@@ -88,18 +91,18 @@ while getopts 'tc:k:d:l:pa:n:' flag; do
 	esac
 done
 
-[[ -z $ARCH ]] && ARCH="$ARCH_NAME"
+[ -z "$ARCH" ] && ARCH="$ARCH_NAME"
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
 CHANNEL="${ARR_CHANNEL[0]}"
 
-[[ -z $CHANNEL ]] && CHANNEL=stable
-[[ -z $VERSION ]] && VERSION=any
-[[ -z $ARCH ]] && ARCH=x64
-[[ -z $CACHE_PATH ]] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
-[[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
-[[ -z $PUB_CACHE_KEY ]] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
-[[ -z $PUB_CACHE_PATH ]] && PUB_CACHE_PATH="default"
+[ -z "$CHANNEL" ] && CHANNEL=stable
+[ -z "$VERSION" ] && VERSION=any
+[ -z "$ARCH" ] && ARCH=x64
+[ -z "$CACHE_PATH" ] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
+[ -z "$CACHE_KEY" ] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
+[ -z "$PUB_CACHE_KEY" ] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
+[ -z "$PUB_CACHE_PATH" ] && PUB_CACHE_PATH="default"
 
 # `PUB_CACHE` is what Dart and Flutter looks for in the environment, while
 # `PUB_CACHE_PATH` is passed in from the action.
@@ -110,29 +113,31 @@ CHANNEL="${ARR_CHANNEL[0]}"
 if [ -z "$PUB_CACHE" ]; then
 	if [ "$PUB_CACHE_PATH" != "default" ]; then
 		PUB_CACHE="$PUB_CACHE_PATH"
-	elif [ "$OS_NAME" == "windows" ]; then
+	elif [ "$OS_NAME" = "windows" ]; then
 		PUB_CACHE="$LOCALAPPDATA\\Pub\\Cache"
 	else
 		PUB_CACHE="$HOME/.pub-cache"
 	fi
 fi
 
-if [[ "$TEST_MODE" == true ]]; then
+if [ "$TEST_MODE" = true ]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
 else
 	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
-if [[ "$CHANNEL" == "master" || "$CHANNEL" == "main" ]]; then
+if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
 	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
 else
 	VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
 fi
 
-if [[ "$VERSION_MANIFEST" == *null* ]]; then
+case "$VERSION_MANIFEST" in
+*null*)
 	not_found_error "$CHANNEL" "$VERSION" "$ARCH"
 	exit 1
-fi
+	;;
+esac
 
 expand_key() {
 	version_channel=$(echo "$VERSION_MANIFEST" | jq -r '.channel')
@@ -155,14 +160,14 @@ CACHE_KEY=$(expand_key "$CACHE_KEY")
 PUB_CACHE_KEY=$(expand_key "$PUB_CACHE_KEY")
 CACHE_PATH=$(expand_key "$(transform_path "$CACHE_PATH")")
 
-if [[ "$PRINT_ONLY" == true ]]; then
+if [ "$PRINT_ONLY" = true ]; then
 	version_info=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch // "x64"')
 
 	info_channel=$(echo "$version_info" | awk -F ':' '{print $1}')
 	info_version=$(echo "$version_info" | awk -F ':' '{print $2}')
 	info_architecture=$(echo "$version_info" | awk -F ':' '{print $3}')
 
-	if [[ "$TEST_MODE" == true ]]; then
+	if [ "$TEST_MODE" = true ]; then
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
 		echo "ARCHITECTURE=$info_architecture"
@@ -186,10 +191,10 @@ if [[ "$PRINT_ONLY" == true ]]; then
 	exit 0
 fi
 
-if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
-	if [[ "$CHANNEL" == "master" || "$CHANNEL" == "main" ]]; then
+if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
+	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
 		git clone -b "$CHANNEL" https://github.com/flutter/flutter.git "$CACHE_PATH"
-		if [[ "$VERSION" != "any" ]]; then
+		if [ "$VERSION" != "any" ]; then
 			git config --global --add safe.directory "$CACHE_PATH"
 			(cd "$CACHE_PATH" && git checkout "$VERSION")
 		fi
