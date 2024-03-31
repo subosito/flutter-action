@@ -73,8 +73,9 @@ PRINT_ONLY=""
 TEST_MODE=false
 ARCH=""
 VERSION=""
+PRECACHE=""
 
-while getopts 'tc:k:d:l:pa:n:' flag; do
+while getopts 'tc:k:d:l:pa:x:n:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
@@ -83,6 +84,7 @@ while getopts 'tc:k:d:l:pa:n:' flag; do
 	p) PRINT_ONLY=true ;;
 	t) TEST_MODE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
+	x) PRECACHE="$OPTARG" ;;
 	n) VERSION="$OPTARG" ;;
 	?) exit 2 ;;
 	esac
@@ -96,6 +98,7 @@ CHANNEL="${ARR_CHANNEL[0]}"
 [[ -z $CHANNEL ]] && CHANNEL=stable
 [[ -z $VERSION ]] && VERSION=any
 [[ -z $ARCH ]] && ARCH=x64
+[[ -z $PRECACHE ]] && PRECACHE=false
 [[ -z $CACHE_PATH ]] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
 [[ -z $CACHE_KEY ]] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 [[ -z $PUB_CACHE_KEY ]] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
@@ -166,6 +169,7 @@ if [[ "$PRINT_ONLY" == true ]]; then
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
 		echo "ARCHITECTURE=$info_architecture"
+		echo "PRECACHE=$PRECACHE"
 		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
@@ -173,15 +177,17 @@ if [[ "$PRINT_ONLY" == true ]]; then
 		exit 0
 	fi
 
-	{
-		echo "CHANNEL=$info_channel"
-		echo "VERSION=$info_version"
-		echo "ARCHITECTURE=$info_architecture"
-		echo "CACHE-KEY=$CACHE_KEY"
-		echo "CACHE-PATH=$CACHE_PATH"
-		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
-		echo "PUB-CACHE-PATH=$PUB_CACHE"
-	} >>"$GITHUB_OUTPUT"
+	if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+		{
+			echo "CHANNEL=$info_channel"
+			echo "VERSION=$info_version"
+			echo "ARCHITECTURE=$info_architecture"
+			echo "CACHE-KEY=$CACHE_KEY"
+			echo "CACHE-PATH=$CACHE_PATH"
+			echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
+			echo "PUB-CACHE-PATH=$PUB_CACHE"
+		} >>"$GITHUB_OUTPUT"
+	fi
 
 	exit 0
 fi
@@ -199,13 +205,22 @@ if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
 	fi
 fi
 
-{
-	echo "FLUTTER_ROOT=$CACHE_PATH"
-	echo "PUB_CACHE=$PUB_CACHE"
-} >>"$GITHUB_ENV"
+if [ -n "${GITHUB_ENV:-}" ]; then
+	{
+		echo "FLUTTER_ROOT=$CACHE_PATH"
+		echo "PUB_CACHE=$PUB_CACHE"
+	} >>"$GITHUB_ENV"
+fi
 
-{
-	echo "$CACHE_PATH/bin"
-	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
-	echo "$PUB_CACHE/bin"
-} >>"$GITHUB_PATH"
+if [ -n "${GITHUB_PATH:-}" ]; then
+	{
+		echo "$CACHE_PATH/bin"
+		echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
+		echo "$PUB_CACHE/bin"
+	} >>"$GITHUB_PATH"
+fi
+
+if [ "$PRECACHE" = true ]; then
+	echo "Will run precache..."
+	flutter precache
+fi
