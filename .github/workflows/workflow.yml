@@ -75,8 +75,10 @@ jobs:
         shell: bash
       - run: flutter --version
         shell: bash
-      - run: ls -la /tmp/flutter
-        shell: test -d $FLUTTER_ROOT/bin/cache/artifacts/engine/linux-amd64-release
+      - run: ls -la $FLUTTER_ROOT
+        shell: bash
+      - run: test -d $FLUTTER_ROOT/bin/cache/artifacts/engine/linux-amd64-release
+        shell: bash
   test_print_output:
     runs-on: macos-latest
     steps:
