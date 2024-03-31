@@ -215,5 +215,6 @@ fi
 } >>"$GITHUB_PATH"
 
 if [ "$PRECACHE" = true ]; then
+	echo "Will run precache..."
 	flutter precache
 fi
