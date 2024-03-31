@@ -1,73 +1,84 @@
-name: 'Flutter action'
-description: 'Setup your runner with Flutter environment'
-author: 'Alif Rachmawadi'
+name: Set up Flutter
+description: Setup your runner with Flutter environment
+author: Alif Rachmawadi
 branding:
-  icon: 'maximize'
-  color: 'blue'
+  icon: maximize
+  color: blue
 inputs:
   flutter-version:
-    description: 'The Flutter version to make available on the path'
+    description: The Flutter version to make available on the path
     required: false
-    default: 'any'
+    default: any
   channel:
-    description: 'The Flutter build release channel'
+    description: The Flutter build release channel
     required: false
-    default: 'stable'
+    default: stable
   cache:
-    description: 'Cache the Flutter SDK'
+    description: Cache the Flutter SDK
     required: false
-    default: 'false'
+    default: "false"
   cache-key:
-    description: 'Identifier for the Flutter SDK cache'
+    description: Identifier for the Flutter SDK cache
     required: false
-    default: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+    default: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
   pub-cache-key:
-    description: 'Identifier for the Dart .pub-cache cache'
+    description: Identifier for the Dart .pub-cache cache
     required: false
-    default: 'flutter-pub:os:-:channel:-:version:-:arch:-:hash:'
+    default: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:"
   cache-path:
-    description: 'Flutter SDK cache path'
+    description: Flutter SDK cache path
     required: false
-    default: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    default: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
   pub-cache-path:
-    description: 'Flutter pub cache path'
+    description: Flutter pub cache path
     required: false
-    default: 'default'
+    default: default
   architecture:
-    description: 'The architecture of Flutter SDK executable (x64 or arm64)'
+    description: The architecture of Flutter SDK executable (x64 or arm64)
     required: false
-    default: '${{ runner.arch }}'
+    default: "${{ runner.arch }}"
 outputs:
-  CACHE-PATH:
-    value: '${{ steps.flutter-action.outputs.CACHE-PATH }}'
   CACHE-KEY:
-    value: '${{ steps.flutter-action.outputs.CACHE-KEY }}'
+    value: "${{ steps.flutter-action.outputs.CACHE-KEY }}"
+    description: Key used to cache the Flutter SDK
+  CACHE-PATH:
+    value: "${{ steps.flutter-action.outputs.CACHE-PATH }}"
+    description: Path to Flutter SDK
   CHANNEL:
-    value: '${{ steps.flutter-action.outputs.CHANNEL }}'
+    value: "${{ steps.flutter-action.outputs.CHANNEL }}"
+    description: The selected Flutter release channel
   VERSION:
-    value: '${{ steps.flutter-action.outputs.VERSION }}'
+    value: "${{ steps.flutter-action.outputs.VERSION }}"
+    description: The selected Flutter version
   ARCHITECTURE:
-    value: '${{ steps.flutter-action.outputs.ARCHITECTURE }}'
+    value: "${{ steps.flutter-action.outputs.ARCHITECTURE }}"
+    description: The selected Flutter CPU architecture
   PUB-CACHE-KEY:
-    value: '${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}'
+    value: "${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}"
+    description: Key used to cache the pub dependencies
   PUB-CACHE-PATH:
-    value: '${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}'
+    value: "${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}"
+    description: Path to pub cache
 runs:
-  using: 'composite'
+  using: composite
   steps:
-    - run: chmod +x $GITHUB_ACTION_PATH/setup.sh
+    - name: Make setup script executable
+      run: chmod +x "$GITHUB_ACTION_PATH/setup.sh"
       shell: bash
-    - id: flutter-action
+    - name: Print configuration
+      id: flutter-action
       run: $GITHUB_ACTION_PATH/setup.sh -p -c '${{ inputs.cache-path }}' -k '${{ inputs.cache-key }}' -d '${{ inputs.pub-cache-path }}' -l '${{ inputs.pub-cache-key }}' -n '${{ inputs.flutter-version }}' -a '${{ inputs.architecture }}' ${{ inputs.channel }}
       shell: bash
-    - if: ${{ inputs.cache == 'true' }}
+    - name: Cache Flutter
+      if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
         restore-keys: |
           ${{ steps.flutter-action.outputs.CACHE-KEY }}
-    - if: ${{ inputs.cache == 'true' }}
+    - name: Cache pub dependencies
+      if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
