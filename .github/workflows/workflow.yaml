@@ -28,6 +28,7 @@ jobs:
         operating-system:
           [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
         channel: [stable, beta, master]
+        dry-run: ["true", "false"]
         include:
           - operating-system: ubuntu-latest
             channel: main
@@ -39,6 +40,7 @@ jobs:
         uses: ./
         with:
           channel: ${{ matrix.channel }}
+          dry-run: ${{ matrix.dry-run }}
       - name: Echo outputs
         run: |
           echo RUNNER-OS=${{ runner.os }}
@@ -51,8 +53,16 @@ jobs:
           echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
         shell: bash
       - run: dart --version
+        if: ${{ matrix.dry-run != 'true' }}
         shell: bash
       - run: flutter --version
+        if: ${{ matrix.dry-run != 'true' }}
+        shell: bash
+      - run: "! dart --version"
+        if: ${{ matrix.dry-run == 'true' }}
+        shell: bash
+      - run: "! flutter --version"
+        if: ${{ matrix.dry-run == 'true' }}
         shell: bash
 
   test_cache:
