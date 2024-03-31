@@ -77,6 +77,14 @@ jobs:
         shell: bash
       - run: ls -la $FLUTTER_ROOT
         shell: bash
+      - run: ls -la $FLUTTER_ROOT/bin
+        shell: bash
+      - run: ls -la $FLUTTER_ROOT/bin/cache
+        shell: bash
+      - run: ls -la $FLUTTER_ROOT/bin/cache/artifacts
+        shell: bash
+      - run: ls -la $FLUTTER_ROOT/bin/cache/artifacts/engine
+        shell: bash
       - run: test -d $FLUTTER_ROOT/bin/cache/artifacts/engine/linux-amd64-release
         shell: bash
   test_print_output:
