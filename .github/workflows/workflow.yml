@@ -8,6 +8,7 @@ on:
     paths:
       - setup.sh
       - action.yml
+      - .github/workflows/workflow.yml
 jobs:
   lint_shellcheck:
     runs-on: ubuntu-latest
@@ -18,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        operating-system: [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
         channel: [stable, beta, master]
         include:
           - operating-system: ubuntu-latest
@@ -48,7 +49,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        operating-system: [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
     steps:
     - uses: actions/checkout@v4
     - uses: ./
