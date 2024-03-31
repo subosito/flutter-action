@@ -61,7 +61,7 @@ jobs:
       shell: bash
     - run: flutter --version
       shell: bash
-  test_precache:
+  test_precache_disabled:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,7 +69,39 @@ jobs:
         with:
           channel: stable
           flutter-version: 3.10.6
-          cache: true
+          cache: false
+          precache: false
+      - run: dart --version
+        shell: bash
+      - run: flutter --version
+        shell: bash
+      - name: Run first test
+        run: |
+          cd $FLUTTER_ROOT/bin/cache/artifacts
+          ls -lah .
+          test ! -e material_fonts
+        shell: bash
+      - name: Run more tests
+        run: |
+          cd $FLUTTER_ROOT/bin/cache/artifacts/engine
+          test ! -e android-arm
+          test ! -e android-arm-profile
+          test ! -e android-arm-release
+          test ! -e android-arm64
+          test ! -e android-arm64-profile
+          test ! -e android-arm64-release
+          test ! -e linux-x64
+          test ! -e linux-x64-profile
+          test ! -e linux-x64-release
+  test_precache_enabled:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          channel: stable
+          flutter-version: 3.10.6
+          cache: false
           precache: true
       - run: dart --version
         shell: bash
