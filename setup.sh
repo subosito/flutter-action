@@ -83,7 +83,6 @@ while getopts 'tc:k:d:l:pa:x:n:' flag; do
 	l) PUB_CACHE_KEY="$OPTARG" ;;
 	p) PRINT_ONLY=true ;;
 	t) TEST_MODE=true ;;
-	t) TEST_MODE=true ;; # Uses RELEASE_MANIFEST from test/ directory, instead of fetching it from Google
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	x) PRECACHE="$OPTARG" ;;
 	n) VERSION="$OPTARG" ;;
