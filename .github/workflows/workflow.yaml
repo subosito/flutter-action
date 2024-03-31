@@ -8,8 +8,8 @@ on:
   pull_request:
     paths:
       - setup.sh
-      - action.yml
-      - .github/workflows/workflow.yml
+      - action.yaml
+      - .github/workflows/workflow.yaml
 jobs:
   lint_shellcheck:
     runs-on: ubuntu-latest
