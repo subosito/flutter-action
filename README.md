@@ -2,7 +2,9 @@
 
 Flutter environment for use in GitHub Actions. It works on Linux, Windows, and macOS.
 
-## Usage
+The following sections show how to configure this action.
+
+## Flutter version
 
 Use specific version and channel:
 
@@ -63,7 +65,9 @@ steps:
 - run: flutter --version
 ```
 
-Build Android APK and app bundle:
+## Build Target
+
+Build **Android** APK and app bundle:
 
 ```yaml
 steps:
@@ -77,7 +81,7 @@ steps:
 - run: flutter build appbundle
 ```
 
-Build for iOS (macOS only):
+Build for **iOS** (macOS only):
 
 ```yaml
 jobs:
@@ -93,7 +97,7 @@ jobs:
     - run: flutter build ios --release --no-codesign
 ```
 
-Build for the web:
+Build for the **web**:
 
 ```yaml
 steps:
@@ -106,7 +110,7 @@ steps:
 - run: flutter build web
 ```
 
-Build for Windows:
+Build for **Windows**:
 
 ```yaml
 jobs:
@@ -120,7 +124,7 @@ jobs:
      - run: flutter build windows
 ```
 
-Build for Linux desktop:
+Build for **Linux** desktop:
 
 ```yaml
 jobs:
@@ -137,7 +141,7 @@ jobs:
      - run: flutter build linux
 ```
 
-Build for macOS desktop:
+Build for **macOS** desktop:
 
 ```yaml
 jobs:
@@ -151,6 +155,8 @@ jobs:
      - run: flutter build macos
 ```
 
+## Caching
+
 Integration with `actions/cache`:
 
 ```yaml
@@ -160,6 +166,7 @@ steps:
   with:
     channel: 'stable'
     cache: true
+    # optional parameters follow
     cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
     cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
     pub-cache-key: 'flutter-pub:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache of dart pub get dependencies
