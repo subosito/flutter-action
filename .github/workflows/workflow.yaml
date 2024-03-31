@@ -69,7 +69,7 @@ jobs:
       - uses: ./
         with:
           channel: stable
-          flutter-version: "3.10.6"
+          flutter-version: 3.10.6
           cache: true
       - run: dart --version
         shell: bash
