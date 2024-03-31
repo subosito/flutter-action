@@ -57,7 +57,7 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: "3.x"
+      flutter-version: 3.x
       channel: any
   - run: flutter --version
 ```
