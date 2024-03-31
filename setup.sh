@@ -83,6 +83,7 @@ while getopts 'tc:k:d:l:pa:x:n:' flag; do
 	l) PUB_CACHE_KEY="$OPTARG" ;;
 	p) PRINT_ONLY=true ;;
 	t) TEST_MODE=true ;;
+	t) TEST_MODE=true ;; # Uses RELEASE_MANIFEST from test/ directory, instead of fetching it from Google
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	x) PRECACHE="$OPTARG" ;;
 	n) VERSION="$OPTARG" ;;
@@ -177,15 +178,17 @@ if [[ "$PRINT_ONLY" == true ]]; then
 		exit 0
 	fi
 
-	{
-		echo "CHANNEL=$info_channel"
-		echo "VERSION=$info_version"
-		echo "ARCHITECTURE=$info_architecture"
-		echo "CACHE-KEY=$CACHE_KEY"
-		echo "CACHE-PATH=$CACHE_PATH"
-		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
-		echo "PUB-CACHE-PATH=$PUB_CACHE"
-	} >>"$GITHUB_OUTPUT"
+	if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+		{
+			echo "CHANNEL=$info_channel"
+			echo "VERSION=$info_version"
+			echo "ARCHITECTURE=$info_architecture"
+			echo "CACHE-KEY=$CACHE_KEY"
+			echo "CACHE-PATH=$CACHE_PATH"
+			echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
+			echo "PUB-CACHE-PATH=$PUB_CACHE"
+		} >>"$GITHUB_OUTPUT"
+	fi
 
 	exit 0
 fi
@@ -203,16 +206,20 @@ if [[ ! -x "$CACHE_PATH/bin/flutter" ]]; then
 	fi
 fi
 
-{
-	echo "FLUTTER_ROOT=$CACHE_PATH"
-	echo "PUB_CACHE=$PUB_CACHE"
-} >>"$GITHUB_ENV"
+if [ -n "${GITHUB_ENV:-}" ]; then
+	{
+		echo "FLUTTER_ROOT=$CACHE_PATH"
+		echo "PUB_CACHE=$PUB_CACHE"
+	} >>"$GITHUB_ENV"
+fi
 
-{
-	echo "$CACHE_PATH/bin"
-	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
-	echo "$PUB_CACHE/bin"
-} >>"$GITHUB_PATH"
+if [ -n "${GITHUB_PATH:-}" ]; then
+	{
+		echo "$CACHE_PATH/bin"
+		echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
+		echo "$PUB_CACHE/bin"
+	} >>"$GITHUB_PATH"
+fi
 
 if [ "$PRECACHE" = true ]; then
 	echo "Will run precache..."
