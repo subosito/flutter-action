@@ -82,6 +82,8 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+      - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
+        shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'
         shell: bash
       - run: ./setup.sh -t -p                        | grep '3.7.7'

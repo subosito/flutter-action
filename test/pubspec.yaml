@@ -1,0 +1,5 @@
+name: flutter_action_test
+
+environment:
+  dart: ">=2.18.0 <3.0.0"
+  flutter: 3.3.10
