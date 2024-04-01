@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 check_command() {
 	command -v "$1" >/dev/null 2>&1
@@ -102,7 +103,7 @@ done
 [ -z "$ARCH" ] && ARCH="$ARCH_NAME"
 
 if [ -n "$VERSION_FILE" ]; then
-	if [ -n "$VERSION" ]; then
+	if [ -n "$VERSION" ] || [ "$VERSION" != "any" ] ; then
 		echo "Cannot specify both a version and a version file"
 		exit 1
 	fi
@@ -111,7 +112,7 @@ if [ -n "$VERSION_FILE" ]; then
 fi
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
-CHANNEL="${ARR_CHANNEL[0]}"
+CHANNEL="${ARR_CHANNEL[0]:-}"
 
 [ -z "$CHANNEL" ] && CHANNEL=stable
 [ -z "$VERSION" ] && VERSION=any
@@ -127,7 +128,7 @@ CHANNEL="${ARR_CHANNEL[0]}"
 # If `PUB_CACHE` is set already, then it should continue to be used. Otherwise, satisfy it
 # if the action requests a custom path, or set to the Dart default values depending
 # on the operating system.
-if [ -z "$PUB_CACHE" ]; then
+if [ -z "${PUB_CACHE:-}" ]; then
 	if [ "$PUB_CACHE_PATH" != "default" ]; then
 		PUB_CACHE="$PUB_CACHE_PATH"
 	elif [ "$OS_NAME" = "windows" ]; then
@@ -203,7 +204,7 @@ if [ "$PRINT_ONLY" = true ]; then
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
-	} >>"$GITHUB_OUTPUT"
+	} >>"${GITHUB_OUTPUT:-/dev/null}"
 
 	exit 0
 fi
@@ -224,10 +225,10 @@ fi
 {
 	echo "FLUTTER_ROOT=$CACHE_PATH"
 	echo "PUB_CACHE=$PUB_CACHE"
-} >>"$GITHUB_ENV"
+} >>"${GITHUB_ENV:-/dev/null}"
 
 {
 	echo "$CACHE_PATH/bin"
 	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
 	echo "$PUB_CACHE/bin"
-} >>"$GITHUB_PATH"
+} >>"${GITHUB_PATH:-/dev/null}"
