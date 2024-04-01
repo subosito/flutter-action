@@ -50,9 +50,6 @@ outputs:
   VERSION:
     value: "${{ steps.flutter-action.outputs.VERSION }}"
     description: The selected Flutter version
-  VERSION_FILE:
-    value: "${{ steps.flutter-action.outputs.VERSION_FILE }}"
-    description: The pubspec.yaml file with exact Flutter version defined
   ARCHITECTURE:
     value: "${{ steps.flutter-action.outputs.ARCHITECTURE }}"
     description: The selected Flutter CPU architecture
@@ -114,7 +111,6 @@ runs:
       run: |
         $GITHUB_ACTION_PATH/setup.sh \
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
-          -f '${{ steps.flutter-action.outputs.VERSION_FILE }}' \
           -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' \
           -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' \
           ${{ steps.flutter-action.outputs.CHANNEL }}
