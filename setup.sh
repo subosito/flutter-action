@@ -2,8 +2,10 @@
 set -eu
 
 check_command() {
-	command -v "$1" >/dev/null 2>&1
+	command -v "$1" >/dev/null
 }
+
+printf "hello from setup.sh\n" 1>&2
 
 if ! check_command jq; then
 	echo "jq not found. Install it from https://stedolan.github.io/jq"
@@ -104,7 +106,7 @@ done
 
 if [ -n "$VERSION_FILE" ]; then
 	if [ -n "$VERSION" ]; then
-		echo "Cannot specify both a version and a version file"
+		echo "Cannot specify both a version and a version file" 1>&2
 		exit 1
 	fi
 
