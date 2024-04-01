@@ -16,8 +16,8 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 3.19.0
       channel: stable
+      flutter-version: 3.19.0
   - run: flutter --version
 ```
 
@@ -43,8 +43,8 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 1.22.x
       channel: dev
+      flutter-version: 1.22.x
   - run: flutter --version
 ```
 
@@ -57,8 +57,8 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 3.x
       channel: any
+      flutter-version: 3.x
   - run: flutter --version
 ```
 
@@ -71,8 +71,8 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 5b12b74 # tag, commit or branch
       channel: master
+      flutter-version: 5b12b74 # tag, commit or branch
   - run: flutter --version
 ```
 
@@ -121,7 +121,7 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      channel: "stable"
+      channel: stable
   - run: flutter pub get
   - run: flutter test
   - run: flutter build web
@@ -174,7 +174,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
+          channel: stable
       - run: flutter build macos
 ```
 
@@ -220,7 +220,9 @@ steps:
     id: flutter-action
     with:
       channel: stable
-  - run: |
+  - name: Print outputs
+    shell: bash
+    run: |
       echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
       echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
       echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
@@ -228,5 +230,4 @@ steps:
       echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
-    shell: bash
 ```
