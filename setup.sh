@@ -103,7 +103,7 @@ done
 [ -z "$ARCH" ] && ARCH="$ARCH_NAME"
 
 if [ -n "$VERSION_FILE" ]; then
-	if [ -n "$VERSION" ] || [ "$VERSION" != "any" ] ; then
+	if [ -n "$VERSION" ]; then
 		echo "Cannot specify both a version and a version file"
 		exit 1
 	fi

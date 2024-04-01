@@ -76,6 +76,27 @@ jobs:
       - run: flutter --version
         shell: bash
 
+  test_version_file:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - uses: ./
+        with:
+          channel: stable
+          flutter-version-file: test/pubspec.yaml
+      - name: Verify Dart version
+        run: dart --version | grep '2.18.6'
+        shell: bash
+      - name: Verify Flutter version
+        run: flutter --version | grep '3.3.10'
+        shell: bash
+
   test_print_output:
     runs-on: macos-latest
 

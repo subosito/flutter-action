@@ -13,7 +13,7 @@ inputs:
   flutter-version:
     description: The Flutter version to make available on the path
     required: false
-    default: any
+    default: ""
   flutter-version-file:
     description: The pubspec.yaml file with exact Flutter version defined
     required: false
