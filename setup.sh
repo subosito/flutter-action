@@ -188,6 +188,7 @@ if [ "$PRINT_ONLY" = true ]; then
 	if [ "$TEST_MODE" = true ]; then
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
+		# VERSION_FILE is not printed, because it is essentially same as VERSION
 		echo "ARCHITECTURE=$info_architecture"
 		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
@@ -199,6 +200,7 @@ if [ "$PRINT_ONLY" = true ]; then
 	{
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
+		# VERSION_FILE is not printed, because it is essentially same as VERSION
 		echo "ARCHITECTURE=$info_architecture"
 		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
