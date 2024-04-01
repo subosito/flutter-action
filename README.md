@@ -5,6 +5,8 @@ macOS.
 
 The following sections show how to configure this action.
 
+Maintainers: [Alif Rachmawadi] (original creator), [Bartek Pacia]
+
 ## Specifying Flutter version
 
 ### Use specific version and channel
@@ -62,6 +64,8 @@ steps:
 >
 > Using `flutter-version-file` requires [`yq`][https://github.com/mikefarah/yq],
 > which is not pre-installed in `windows` images. Install it yourself.
+
+### Use latest release for particular channel
 
 ```yaml
 steps:
@@ -279,3 +283,6 @@ steps:
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
 ```
+
+[Alif Rachmawadi]: https://github.com/subosito
+[Bartek Pacia]: https://github.com/bartekpacia
