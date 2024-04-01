@@ -9,11 +9,6 @@ if ! check_command jq; then
 	exit 1
 fi
 
-if ! check_command yq; then
-	echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
-	exit 1
-fi
-
 OS_NAME=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
 ARCH_NAME=$(echo "$RUNNER_ARCH" | awk '{print tolower($0)}')
 MANIFEST_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
@@ -93,14 +88,18 @@ while getopts 'tc:k:d:l:pa:n:f:' flag; do
 	t) TEST_MODE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	n) VERSION="$OPTARG" ;;
-	f) VERSION_FILE="$OPTARG" ;;
+	f)
+		VERSION_FILE="$OPTARG"
+		if [ -n "$VERSION_FILE" ] && ! check_command yq; then
+			echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
+			exit 1
+		fi
+		;;
 	?) exit 2 ;;
 	esac
 done
 
 [ -z "$ARCH" ] && ARCH="$ARCH_NAME"
-
-
 
 if [ -n "$VERSION_FILE" ]; then
 	if [ -n "$VERSION" ]; then
