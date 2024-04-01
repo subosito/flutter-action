@@ -7,7 +7,7 @@ The following sections show how to configure this action.
 
 ## Specifying Flutter version
 
-Use specific version and channel:
+### Use specific version and channel
 
 ```yaml
 steps:
@@ -21,8 +21,9 @@ steps:
   - run: flutter --version
 ```
 
-Use version from pubspec.yaml (inspired by
-[`actions/setup-go`](https://github.com/actions/setup-go)):
+### Use version from pubspec.yaml
+
+This is inspired by [`actions/setup-go`](https://github.com/actions/setup-go).
 
 ```yaml
 steps:
@@ -36,8 +37,10 @@ steps:
   - run: flutter --version
 ```
 
-> [!IMPORTANT] For `flutter-version-file` to work, you need to have the exact
-> Flutter version defined in your pubspec.yaml:
+> [!IMPORTANT]
+>
+> For `flutter-version-file` to work, you need to have the exact Flutter version
+> defined in your pubspec.yaml:
 >
 > **Good**
 >
@@ -56,6 +59,7 @@ steps:
 > ```
 
 > [!WARNING]
+>
 > Using `flutter-version-file` requires [`yq`][https://github.com/mikefarah/yq],
 > which is not pre-installed in `windows` images. Install it yourself.
 
@@ -70,7 +74,7 @@ steps:
   - run: flutter --version
 ```
 
-Use latest release for particular version and/or channel:
+### Use latest release for particular version and/or channel
 
 ```yaml
 steps:
@@ -84,7 +88,7 @@ steps:
   - run: flutter --version
 ```
 
-Use particular version on any channel:
+### Use particular version on any channel
 
 ```yaml
 steps:
@@ -98,7 +102,7 @@ steps:
   - run: flutter --version
 ```
 
-Use particular git reference on master channel:
+### Use particular git reference on master channel
 
 ```yaml
 steps:
@@ -130,7 +134,11 @@ steps:
   - run: flutter build appbundle
 ```
 
-Build for **iOS** (macOS runners only):
+### Build for iOS
+
+> [!NOTE]
+>
+> Building for iOS requires a macOS runner.
 
 ```yaml
 jobs:
@@ -148,7 +156,7 @@ jobs:
       - run: flutter build ios --release --no-codesign
 ```
 
-Build for the **web**:
+### Build for the web
 
 ```yaml
 steps:
@@ -163,7 +171,7 @@ steps:
   - run: flutter build web
 ```
 
-Build for **Windows**:
+### Build for Windows
 
 ```yaml
 jobs:
@@ -179,7 +187,7 @@ jobs:
       - run: flutter build windows
 ```
 
-Build for **Linux** desktop:
+### Build for Linux desktop
 
 ```yaml
 jobs:
@@ -198,7 +206,11 @@ jobs:
       - run: flutter build linux
 ```
 
-Build for **macOS** desktop:
+### Build for macOS desktop
+
+> [!NOTE]
+>
+> Building for macOS requires a macOS runner.
 
 ```yaml
 jobs:
