@@ -21,6 +21,40 @@ steps:
   - run: flutter --version
 ```
 
+Use version from pubspec.yaml:
+
+```yaml
+steps:
+  - name: Clone repository
+    uses: actions/checkout@v4
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      channel: stable
+      flutter-version-file: pubspec.yaml # path to pubspec.yaml
+  - run: flutter --version
+```
+
+> [!IMPORTANT]
+> For `flutter-version-file` to work, you need to have the exact Flutter version
+> defined in your pubspec.yaml:
+>
+> **Good**
+>
+> ```yaml
+> environment:
+>   sdk: ">=3.3.0 <4.0.0"
+>   flutter: 3.19.0
+> ```
+>
+> **Bad**
+>
+> ```yaml
+> environment:
+>   sdk: ">=3.3.0 <4.0.0"
+>   flutter: ">= 3.19.0 <4.0.0"
+> ```
+
 Use latest release for particular channel:
 
 ```yaml
