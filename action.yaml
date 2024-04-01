@@ -29,15 +29,15 @@ inputs:
   cache-key:
     description: Identifier for the Flutter SDK cache
     required: false
-    default: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+    default: ""
   cache-path:
     description: Flutter SDK cache path
     required: false
-    default: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+    default: ""
   pub-cache-key:
     description: Identifier for the Dart .pub-cache cache
     required: false
-    default: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:"
+    default: ""
   pub-cache-path:
     description: Flutter pub cache path
     required: false
