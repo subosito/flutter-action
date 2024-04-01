@@ -5,7 +5,12 @@ check_command() {
 }
 
 if ! check_command jq; then
-	echo "jq not found, please install it, https://stedolan.github.io/jq/download/"
+	echo "jq not found. Install it from https://stedolan.github.io/jq"
+	exit 1
+fi
+
+if ! check_command yq; then
+	echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
 	exit 1
 fi
 
@@ -76,8 +81,9 @@ PRINT_ONLY=""
 TEST_MODE=false
 ARCH=""
 VERSION=""
+VERSION_FILE=""
 
-while getopts 'tc:k:d:l:pa:n:' flag; do
+while getopts 'tc:k:d:l:pa:n:f:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
@@ -87,11 +93,23 @@ while getopts 'tc:k:d:l:pa:n:' flag; do
 	t) TEST_MODE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	n) VERSION="$OPTARG" ;;
+	f) VERSION_FILE="$OPTARG" ;;
 	?) exit 2 ;;
 	esac
 done
 
 [ -z "$ARCH" ] && ARCH="$ARCH_NAME"
+
+
+
+if [ -n "$VERSION_FILE" ]; then
+	if [ -n "$VERSION" ]; then
+		echo "Cannot specify both a version and a version file"
+		exit 1
+	fi
+
+	VERSION="$(yq '.environment.flutter' "$VERSION_FILE")"
+fi
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
 CHANNEL="${ARR_CHANNEL[0]}"
