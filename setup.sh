@@ -1,11 +1,12 @@
 #!/bin/bash
+set -eu
 
 check_command() {
 	command -v "$1" >/dev/null 2>&1
 }
 
 if ! check_command jq; then
-	echo "jq not found, please install it, https://stedolan.github.io/jq/download/"
+	echo "jq not found. Install it from https://stedolan.github.io/jq"
 	exit 1
 fi
 
@@ -76,8 +77,9 @@ PRINT_ONLY=""
 TEST_MODE=false
 ARCH=""
 VERSION=""
+VERSION_FILE=""
 
-while getopts 'tc:k:d:l:pa:n:' flag; do
+while getopts 'tc:k:d:l:pa:n:f:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
@@ -87,19 +89,35 @@ while getopts 'tc:k:d:l:pa:n:' flag; do
 	t) TEST_MODE=true ;;
 	a) ARCH="$(echo "$OPTARG" | awk '{print tolower($0)}')" ;;
 	n) VERSION="$OPTARG" ;;
+	f)
+		VERSION_FILE="$OPTARG"
+		if [ -n "$VERSION_FILE" ] && ! check_command yq; then
+			echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
+			exit 1
+		fi
+		;;
 	?) exit 2 ;;
 	esac
 done
 
 [ -z "$ARCH" ] && ARCH="$ARCH_NAME"
 
+if [ -n "$VERSION_FILE" ]; then
+	if [ -n "$VERSION" ]; then
+		echo "Cannot specify both a version and a version file"
+		exit 1
+	fi
+
+	VERSION="$(yq '.environment.flutter' "$VERSION_FILE")"
+fi
+
 ARR_CHANNEL=("${@:$OPTIND:1}")
-CHANNEL="${ARR_CHANNEL[0]}"
+CHANNEL="${ARR_CHANNEL[0]:-}"
 
 [ -z "$CHANNEL" ] && CHANNEL=stable
 [ -z "$VERSION" ] && VERSION=any
 [ -z "$ARCH" ] && ARCH=x64
-[ -z "$CACHE_PATH" ] && CACHE_PATH="$RUNNER_TEMP/flutter/:channel:-:version:-:arch:"
+[ -z "$CACHE_PATH" ] && CACHE_PATH="$RUNNER_TOOL_CACHE/flutter/:channel:-:version:-:arch:"
 [ -z "$CACHE_KEY" ] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 [ -z "$PUB_CACHE_KEY" ] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
 [ -z "$PUB_CACHE_PATH" ] && PUB_CACHE_PATH="default"
@@ -110,7 +128,7 @@ CHANNEL="${ARR_CHANNEL[0]}"
 # If `PUB_CACHE` is set already, then it should continue to be used. Otherwise, satisfy it
 # if the action requests a custom path, or set to the Dart default values depending
 # on the operating system.
-if [ -z "$PUB_CACHE" ]; then
+if [ -z "${PUB_CACHE:-}" ]; then
 	if [ "$PUB_CACHE_PATH" != "default" ]; then
 		PUB_CACHE="$PUB_CACHE_PATH"
 	elif [ "$OS_NAME" = "windows" ]; then
@@ -170,6 +188,7 @@ if [ "$PRINT_ONLY" = true ]; then
 	if [ "$TEST_MODE" = true ]; then
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
+		# VERSION_FILE is not printed, because it is essentially same as VERSION
 		echo "ARCHITECTURE=$info_architecture"
 		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
@@ -181,12 +200,13 @@ if [ "$PRINT_ONLY" = true ]; then
 	{
 		echo "CHANNEL=$info_channel"
 		echo "VERSION=$info_version"
+		# VERSION_FILE is not printed, because it is essentially same as VERSION
 		echo "ARCHITECTURE=$info_architecture"
 		echo "CACHE-KEY=$CACHE_KEY"
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
-	} >>"$GITHUB_OUTPUT"
+	} >>"${GITHUB_OUTPUT:-/dev/null}"
 
 	exit 0
 fi
@@ -207,10 +227,10 @@ fi
 {
 	echo "FLUTTER_ROOT=$CACHE_PATH"
 	echo "PUB_CACHE=$PUB_CACHE"
-} >>"$GITHUB_ENV"
+} >>"${GITHUB_ENV:-/dev/null}"
 
 {
 	echo "$CACHE_PATH/bin"
 	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
 	echo "$PUB_CACHE/bin"
-} >>"$GITHUB_PATH"
+} >>"${GITHUB_PATH:-/dev/null}"

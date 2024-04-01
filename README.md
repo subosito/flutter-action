@@ -5,9 +5,9 @@ macOS.
 
 The following sections show how to configure this action.
 
-## Flutter version
+## Specifying Flutter version
 
-Use specific version and channel:
+### Use specific version and channel
 
 ```yaml
 steps:
@@ -16,12 +16,52 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 3.19.0
       channel: stable
+      flutter-version: 3.19.0
   - run: flutter --version
 ```
 
-Use latest release for particular channel:
+### Use version from pubspec.yaml
+
+This is inspired by [`actions/setup-go`](https://github.com/actions/setup-go).
+
+```yaml
+steps:
+  - name: Clone repository
+    uses: actions/checkout@v4
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      channel: stable
+      flutter-version-file: pubspec.yaml # path to pubspec.yaml
+  - run: flutter --version
+```
+
+> [!IMPORTANT]
+>
+> For `flutter-version-file` to work, you need to have the exact Flutter version
+> defined in your pubspec.yaml:
+>
+> **Good**
+>
+> ```yaml
+> environment:
+>   sdk: ">=3.3.0 <4.0.0"
+>   flutter: 3.19.0
+> ```
+>
+> **Bad**
+>
+> ```yaml
+> environment:
+>   sdk: ">=3.3.0 <4.0.0"
+>   flutter: ">= 3.19.0 <4.0.0"
+> ```
+
+> [!WARNING]
+>
+> Using `flutter-version-file` requires [`yq`][https://github.com/mikefarah/yq],
+> which is not pre-installed in `windows` images. Install it yourself.
 
 ```yaml
 steps:
@@ -34,7 +74,7 @@ steps:
   - run: flutter --version
 ```
 
-Use latest release for particular version and/or channel:
+### Use latest release for particular version and/or channel
 
 ```yaml
 steps:
@@ -43,12 +83,12 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 1.22.x
       channel: dev
+      flutter-version: 1.22.x
   - run: flutter --version
 ```
 
-Use particular version on any channel:
+### Use particular version on any channel
 
 ```yaml
 steps:
@@ -57,12 +97,12 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 3.x
       channel: any
+      flutter-version: 3.x
   - run: flutter --version
 ```
 
-Use particular git reference on master channel:
+### Use particular git reference on master channel
 
 ```yaml
 steps:
@@ -71,8 +111,8 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 5b12b74 # tag, commit or branch
       channel: master
+      flutter-version: 5b12b74 # tag, commit or branch
   - run: flutter --version
 ```
 
@@ -94,7 +134,11 @@ steps:
   - run: flutter build appbundle
 ```
 
-Build for **iOS** (macOS runners only):
+### Build for iOS
+
+> [!NOTE]
+>
+> Building for iOS requires a macOS runner.
 
 ```yaml
 jobs:
@@ -112,7 +156,7 @@ jobs:
       - run: flutter build ios --release --no-codesign
 ```
 
-Build for the **web**:
+### Build for the web
 
 ```yaml
 steps:
@@ -121,13 +165,13 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      channel: "stable"
+      channel: stable
   - run: flutter pub get
   - run: flutter test
   - run: flutter build web
 ```
 
-Build for **Windows**:
+### Build for Windows
 
 ```yaml
 jobs:
@@ -143,7 +187,7 @@ jobs:
       - run: flutter build windows
 ```
 
-Build for **Linux** desktop:
+### Build for Linux desktop
 
 ```yaml
 jobs:
@@ -162,7 +206,11 @@ jobs:
       - run: flutter build linux
 ```
 
-Build for **macOS** desktop:
+### Build for macOS desktop
+
+> [!NOTE]
+>
+> Building for macOS requires a macOS runner.
 
 ```yaml
 jobs:
@@ -174,7 +222,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
+          channel: stable
       - run: flutter build macos
 ```
 
@@ -220,7 +268,9 @@ steps:
     id: flutter-action
     with:
       channel: stable
-  - run: |
+  - name: Print outputs
+    shell: bash
+    run: |
       echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
       echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
       echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
@@ -228,5 +278,4 @@ steps:
       echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
-    shell: bash
 ```

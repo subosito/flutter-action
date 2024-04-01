@@ -76,12 +76,35 @@ jobs:
       - run: flutter --version
         shell: bash
 
+  test_version_file:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - uses: ./
+        with:
+          channel: stable
+          flutter-version-file: test/pubspec.yaml
+      - name: Verify Dart version
+        run: dart --version | grep '2.18.6'
+        shell: bash
+      - name: Verify Flutter version
+        run: flutter --version | grep '3.3.10'
+        shell: bash
+
   test_print_output:
     runs-on: macos-latest
 
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+      - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
+        shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'
         shell: bash
       - run: ./setup.sh -t -p                        | grep '3.7.7'
@@ -146,15 +169,15 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -n 0 any               | grep 'flutter-macos-beta-0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
         shell: bash
-      - run: ./setup.sh -t -p                        | grep '/Users/runner/work/_temp/flutter/stable-3.7.7-x64'
+      - run: ./setup.sh -t -p                        | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-x64'
         shell: bash
-      - run: ./setup.sh -t -p stable                 | grep '/Users/runner/work/_temp/flutter/stable-3.7.7-x64'
+      - run: ./setup.sh -t -p stable                 | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-x64'
         shell: bash
-      - run: ./setup.sh -t -p beta                   | grep '/Users/runner/work/_temp/flutter/beta-3.9.0-0.1.pre-x64'
+      - run: ./setup.sh -t -p beta                   | grep '/Users/runner/hostedtoolcache/flutter/beta-3.9.0-0.1.pre-x64'
         shell: bash
-      - run: ./setup.sh -t -p dev                    | grep '/Users/runner/work/_temp/flutter/dev-2.11.0-0.1.pre-x64'
+      - run: ./setup.sh -t -p dev                    | grep '/Users/runner/hostedtoolcache/flutter/dev-2.11.0-0.1.pre-x64'
         shell: bash
-      - run: ./setup.sh -t -p master                 | grep '/Users/runner/work/_temp/flutter/master-any-x64'
+      - run: ./setup.sh -t -p master                 | grep '/Users/runner/hostedtoolcache/flutter/master-any-x64'
         shell: bash
       - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:hash:'       | grep 'custom-stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
