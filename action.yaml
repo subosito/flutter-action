@@ -6,14 +6,22 @@ branding:
   color: blue
 
 inputs:
-  flutter-version:
-    description: The Flutter version to make available on the path
-    required: false
-    default: any
   channel:
     description: The Flutter build release channel
     required: false
     default: stable
+  flutter-version:
+    description: The Flutter version to make available on the path
+    required: false
+    default: any
+  flutter-version-file:
+    description: The pubspec.yaml file with exact Flutter version defined
+    required: false
+    default: ""
+  architecture:
+    description: The architecture of Flutter SDK executable (x64 or arm64)
+    required: false
+    default: "${{ runner.arch }}"
   cache:
     description: Cache the Flutter SDK
     required: false
@@ -22,39 +30,38 @@ inputs:
     description: Identifier for the Flutter SDK cache
     required: false
     default: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
-  pub-cache-key:
-    description: Identifier for the Dart .pub-cache cache
-    required: false
-    default: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:"
   cache-path:
     description: Flutter SDK cache path
     required: false
     default: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+  pub-cache-key:
+    description: Identifier for the Dart .pub-cache cache
+    required: false
+    default: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:"
   pub-cache-path:
     description: Flutter pub cache path
     required: false
     default: default
-  architecture:
-    description: The architecture of Flutter SDK executable (x64 or arm64)
-    required: false
-    default: "${{ runner.arch }}"
 
 outputs:
-  CACHE-KEY:
-    value: "${{ steps.flutter-action.outputs.CACHE-KEY }}"
-    description: Key used to cache the Flutter SDK
-  CACHE-PATH:
-    value: "${{ steps.flutter-action.outputs.CACHE-PATH }}"
-    description: Path to Flutter SDK
   CHANNEL:
     value: "${{ steps.flutter-action.outputs.CHANNEL }}"
     description: The selected Flutter release channel
   VERSION:
     value: "${{ steps.flutter-action.outputs.VERSION }}"
     description: The selected Flutter version
+  VERSION_FILE:
+    value: "${{ steps.flutter-action.outputs.VERSION_FILE }}"
+    description: The pubspec.yaml file with exact Flutter version defined
   ARCHITECTURE:
     value: "${{ steps.flutter-action.outputs.ARCHITECTURE }}"
     description: The selected Flutter CPU architecture
+  CACHE-KEY:
+    value: "${{ steps.flutter-action.outputs.CACHE-KEY }}"
+    description: Key used to cache the Flutter SDK
+  CACHE-PATH:
+    value: "${{ steps.flutter-action.outputs.CACHE-PATH }}"
+    description: Path to Flutter SDK
   PUB-CACHE-KEY:
     value: "${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}"
     description: Key used to cache the pub dependencies
@@ -74,12 +81,13 @@ runs:
       shell: bash
       run: |
         $GITHUB_ACTION_PATH/setup.sh -p \
-          -c '${{ inputs.cache-path }}' \
-          -k '${{ inputs.cache-key }}' \
-          -d '${{ inputs.pub-cache-path }}' \
-          -l '${{ inputs.pub-cache-key }}' \
           -n '${{ inputs.flutter-version }}' \
+          -f '${{ inputs.flutter-version-file }}' \
           -a '${{ inputs.architecture }}' \
+          -k '${{ inputs.cache-key }}' \
+          -c '${{ inputs.cache-path }}' \
+          -l '${{ inputs.pub-cache-key }}' \
+          -d '${{ inputs.pub-cache-path }}' \
           ${{ inputs.channel }}
 
     - name: Cache Flutter
@@ -105,7 +113,8 @@ runs:
       shell: bash
       run: |
         $GITHUB_ACTION_PATH/setup.sh \
-          -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' \
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
+          -f '${{ steps.flutter-action.outputs.VERSION_FILE }}' \
           -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' \
+          -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' \
           ${{ steps.flutter-action.outputs.CHANNEL }}
