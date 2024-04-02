@@ -42,6 +42,10 @@ inputs:
     description: Flutter pub cache path
     required: false
     default: default
+  dry-run:
+    description: If true, get outputs but do not install Flutter
+    required: false
+    default: "false"
 
 outputs:
   CHANNEL:
@@ -108,6 +112,7 @@ runs:
 
     - name: Run setup script
       shell: bash
+      if: ${{ inputs.dry-run != 'true' }}
       run: |
         $GITHUB_ACTION_PATH/setup.sh \
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
