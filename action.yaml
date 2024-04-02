@@ -43,7 +43,7 @@ inputs:
     required: false
     default: default
   dry-run:
-    description: 'If true, get outputs but do not install Flutter'
+    description: If true, get outputs but do not install Flutter
     required: false
     default: "false"
 

@@ -28,7 +28,7 @@ jobs:
         operating-system:
           [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
         channel: [stable, beta, master]
-        dry-run: ["true", "false"]
+        dry-run: [true, false]
         include:
           - operating-system: ubuntu-latest
             channel: main

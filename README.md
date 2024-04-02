@@ -282,8 +282,8 @@ steps:
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
 ```
 
-If you don't need to install Flutter and just want the output, you can use
-the `dry-run` option:
+If you don't need to install Flutter and just want the outputs, you can use the
+`dry-run` option:
 
 ```yaml
 steps:
@@ -294,7 +294,7 @@ steps:
     id: flutter-action
     with:
       channel: stable
-      dry-run: "true"
+      dry-run: true
   - run: |
       echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
       echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
