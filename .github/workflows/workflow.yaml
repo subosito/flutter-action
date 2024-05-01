@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
+          [ubuntu-latest, windows-latest, macos-latest, macos-13]
         channel: [stable, beta, master]
         dry-run: [true, false]
         include:
@@ -71,7 +71,7 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
+          [ubuntu-latest, windows-latest, macos-latest, macos-13]
 
     steps:
       - name: Clone repository
