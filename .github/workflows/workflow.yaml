@@ -53,16 +53,16 @@ jobs:
           echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
         shell: bash
       - run: dart --version
-        if: ${{ matrix.dry-run != 'true' }}
+        if: ${{ !matrix.dry-run }}
         shell: bash
       - run: flutter --version
-        if: ${{ matrix.dry-run != 'true' }}
+        if: ${{ !matrix.dry-run }}
         shell: bash
       - run: "! dart --version"
-        if: ${{ matrix.dry-run == 'true' }}
+        if: ${{ matrix.dry-run }}
         shell: bash
       - run: "! flutter --version"
-        if: ${{ matrix.dry-run == 'true' }}
+        if: ${{ matrix.dry-run }}
         shell: bash
 
   test_cache:
@@ -108,7 +108,7 @@ jobs:
         shell: bash
 
   test_print_output:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
       - name: Clone repository
