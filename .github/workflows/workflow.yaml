@@ -107,8 +107,8 @@ jobs:
         run: flutter --version | grep '3.3.10'
         shell: bash
 
-  test_print_output:
-    runs-on: macos-13
+  test_print_output_x64:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Clone repository
@@ -143,6 +143,88 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -n 3 any               | grep '3.9.0-0.1.pre'
         shell: bash
+      - run: ./setup.sh -t -p -n 3 -a x64 any        | grep 'x64'
+        shell: bash
+      - run: ./setup.sh -t -p -n any -a x64 stable   | grep 'stable'
+        shell: bash
+      - run: ./setup.sh -t -p -n any -a x64 stable   | grep '3.7.7'
+        shell: bash
+      - run: ./setup.sh -t -p -n any -a x64 stable   | grep 'x64'
+        shell: bash
+      - run: ./setup.sh -t -p -n 1 stable            | grep '1.22.6'
+        shell: bash
+      - run: ./setup.sh -t -p -n 0 any               | grep 'beta'
+        shell: bash
+      - run: ./setup.sh -t -p -n 0 any               | grep '0.11.13'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'flutter-linux-stable-3.7.7-x64-2ad6cd72c040113b47ee9055e722606a490ef0da'
+        shell: bash
+      - run: ./setup.sh -t -p stable                 | grep 'flutter-linux-stable-3.7.7-x64-2ad6cd72c040113b47ee9055e722606a490ef0da'
+        shell: bash
+      - run: ./setup.sh -t -p beta                   | grep 'flutter-linux-beta-3.9.0-0.1.pre-x64-f732038a8cf4562ce38a1d7debb30209ae3da896'
+        shell: bash
+      - run: ./setup.sh -t -p dev                    | grep 'flutter-linux-dev-2.13.0-0.1.pre-x64-13a2fb10b838971ce211230f8ffdd094c14af02c'
+        shell: bash
+      - run: ./setup.sh -t -p master                 | grep 'flutter-linux-master-any-x64-master'
+        shell: bash
+      - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-linux-master-5b12b74-x64-master'
+        shell: bash
+      - run: ./setup.sh -t -p -n 3.12.0-12.0.pre master     | grep 'flutter-linux-master-3.12.0-12.0.pre-x64-master'
+        shell: bash
+      - run: ./setup.sh -t -p -n stable master       | grep 'flutter-linux-master-stable-x64-master'
+        shell: bash
+      - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-linux-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
+        shell: bash
+      - run: ./setup.sh -t -p -n 1 any               | grep 'flutter-linux-beta-1.26.0-17.8.pre-x64-044f2cf5607a26f8818dab0f766400e85c52bdff'
+        shell: bash
+      - run: ./setup.sh -t -p -n 0 any               | grep 'flutter-linux-beta-0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep '/opt/hostedtoolcache/flutter/stable-3.7.7-x64'
+        shell: bash
+      - run: ./setup.sh -t -p stable                 | grep '/opt/hostedtoolcache/flutter/stable-3.7.7-x64'
+        shell: bash
+      - run: ./setup.sh -t -p beta                   | grep '/opt/hostedtoolcache/flutter/beta-3.9.0-0.1.pre-x64'
+        shell: bash
+      - run: ./setup.sh -t -p dev                    | grep '/opt/hostedtoolcache/flutter/dev-2.13.0-0.1.pre-x64'
+        shell: bash
+      - run: ./setup.sh -t -p master                 | grep '/opt/hostedtoolcache/flutter/master-any-x64'
+        shell: bash
+      - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:hash:'       | grep 'custom-stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
+        shell: bash
+      - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:sha256:'     | grep 'custom-stable-3.7.7-cdd49597e88c35e5de5184e9acff433dfbb3c075b74ef7b27790af7f57ce2420'
+        shell: bash
+      - run: ./setup.sh -t -p -c '/tmp/flutter/:channel:-:version:-:hash:' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
+        shell: bash
+
+
+  test_print_output_arm64:
+    runs-on: macos-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'stable'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep '3.7.7'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'arm64'
+        shell: bash
+      - run: ./setup.sh -t -p stable                 | grep 'stable'
+        shell: bash
+      - run: ./setup.sh -t -p beta                   | grep 'beta'
+        shell: bash
+      - run: ./setup.sh -t -p beta                   | grep '3.9.0-0.1.pre'
+        shell: bash
+      - run: ./setup.sh -t -p -n 3.3.10 stable       | grep '3.3.10'
+        shell: bash
+      - run: ./setup.sh -t -p -n 3.3.1 stable        | grep '3.3.1'
+        shell: bash
+      - run: ./setup.sh -t -p -n 3 any               | grep 'beta'
+        shell: bash
+      - run: ./setup.sh -t -p -n 3 any               | grep '3.9.0-0.1.pre'
+        shell: bash
       - run: ./setup.sh -t -p -n 3 -a arm64 any      | grep 'arm64'
         shell: bash
       - run: ./setup.sh -t -p -n any -a arm64 stable | grep 'stable'
@@ -151,47 +233,31 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -n any -a arm64 stable | grep 'arm64'
         shell: bash
-      - run: ./setup.sh -t -p -n 1 stable            | grep '1.22.6'
+      - run: ./setup.sh -t -p                        | grep 'flutter-macos-stable-3.7.7-arm64-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
-      - run: ./setup.sh -t -p -n 0 any               | grep 'beta'
+      - run: ./setup.sh -t -p stable                 | grep 'flutter-macos-stable-3.7.7-arm64-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
-      - run: ./setup.sh -t -p -n 0 any               | grep '0.11.13'
+      - run: ./setup.sh -t -p beta                   | grep 'flutter-macos-beta-3.9.0-0.1.pre-arm64-8b9b90e75107181aadc303d8d7422205863a35dd'
         shell: bash
-      - run: ./setup.sh -t -p                        | grep 'flutter-macos-stable-3.7.7-x64-2ad6cd72c040113b47ee9055e722606a490ef0da'
+      - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-any-arm64-master'
         shell: bash
-      - run: ./setup.sh -t -p stable                 | grep 'flutter-macos-stable-3.7.7-x64-2ad6cd72c040113b47ee9055e722606a490ef0da'
+      - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-macos-master-5b12b74-arm64-master'
         shell: bash
-      - run: ./setup.sh -t -p beta                   | grep 'flutter-macos-beta-3.9.0-0.1.pre-x64-f732038a8cf4562ce38a1d7debb30209ae3da896'
+      - run: ./setup.sh -t -p -n 3.12.0-12.0.pre master     | grep 'flutter-macos-master-3.12.0-12.0.pre-arm64-master'
         shell: bash
-      - run: ./setup.sh -t -p dev                    | grep 'flutter-macos-dev-2.11.0-0.1.pre-x64-b101bfe32f634566e7cb2791a9efe19cf8828b15'
+      - run: ./setup.sh -t -p -n stable master       | grep 'flutter-macos-master-stable-arm64-master'
         shell: bash
-      - run: ./setup.sh -t -p master                 | grep 'flutter-macos-master-any-x64-master'
+      - run: ./setup.sh -t -p                        | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-arm64'
         shell: bash
-      - run: ./setup.sh -t -p -n 5b12b74 master      | grep 'flutter-macos-master-5b12b74-x64-master'
+      - run: ./setup.sh -t -p stable                 | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-arm64'
         shell: bash
-      - run: ./setup.sh -t -p -n 3.12.0-12.0.pre master     | grep 'flutter-macos-master-3.12.0-12.0.pre-x64-master'
+      - run: ./setup.sh -t -p beta                   | grep '/Users/runner/hostedtoolcache/flutter/beta-3.9.0-0.1.pre-arm64'
         shell: bash
-      - run: ./setup.sh -t -p -n stable master       | grep 'flutter-macos-master-stable-x64-master'
-        shell: bash
-      - run: ./setup.sh -t -p -n 2 any               | grep 'flutter-macos-beta-2.13.0-0.4.pre-x64-25caf1461b8f643092a9f6f5b224453b5c057d10'
-        shell: bash
-      - run: ./setup.sh -t -p -n 1 any               | grep 'flutter-macos-beta-1.26.0-17.8.pre-x64-044f2cf5607a26f8818dab0f766400e85c52bdff'
-        shell: bash
-      - run: ./setup.sh -t -p -n 0 any               | grep 'flutter-macos-beta-0.11.13-x64-58c8489fcdb4e4ef6c010117584c9b23d15221aa'
-        shell: bash
-      - run: ./setup.sh -t -p                        | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-x64'
-        shell: bash
-      - run: ./setup.sh -t -p stable                 | grep '/Users/runner/hostedtoolcache/flutter/stable-3.7.7-x64'
-        shell: bash
-      - run: ./setup.sh -t -p beta                   | grep '/Users/runner/hostedtoolcache/flutter/beta-3.9.0-0.1.pre-x64'
-        shell: bash
-      - run: ./setup.sh -t -p dev                    | grep '/Users/runner/hostedtoolcache/flutter/dev-2.11.0-0.1.pre-x64'
-        shell: bash
-      - run: ./setup.sh -t -p master                 | grep '/Users/runner/hostedtoolcache/flutter/master-any-x64'
+      - run: ./setup.sh -t -p master                 | grep '/Users/runner/hostedtoolcache/flutter/master-any-arm64'
         shell: bash
       - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:hash:'       | grep 'custom-stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
-      - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:sha256:'     | grep 'custom-stable-3.7.7-78957b52f023a0d811add27eddc59b1a59d27d2ada5df123f39d0315708fb2d5'
+      - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:sha256:'     | grep 'custom-stable-3.7.7-0511b9f164a62f467b063e6c83d9c683bb3fb056ee556b2f45e987a2c2f4a260'
         shell: bash
       - run: ./setup.sh -t -p -c '/tmp/flutter/:channel:-:version:-:hash:' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
