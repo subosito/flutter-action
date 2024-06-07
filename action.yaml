@@ -79,6 +79,7 @@ runs:
     - name: Make yq tool available on Windows runners
       if: runner.os == 'Windows'
       run: choco install yq
+      shell: bash
       
     - name: Make setup script executable
       run: chmod +x "$GITHUB_ACTION_PATH/setup.sh"
