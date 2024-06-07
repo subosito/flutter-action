@@ -73,6 +73,13 @@ outputs:
 runs:
   using: composite
   steps:
+
+    # This is a cross-platform composite action that needs yq to be available.
+    # GitHub decided to not make it available: https://github.com/actions/runner-images/issues/7443#issuecomment-1514597691
+    - name: Make yq tool available on Windows runners
+      if: runner.os == 'Windows'
+      run: choco install yq
+      
     - name: Make setup script executable
       run: chmod +x "$GITHUB_ACTION_PATH/setup.sh"
       shell: bash
