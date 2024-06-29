@@ -61,7 +61,7 @@ steps:
 > [!WARNING]
 >
 > Using `flutter-version-file` requires [`yq`](https://github.com/mikefarah/yq),
-> which is not pre-installed in `windows` images. Install it yourself.
+> which is installed in `windows` images by this action..
 
 ### Use latest release for particular channel
 
