@@ -1,6 +1,7 @@
-name: Main workflow
+name: test
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
