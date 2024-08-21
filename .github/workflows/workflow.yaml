@@ -54,16 +54,16 @@ jobs:
           echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
         shell: bash
       - run: dart --version
-        if: ${{ matrix.dry-run != 'true' }}
+        if: ${{ matrix.dry-run != true }}
         shell: bash
       - run: flutter --version
-        if: ${{ matrix.dry-run != 'true' }}
+        if: ${{ matrix.dry-run != true }}
         shell: bash
       - run: "! dart --version"
-        if: ${{ matrix.dry-run == 'true' }}
+        if: ${{ matrix.dry-run == true }}
         shell: bash
       - run: "! flutter --version"
-        if: ${{ matrix.dry-run == 'true' }}
+        if: ${{ matrix.dry-run == true }}
         shell: bash
 
   test_cache:
