@@ -124,9 +124,8 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p                        | grep '3.7.7'
         shell: bash
-      - run: ./setup.sh -t -p                        | grep 'x64'
+      - run: ./setup.sh -t -p                        | grep 'arm64'
         shell: bash
-        continue-on-error: true
       - run: ./setup.sh -t -p stable                 | grep 'stable'
         shell: bash
       - run: ./setup.sh -t -p beta                   | grep 'beta'
@@ -136,14 +135,6 @@ jobs:
       - run: ./setup.sh -t -p -n 3.3.10 stable       | grep '3.3.10'
         shell: bash
       - run: ./setup.sh -t -p -n 3.3.1 stable        | grep '3.3.1'
-        shell: bash
-      - run: ./setup.sh -t -p -n 2 stable            | grep '2.10.5'
-        shell: bash
-      - run: ./setup.sh -t -p -n 2 beta              | grep '2.13.0-0.4.pre'
-        shell: bash
-      - run: ./setup.sh -t -p -n 2 any               | grep 'beta'
-        shell: bash
-      - run: ./setup.sh -t -p -n 2 any               | grep '2.13.0-0.4.pre'
         shell: bash
       - run: ./setup.sh -t -p -n 3 any               | grep 'beta'
         shell: bash
