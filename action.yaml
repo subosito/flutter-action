@@ -120,7 +120,7 @@ runs:
 
     - name: Run setup script
       shell: bash
-      if: ${{ inputs.dry-run != 'true' }}
+      if: ${{ inputs.dry-run != 'true' && inputs.dry-run != true }}
       run: |
         $GITHUB_ACTION_PATH/setup.sh \
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
