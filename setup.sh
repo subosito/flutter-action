@@ -108,7 +108,7 @@ if [ -n "$VERSION_FILE" ]; then
 		exit 1
 	fi
 
-	VERSION="$(yq '.environment.flutter' "$VERSION_FILE")"
+	VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
 fi
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
