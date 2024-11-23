@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
+          [ubuntu-latest, windows-latest, macos-latest, macos-13]
         channel: [stable, beta, master]
         dry-run: [true, false]
         include:
@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest, macos-13, macos-14]
+          [ubuntu-latest, windows-latest, macos-latest, macos-13]
 
     steps:
       - name: Clone repository
@@ -109,7 +109,7 @@ jobs:
         shell: bash
 
   test_print_output:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     # These calls to setup.sh sepcify the -t flag, which enables test mode.
     #  Test mode uses hardcoded Flutter release manifests from test/ directory.
