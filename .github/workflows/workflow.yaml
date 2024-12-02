@@ -30,6 +30,7 @@ jobs:
           [ubuntu-latest, windows-latest, macos-latest, macos-13]
         channel: [stable, beta, master]
         dry-run: [true, false]
+        git-source: [https://github.com/flutter/flutter.git, https://github.com/Flutter-Foundation/flutter.git, https://gitee.com/harmonycommando_flutter/flutter.git]
         include:
           - operating-system: ubuntu-latest
             channel: main
@@ -42,6 +43,7 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
           dry-run: ${{ matrix.dry-run }}
+          git-source: ${{ matrix.git-source }}
       - name: Echo outputs
         run: |
           echo RUNNER-OS=${{ runner.os }}
