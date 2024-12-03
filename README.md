@@ -3,6 +3,8 @@
 Flutter environment for use in GitHub Actions. It works on Linux, Windows, and
 macOS.
 
+Originally created by [Alif Rachmawadi]. Maintained by [Bartek Pacia].
+
 The following sections show how to configure this action.
 
 ## Specifying Flutter version
@@ -305,11 +307,5 @@ steps:
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
     shell: bash
 ```
-
-## Maintainers
-
-- [Alif Rachmawadi] (original creator)
-- [Bartek Pacia]
-
 [Alif Rachmawadi]: https://github.com/subosito
 [Bartek Pacia]: https://github.com/bartekpacia
