@@ -75,7 +75,7 @@ outputs:
     description: Path to pub cache
   GIT_SOURCE:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
-    description: Git source
+    description: Git source of Flutter SDK repository to clone
 
 runs:
   using: composite
