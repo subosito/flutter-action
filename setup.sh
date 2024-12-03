@@ -78,8 +78,9 @@ TEST_MODE=false
 ARCH=""
 VERSION=""
 VERSION_FILE=""
+GIT_SOURCE=""
 
-while getopts 'tc:k:d:l:pa:n:f:' flag; do
+while getopts 'tc:k:d:l:pa:n:f:g:' flag; do
 	case "$flag" in
 	c) CACHE_PATH="$OPTARG" ;;
 	k) CACHE_KEY="$OPTARG" ;;
@@ -96,6 +97,7 @@ while getopts 'tc:k:d:l:pa:n:f:' flag; do
 			exit 1
 		fi
 		;;
+    g) GIT_SOURCE="$OPTARG" ;;
 	?) exit 2 ;;
 	esac
 done
@@ -121,6 +123,7 @@ CHANNEL="${ARR_CHANNEL[0]:-}"
 [ -z "$CACHE_KEY" ] && CACHE_KEY="flutter-:os:-:channel:-:version:-:arch:-:hash:"
 [ -z "$PUB_CACHE_KEY" ] && PUB_CACHE_KEY="flutter-pub-:os:-:channel:-:version:-:arch:-:hash:"
 [ -z "$PUB_CACHE_PATH" ] && PUB_CACHE_PATH="default"
+[ -z "$GIT_SOURCE" ] && GIT_SOURCE="https://github.com/flutter/flutter.git"
 
 # `PUB_CACHE` is what Dart and Flutter looks for in the environment, while
 # `PUB_CACHE_PATH` is passed in from the action.
@@ -213,7 +216,7 @@ fi
 
 if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
 	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-		git clone -b "$CHANNEL" https://github.com/flutter/flutter.git "$CACHE_PATH"
+		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH"
 		if [ "$VERSION" != "any" ]; then
 			git config --global --add safe.directory "$CACHE_PATH"
 			(cd "$CACHE_PATH" && git checkout "$VERSION")
