@@ -122,7 +122,61 @@ steps:
   - run: flutter --version
 ```
 
-## Build Target
+### Use alternative Flutter repository
+
+This action supports "alternative Flutters" in addition to the official
+[`flutter/flutter`](https://github.com/flutter/flutter), for example:
+- [Flock](https://github.com/Flutter-Foundation/flutter.git)
+- [a Flutter fork that supports
+  HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
+
+```yaml
+steps:
+  - name: Clone repository
+    uses: actions/checkout@v4
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      channel: master
+      flutter-version: 3.24.0
+      git-source: https://github.com/Flutter-Foundation/flutter.git
+  - run: flutter --version
+```
+
+> ![NOTE]
+>
+> This feature was implemented in
+> [#344](https://github.com/subosito/flutter-action/pull/334) and is available
+> since v2.18.0.
+
+### Apply a patch
+
+Sometimes you find a bug in Flutter and you fix it yourself (you're a
+rockstar!), and then submit a patch/PR to Flutter repository. However, everyone
+knows that code review takes time, but your app needs the fix _now_.
+
+You can apply your patch like this:
+
+```yaml
+steps:
+- name: Clone repository
+  uses: actions/checkout@v4
+- uses: subosito/flutter-action@v2
+  with:
+    flutter-version: 3.22.2
+    channel: stable
+- run: |
+    flutter --version
+    cd ${{ env.FLUTTER_ROOT }}
+    curl https://patch-diff.githubusercontent.com/raw/flutter/flutter/pull/137874.patch | git apply
+    git status
+```
+
+> ![NOTE]
+>
+> This was first discussed in [this issue](https://github.com/subosito/flutter-action/issues/310).
+
+## Build targets
 
 Build **Android** APK and app bundle:
 
@@ -133,7 +187,7 @@ steps:
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
-      flutter-version: 3.19.0
+      flutter-version: 3.24.0
   - run: flutter pub get
   - run: flutter test
   - run: flutter build apk
