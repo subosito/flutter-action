@@ -143,7 +143,7 @@ steps:
   - run: flutter --version
 ```
 
-> ![NOTE]
+> [!NOTE]
 >
 > This feature was implemented in
 > [#344](https://github.com/subosito/flutter-action/pull/334) and is available
@@ -172,7 +172,7 @@ steps:
     git status
 ```
 
-> ![NOTE]
+> [!NOTE]
 >
 > This was first discussed in [this issue](https://github.com/subosito/flutter-action/issues/310).
 
