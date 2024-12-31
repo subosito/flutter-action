@@ -110,7 +110,16 @@ if [ -n "$VERSION_FILE" ]; then
 		exit 1
 	fi
 
-	VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
+	# Try to get version and handle potential errors
+	VERSION_RAW="$(yq '.environment.flutter' "$VERSION_FILE")"
+	if [ "$VERSION_RAW" = "null" ] || [ -z "$VERSION_RAW" ]; then
+		echo "Error: Could not find Flutter version in $VERSION_FILE under environment.flutter"
+		echo "Content of $VERSION_FILE:"
+		cat "$VERSION_FILE"
+		exit 1
+	fi
+	# Strip quotes from version
+	VERSION=$(echo "$VERSION_RAW" | tr -d '"')
 fi
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
