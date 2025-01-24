@@ -76,6 +76,9 @@ outputs:
   GIT_SOURCE:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
     description: Git source of Flutter SDK repository to clone
+  CACHE-HIT:
+    value: "${{ steps.cache-hit-pub.outputs.cache-hit }}"
+    description: Whether the Pub cache was a hit
 
 runs:
   using: composite
@@ -118,6 +121,7 @@ runs:
 
     - name: Cache pub dependencies
       uses: actions/cache@v4
+      id: cache-pub
       if: ${{ inputs.cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
@@ -125,6 +129,11 @@ runs:
         restore-keys: |
           ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
           ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
+
+    - name: Set pub cache hit outputs
+      id: cache-hit-pub
+      shell: bash
+      run: echo "cache-hit=${{ steps.cache-pub.outputs.cache-hit }}" >> "$GITHUB_OUTPUT"
 
     - name: Run setup script
       shell: bash

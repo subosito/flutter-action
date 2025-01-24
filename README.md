@@ -338,6 +338,7 @@ steps:
       echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
+      echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
 ```
 
 If you don't need to install Flutter and just want the outputs, you can use the
@@ -361,6 +362,7 @@ steps:
       echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
+      echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
     shell: bash
 ```
 [Alif Rachmawadi]: https://github.com/subosito
