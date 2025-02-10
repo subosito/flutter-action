@@ -139,7 +139,7 @@ steps:
     with:
       channel: master
       flutter-version: 3.24.0
-      git-source: https://github.com/Flutter-Foundation/flutter.git
+      git-source: https://github.com/join-the-flock/flock.git
   - run: flutter --version
 ```
 
