@@ -134,4 +134,5 @@ runs:
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
           -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' \
           -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' \
+          -d '${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}' \
           ${{ steps.flutter-action.outputs.CHANNEL }}
