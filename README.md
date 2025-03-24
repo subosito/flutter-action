@@ -126,7 +126,7 @@ steps:
 
 This action supports "alternative Flutters" in addition to the official
 [`flutter/flutter`](https://github.com/flutter/flutter), for example:
-- [Flock](https://github.com/Flutter-Foundation/flutter.git)
+- [Flock](https://github.com/join-the-flock/flock.git)
 - [a Flutter fork that supports
   HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
 
@@ -139,7 +139,7 @@ steps:
     with:
       channel: master
       flutter-version: 3.24.0
-      git-source: https://github.com/Flutter-Foundation/flutter.git
+      git-source: https://github.com/join-the-flock/flock.git
   - run: flutter --version
 ```
 
