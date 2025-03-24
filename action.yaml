@@ -113,8 +113,6 @@ runs:
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
-        restore-keys: |
-          ${{ steps.flutter-action.outputs.CACHE-KEY }}
 
     - name: Cache pub dependencies
       uses: actions/cache@v4
@@ -122,9 +120,6 @@ runs:
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
-        restore-keys: |
-          ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
-          ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
 
     - name: Run setup script
       shell: bash
