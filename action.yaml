@@ -110,14 +110,14 @@ runs:
       # only run if cache path doesn't already exist
     - name: Check if cache path exists
       id: check-cache
-      if: ${{ inputs.cache == 'true' }}
+      if: ${{ inputs.cache == 'true' && steps.flutter-action.outputs.CACHE-PATH != "" }}
       shell: bash
       run: |
-        if [ -d "${{ inputs.cache-path }}" ]; then
+        if [ -d "${{ steps.flutter-action.outputs.CACHE-PATH }}" ]; then
           echo "Cache path already exists, skipping cache step."
-          echo "flutter-action-cache-exists=true" >> $GITHUB_OUTPUTS
+          echo "flutter-action-cache-exists=true" >> "$GITHUB_OUTPUT"
         else
-          echo "flutter-action-cache-exists=false" >> $GITHUB_OUTPUTS
+          echo "flutter-action-cache-exists=false" >> "$GITHUB_OUTPUT"
         fi
 
     - name: Cache Flutter
