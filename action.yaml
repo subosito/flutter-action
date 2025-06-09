@@ -80,11 +80,12 @@ outputs:
 runs:
   using: composite
   steps:
-    # This is a cross-platform composite action that needs yq.
+    # This is a cross-platform composite action that needs yq in order to parse
+    # the pubspec.yaml file.
     # It's not preinstalled on Windows runners.
     # See https://github.com/actions/runner-images/issues/7443#issuecomment-1514597691
     - name: Make yq tool available on Windows runners
-      if: runner.os == 'Windows'
+      if: runner.os == 'Windows' && inputs.flutter-version-file != ''
       run: choco install yq
       shell: bash
 
