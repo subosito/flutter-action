@@ -180,7 +180,7 @@ expand_key() {
 CACHE_KEY=$(expand_key "$CACHE_KEY")
 PUB_CACHE_KEY=$(expand_key "$PUB_CACHE_KEY")
 CACHE_PATH=$(expand_key "$(transform_path "$CACHE_PATH")")
-PUB_CACHE_PATH=$(expand_key "$(transform_path "$PUB_CACHE_PATH")")
+PUB_CACHE=$(expand_key "$(transform_path "$PUB_CACHE")")
 
 if [ "$PRINT_ONLY" = true ]; then
 	version_info=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch // "x64"')
