@@ -122,6 +122,24 @@ steps:
   - run: flutter --version
 ```
 
+### Use a Flutter mirror by set ENV
+
+You can get more infomation from [Flutter official docs](https://docs.flutter.dev/community/china).
+
+```yaml
+steps:
+  - name: Clone repository
+    uses: actions/checkout@v4
+  - name: Set up Flutter
+    env:
+      FLUTTER_STORAGE_BASE_URL: https://storage.flutter-io.cn
+    uses: subosito/flutter-action@v2
+    with:
+      channel: master
+      flutter-version: 5b12b74 # tag, commit or branch
+  - run: flutter --version
+```
+
 ### Use alternative Flutter repository
 
 This action supports "alternative Flutters" in addition to the official
