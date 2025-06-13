@@ -317,6 +317,37 @@ dynamic values:
 - `:hash:`
 - `:sha256:`
 
+### Using cache outputs
+
+Note: `PUB-CACHE-HIT` and `CACHE-HIT` directly use the `cache-hit` output from `actions/cache@v4`, which is the following:
+> - `cache-hit` - A string value to indicate an exact match was found for the key.
+>   - If there's a cache hit, this will be 'true' or 'false' to indicate if there's an exact match for `key`.
+>   - If there's a cache miss, this will be an empty string.
+
+Example usage (inspired by [actions/cache@v4](https://github.com/actions/cache?tab=readme-ov-file#skipping-steps-based-on-cache-hit) and [#346](https://github.com/subosito/flutter-action/pull/346)) to skip `melos bootstrap` if there was a pub cache hit:
+
+```
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
+
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    id: flutter-action
+    with:
+      channel: stable
+      cache: true
+
+  - name: Conditionally run melos bootstrap
+    if: steps.flutter-action.outputs.PUB-CACHE-HIT != 'true'
+    run: melos bootstrap
+
+  - name: Continue with build
+    run: flutter build apk
+```
+
+## Outputs
+
 Use outputs from `flutter-action`:
 
 ```yaml
@@ -339,6 +370,7 @@ steps:
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
       echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
+      echo PUB-CACHE-HIT=${{ steps.flutter-action.outputs.PUB-CACHE-HIT }}
 ```
 
 If you don't need to install Flutter and just want the outputs, you can use the
@@ -363,7 +395,10 @@ steps:
       echo PUB-CACHE-PATH=${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
       echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
+      echo PUB-CACHE-HIT=${{ steps.flutter-action.outputs.PUB-CACHE-HIT }}
     shell: bash
 ```
-[Alif Rachmawadi]: https://github.com/subosito
-[Bartek Pacia]: https://github.com/bartekpacia
+
+[Alif Rachmawadi](https://github.com/subosito)
+
+[Bartek Pacia](https://github.com/bartekpacia)
