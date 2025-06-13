@@ -77,10 +77,10 @@ outputs:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
     description: Git source of Flutter SDK repository to clone
   CACHE-HIT:
-    value: "${{ steps.cache-hit-flutter.outputs.cache-hit }}"
+    value: "${{ steps.cache-flutter.outputs.cache-hit }}"
     description: "`true` if the flutter cache was a hit"
   PUB-CACHE-HIT:
-    value: "${{ steps.cache-hit-pub.outputs.cache-hit }}"
+    value: "${{ steps.cache-pub.outputs.cache-hit }}"
     description: "`true` if the pub cache was a hit"
 
 runs:
@@ -121,11 +121,6 @@ runs:
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
-    
-    - name: Set flutter cache hit outputs
-      id: cache-hit-flutter
-      shell: bash
-      run: echo "cache-hit=${{ steps.cache-flutter.outputs.cache-hit }}" >> "$GITHUB_OUTPUT"
 
     - name: Cache pub dependencies
       uses: actions/cache@v4
@@ -134,11 +129,6 @@ runs:
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
-
-    - name: Set pub cache hit outputs
-      id: cache-hit-pub
-      shell: bash
-      run: echo "pub-cache-hit=${{ steps.cache-pub.outputs.cache-hit }}" >> "$GITHUB_OUTPUT"
 
     - name: Run setup script
       shell: bash
