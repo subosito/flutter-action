@@ -76,6 +76,12 @@ outputs:
   GIT_SOURCE:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
     description: Git source of Flutter SDK repository to clone
+  CACHE-HIT:
+    value: "${{ steps.cache-flutter.outputs.cache-hit }}"
+    description: "`true` if the flutter cache was a hit"
+  PUB-CACHE-HIT:
+    value: "${{ steps.cache-pub.outputs.cache-hit }}"
+    description: "`true` if the pub cache was a hit"
 
 runs:
   using: composite
@@ -109,6 +115,7 @@ runs:
           ${{ inputs.channel }}
 
     - name: Cache Flutter
+      id: cache-flutter
       uses: actions/cache@v4
       if: ${{ inputs.cache == 'true' }}
       with:
@@ -117,6 +124,7 @@ runs:
 
     - name: Cache pub dependencies
       uses: actions/cache@v4
+      id: cache-pub
       if: ${{ inputs.cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
