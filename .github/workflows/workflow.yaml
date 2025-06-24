@@ -207,6 +207,10 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -c '/tmp/flutter/:channel:-:version:-:hash:' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
         shell: bash
+      - run: ./setup.sh -t -p -d '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-path' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-path'
+        shell: bash
+      - run: ./setup.sh -t -p -l '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-key' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-key'
+        shell: bash
 
 
   test_print_output_arm64:
@@ -275,4 +279,8 @@ jobs:
       - run: ./setup.sh -t -p -k 'custom-:channel:-:version:-:sha256:'     | grep 'custom-stable-3.7.7-0511b9f164a62f467b063e6c83d9c683bb3fb056ee556b2f45e987a2c2f4a260'
         shell: bash
       - run: ./setup.sh -t -p -c '/tmp/flutter/:channel:-:version:-:hash:' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da'
+        shell: bash
+      - run: ./setup.sh -t -p -d '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-path' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-path'
+        shell: bash
+      - run: ./setup.sh -t -p -l '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-key' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-key'
         shell: bash
