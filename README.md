@@ -319,12 +319,13 @@ dynamic values:
 
 ### Using cache outputs
 
-Note: `PUB-CACHE-HIT` and `CACHE-HIT` directly use the `cache-hit` output from `actions/cache@v4`, which is the following:
+> [!NOTE]
+> `PUB-CACHE-HIT` and `CACHE-HIT` directly use the `cache-hit` output from `actions/cache@v4`, which is the following:
 > - `cache-hit` - A string value to indicate an exact match was found for the key.
 >   - If there's a cache hit, this will be 'true' or 'false' to indicate if there's an exact match for `key`.
 >   - If there's a cache miss, this will be an empty string.
 
-Example usage (inspired by [actions/cache@v4](https://github.com/actions/cache?tab=readme-ov-file#skipping-steps-based-on-cache-hit) and [#346](https://github.com/subosito/flutter-action/pull/346)) to skip `melos bootstrap` if there was a pub cache hit:
+Example usage (inspired by [actions/cache@v4](https://github.com/actions/cache/blob/c45d39173a637a28edbd526cb160189cc4e84f5a/README.md#skipping-steps-based-on-cache-hit) and [#346](https://github.com/subosito/flutter-action/pull/346)) to skip `melos bootstrap` if there was a pub cache hit:
 
 ```
 steps:
