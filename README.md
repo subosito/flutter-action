@@ -418,6 +418,5 @@ steps:
     shell: bash
 ```
 
-[Alif Rachmawadi](https://github.com/subosito)
-
-[Bartek Pacia](https://github.com/bartekpacia)
+[Alif Rachmawadi]: https://github.com/subosito
+[Bartek Pacia]: https://github.com/bartekpacia
