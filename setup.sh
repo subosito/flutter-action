@@ -51,18 +51,10 @@ download_archive() {
 
 	case "$archive_name" in
 	*.zip)
-		EXTRACT_PATH="$RUNNER_TEMP/_unzip_temp"
-		unzip -q -o "$archive_local" -d "$EXTRACT_PATH"
-		# Remove the folder again so that the move command can do a simple rename
-		# instead of moving the content into the target folder.
-		# This is a little bit of a hack since the "mv --no-target-directory"
-		# linux option is not available here
-		rm -r "$2"
-		mv "$EXTRACT_PATH"/flutter "$2"
-		rm -r "$EXTRACT_PATH"
+		unzip -q -o "$archive_local" -d "$2"
 		;;
 	*)
-		tar xf "$archive_local" -C "$2" --strip-components=1
+		tar xf "$archive_local" -C "$2"
 		;;
 	esac
 
@@ -230,11 +222,11 @@ if [ "$PRINT_ONLY" = true ]; then
 	exit 0
 fi
 
-if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
+if [ ! -x "$CACHE_PATH/flutter/bin/flutter" ]; then
 	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH"
+		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
 		if [ "$VERSION" != "any" ]; then
-			git config --global --add safe.directory "$CACHE_PATH"
+			git config --global --add safe.directory "$CACHE_PATH/flutter"
 			(cd "$CACHE_PATH" && git checkout "$VERSION")
 		fi
 	else
@@ -244,12 +236,12 @@ if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
 fi
 
 {
-	echo "FLUTTER_ROOT=$CACHE_PATH"
+	echo "FLUTTER_ROOT=$CACHE_PATH/flutter"
 	echo "PUB_CACHE=$PUB_CACHE"
 } >>"${GITHUB_ENV:-/dev/null}"
 
 {
-	echo "$CACHE_PATH/bin"
-	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
+	echo "$CACHE_PATH/flutter/bin"
+	echo "$CACHE_PATH/flutter/bin/cache/dart-sdk/bin"
 	echo "$PUB_CACHE/bin"
 } >>"${GITHUB_PATH:-/dev/null}"
