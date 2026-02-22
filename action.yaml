@@ -116,14 +116,14 @@ runs:
 
     - name: Cache Flutter
       id: cache-flutter
-      uses: actions/cache@v4
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
       if: ${{ inputs.cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
 
     - name: Cache pub dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
       id: cache-pub
       if: ${{ inputs.cache == 'true' }}
       with:
