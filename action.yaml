@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ""
   flutter-version-file:
-    description: The pubspec.yaml file with exact Flutter version defined
+    description: The pubspec.yaml or fvm config file with exact Flutter version defined
     required: false
     default: ""
   architecture:
@@ -91,7 +91,7 @@ runs:
     # It's not preinstalled on Windows runners.
     # See https://github.com/actions/runner-images/issues/7443#issuecomment-1514597691
     - name: Make yq tool available on Windows runners
-      if: runner.os == 'Windows' && inputs.flutter-version-file != ''
+      if: runner.os == 'Windows' && inputs.flutter-version-file != '' && !endsWith(inputs.flutter-version-file, '.fvmrc') && !endsWith(inputs.flutter-version-file, 'fvm_config.json')
       run: choco install yq
       shell: bash
 
