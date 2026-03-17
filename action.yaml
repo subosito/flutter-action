@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ""
   flutter-version-file:
-    description: The pubspec.yaml or fvm config file with exact Flutter version defined
+    description: The pubspec.yaml or FVM config file with exact Flutter version defined
     required: false
     default: ""
   architecture:
