@@ -381,6 +381,28 @@ steps:
     run: flutter build apk
 ```
 
+### Using custom cache actions
+
+If you'd like to use a caching action other than `actions/cache` (the GitHub default), you can provide custom actions like this:
+
+```yaml
+- name: Configure Flutter
+  id: config-flutter
+  uses: subosito/flutter-action@v2
+  with:
+    channel: stable
+    cache: true
+    custom-pub-cache-action: my-organization/actions/repository-scoped-cache@main
+    custom-cache-action: my-organization/actions/global-cache@main
+```
+
+Both custom actions must be drop-in replacements for `actions/cache`: they should accept the same inputs and expose the same outputs.
+
+Notes:
+
+- **custom-pub-cache-action** — Recommended to use a repository-scoped cache action (or narrower) as the cache key incorporates a hash of your project's `pubspec.yaml` files. The default `actions/cache` is repository-scoped and also branch-scoped.
+- **custom-cache-action** — Recommended to use a global-scoped cache action here to increase hit rates across multiple Flutter repositories that use the same Flutter version.
+
 ## Outputs
 
 Use outputs from `flutter-action`:
