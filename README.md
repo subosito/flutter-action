@@ -326,7 +326,7 @@ steps:
       cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache
       cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
       pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache of dart pub get dependencies
-      pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
+      pub-cache-path: "default" # optional, change this to specify the cache path (default: $HOME/.pub-cache)
   - run: flutter --version
 ```
 
@@ -395,6 +395,7 @@ steps:
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
       echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
       echo PUB-CACHE-HIT=${{ steps.flutter-action.outputs.PUB-CACHE-HIT }}
+      echo GIT_SOURCE=${{ steps.flutter-action.outputs.GIT_SOURCE }}
 ```
 
 If you don't need to install Flutter and just want the outputs, you can use the
@@ -420,6 +421,7 @@ steps:
       echo PUB-CACHE-KEY=${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}
       echo CACHE-HIT=${{ steps.flutter-action.outputs.CACHE-HIT }}
       echo PUB-CACHE-HIT=${{ steps.flutter-action.outputs.PUB-CACHE-HIT }}
+      echo GIT_SOURCE=${{ steps.flutter-action.outputs.GIT_SOURCE }}
     shell: bash
 ```
 

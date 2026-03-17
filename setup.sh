@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
 check_command() {
 	command -v "$1" >/dev/null 2>&1
@@ -45,7 +45,7 @@ download_archive() {
 	archive_name=$(basename "$1")
 	archive_local="$RUNNER_TEMP/$archive_name"
 
-	curl --connect-timeout 15 --retry 5 "$archive_url" >"$archive_local"
+	curl -fL --connect-timeout 15 --retry 5 "$archive_url" >"$archive_local"
 
 	mkdir -p "$2"
 
@@ -113,8 +113,8 @@ if [ -n "$VERSION_FILE" ]; then
 	VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
 fi
 
-ARR_CHANNEL=("${@:$OPTIND:1}")
-CHANNEL="${ARR_CHANNEL[0]:-}"
+shift $((OPTIND - 1))
+CHANNEL="${1:-}"
 
 [ -z "$CHANNEL" ] && CHANNEL=stable
 [ -z "$VERSION" ] && VERSION=any
@@ -144,7 +144,7 @@ fi
 if [ "$TEST_MODE" = true ]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
 else
-	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
+	RELEASE_MANIFEST=$(curl -sfL --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
 if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
@@ -198,6 +198,7 @@ if [ "$PRINT_ONLY" = true ]; then
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
+		echo "GIT_SOURCE=$GIT_SOURCE"
 		exit 0
 	fi
 
@@ -210,6 +211,7 @@ if [ "$PRINT_ONLY" = true ]; then
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
+		echo "GIT_SOURCE=$GIT_SOURCE"
 	} >>"${GITHUB_OUTPUT:-/dev/null}"
 
 	exit 0
