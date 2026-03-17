@@ -63,9 +63,9 @@ steps:
 > [!NOTE]
 >
 > Using `flutter-version-file` requires [`yq`](https://github.com/mikefarah/yq),
-> which is not pre-installed in `windows` runners. Fortunately, since version
-> 2.18.0, this action installs `yq` automatically if `flutter-version-file`
-> is specified, so no action is required from you.
+> which is not pre-installed in `windows` runners.
+> This action installs `yq` automatically if `flutter-version-file` is specified,
+> so no action is required from you.
 
 ### Use latest release for particular channel
 
