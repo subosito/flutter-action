@@ -1,7 +1,7 @@
 # flutter-action
 
-Flutter environment for use in GitHub Actions. It works on Linux, Windows, and
-macOS.
+Flutter environment for use in GitHub Actions.
+It works on Linux, Windows, and macOS.
 
 Originally created by [Alif Rachmawadi]. Maintained by [Bartek Pacia].
 
@@ -145,8 +145,7 @@ steps:
 This action supports "alternative Flutters" in addition to the official
 [`flutter/flutter`](https://github.com/flutter/flutter), for example:
 - [Flock](https://github.com/join-the-flock/flock.git)
-- [a Flutter fork that supports
-  HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
+- [a Flutter fork that supports HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
 
 ```yaml
 steps:
@@ -161,17 +160,11 @@ steps:
   - run: flutter --version
 ```
 
-> [!NOTE]
->
-> This feature was implemented in
-> [#344](https://github.com/subosito/flutter-action/pull/334) and is available
-> since v2.18.0.
-
 ### Apply a patch
 
-Sometimes you find a bug in Flutter and you fix it yourself (you're a
-rockstar!), and then submit a patch/PR to Flutter repository. However, everyone
-knows that code review takes time, but your app needs the fix _now_.
+Sometimes you find a bug in Flutter and fix it yourself (you're a rockstar!),
+and then submit a patch/PR to Flutter repository.
+However, everyone knows that code review takes time, but your app needs the fix _now_.
 
 You can apply your patch like this:
 
