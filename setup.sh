@@ -92,9 +92,11 @@ while getopts 'tc:k:d:l:pa:n:f:g:' flag; do
 	n) VERSION="$OPTARG" ;;
 	f)
 		VERSION_FILE="$OPTARG"
-		if [ -n "$VERSION_FILE" ] && ! check_command yq; then
-			echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
-			exit 1
+		if [ -n "$VERSION_FILE" ]; then
+			if [[ "$VERSION_FILE" != *".fvmrc" ]] && [[ "$VERSION_FILE" != *"fvm_config.json" ]] && ! check_command yq; then
+				echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
+				exit 1
+			fi
 		fi
 		;;
 	g) GIT_SOURCE="$OPTARG" ;;
@@ -110,11 +112,24 @@ if [ -n "$VERSION_FILE" ]; then
 		exit 1
 	fi
 
-	VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
+	if [[ "$VERSION_FILE" == *".fvmrc" ]]; then
+		VERSION="$(jq -r '.flutter' "$VERSION_FILE")"
+	elif [[ "$VERSION_FILE" == *"fvm_config.json" ]]; then
+		VERSION="$(jq -r '.flutterSdkVersion // .flutter' "$VERSION_FILE")"
+	else
+		VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
+	fi
+
+	if [[ "$VERSION" == "stable" ]] || [[ "$VERSION" == "beta" ]] || [[ "$VERSION" == "master" ]] || [[ "$VERSION" == "main" ]]; then
+		CHANNEL="$VERSION"
+		VERSION="any"
+	fi
 fi
 
 ARR_CHANNEL=("${@:$OPTIND:1}")
-CHANNEL="${ARR_CHANNEL[0]:-}"
+if [ -z "${CHANNEL:-}" ]; then
+	CHANNEL="${ARR_CHANNEL[0]:-}"
+fi
 
 [ -z "$CHANNEL" ] && CHANNEL=stable
 [ -z "$VERSION" ] && VERSION=any

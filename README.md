@@ -23,7 +23,7 @@ steps:
   - run: flutter --version
 ```
 
-### Use version from pubspec.yaml
+### Use version from pubspec.yaml or FVM config
 
 This is inspired by [`actions/setup-go`](https://github.com/actions/setup-go).
 
@@ -35,7 +35,7 @@ steps:
     uses: subosito/flutter-action@v2
     with:
       channel: stable
-      flutter-version-file: pubspec.yaml # path to pubspec.yaml
+      flutter-version-file: pubspec.yaml # path to pubspec.yaml or .fvmrc or .fvm/fvm_config.json
   - run: flutter --version
 ```
 
