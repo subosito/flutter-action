@@ -115,6 +115,35 @@ jobs:
         run: flutter --version | grep '3.3.10'
         shell: bash
 
+  test_master_version:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+      - id: flutter-action
+        uses: ./
+        with:
+          channel: master
+          flutter-version: e6ed6e9e16782a24a912e79d3100c496600aae5b # some commit made on 18/03/2026
+      - name: Echo outputs
+        run: |
+          echo RUNNER-OS=${{ runner.os }}
+          echo RUNNER-ARCH=${{ runner.arch }}
+
+          echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
+          echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
+          echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
+          echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+          echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
+        shell: bash
+      - run: flutter --version
+        shell: bash
+
   test_print_output_x64:
     runs-on: ubuntu-latest
 
