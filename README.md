@@ -323,12 +323,30 @@ steps:
       channel: stable
       cache: true
       # optional parameters follow
+      pub-cache: true # optional, defaults to empty (falls back to cache value for backward compatibility)
       cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache
       cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
       pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache of dart pub get dependencies
       pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
   - run: flutter --version
 ```
+
+> [!NOTE]
+>
+> The `cache` and `pub-cache` inputs are independent and control different caches:
+> - `cache: true` - Caches the Flutter SDK installation
+> - `pub-cache: true` - Caches Dart pub dependencies
+> - `pub-cache: false` - Disables pub dependency caching
+> 
+> **Backward Compatibility:** When `pub-cache` is not specified (empty), it falls back to the `cache` value.
+> This means existing workflows with `cache: true` will automatically cache both Flutter SDK and pub dependencies.
+> 
+> You can use them in any combination:
+> - Both enabled: `cache: true` (pub-cache will default to true for backward compatibility)
+> - Both enabled explicitly: `cache: true` and `pub-cache: true`
+> - Only Flutter SDK: `cache: true` and `pub-cache: false`
+> - Only pub dependencies: `cache: false` and `pub-cache: true` for self-hosted runners
+> - Neither: `cache: false` and `pub-cache: false` (or omit both)
 
 Note: `cache-key`, `pub-cache-key`, and `cache-path` have support for several
 dynamic values:

@@ -34,6 +34,10 @@ inputs:
     description: Flutter SDK cache path
     required: false
     default: ""
+  pub-cache:
+    description: Cache the Dart pub dependencies
+    required: false
+    default: ""
   pub-cache-key:
     description: Identifier for the Dart .pub-cache cache
     required: false
@@ -125,7 +129,7 @@ runs:
     - name: Cache pub dependencies
       uses: actions/cache@v5
       id: cache-pub
-      if: ${{ inputs.cache == 'true' }}
+      if: ${{ (inputs.pub-cache == '' && inputs.cache == 'true') || inputs.pub-cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
