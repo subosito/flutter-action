@@ -302,9 +302,9 @@ jobs:
 Integration with [`actions/cache`](https://github.com/actions/cache):
 
 > [!IMPORTANT]
-> `subosito/flutter-action` now uses `actions/cache@v5` internally. If you use
-> self-hosted runners, make sure they are updated to Actions Runner
-> `2.327.1` or newer before enabling cache support.
+> `subosito/flutter-action` now uses `actions/cache@v5` internally.
+> If you use self-hosted runners, make sure they are updated
+> to Actions Runner `2.327.1` or newer before enabling cache support.
 
 ```yaml
 steps:
@@ -326,16 +326,15 @@ steps:
 
 > [!NOTE]
 >
-> The `cache` and `pub-cache` inputs are independent and control different caches:
-> - `cache: true` - Caches the Flutter SDK installation
-> - `pub-cache: true` - Caches Dart pub dependencies
-> - `pub-cache: false` - Disables pub dependency caching
+> **The `cache` and `pub-cache` inputs are independent and control different caches:**
+> - `cache: true/false` - controls whether to cache the Flutter SDK installation
+> - `pub-cache: true/false` - controls whether to cache the pub dependencies
 > 
 > **Backward Compatibility:** When `pub-cache` is not specified (empty), it falls back to the `cache` value.
-> This means existing workflows with `cache: true` will automatically cache both Flutter SDK and pub dependencies.
+> This means existing workflows with `cache: true` automatically cache both Flutter SDK and pub dependencies.
 > 
 > You can use them in any combination:
-> - Both enabled: `cache: true` (pub-cache will default to true for backward compatibility)
+> - Both enabled: `cache: true` (`pub-cache` defaults to true for backward compatibility)
 > - Both enabled explicitly: `cache: true` and `pub-cache: true`
 > - Only Flutter SDK: `cache: true` and `pub-cache: false`
 > - Only pub dependencies: `cache: false` and `pub-cache: true` for self-hosted runners
