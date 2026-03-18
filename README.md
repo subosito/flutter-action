@@ -1,7 +1,7 @@
 # flutter-action
 
-Flutter environment for use in GitHub Actions. It works on Linux, Windows, and
-macOS.
+Flutter environment for use in GitHub Actions.
+It works on Linux, Windows, and macOS.
 
 Originally created by [Alif Rachmawadi]. Maintained by [Bartek Pacia].
 
@@ -14,7 +14,7 @@ The following sections show how to configure this action.
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -30,7 +30,7 @@ This is inspired by [`actions/setup-go`](https://github.com/actions/setup-go).
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -63,16 +63,16 @@ steps:
 > [!NOTE]
 >
 > Using `flutter-version-file` requires [`yq`](https://github.com/mikefarah/yq),
-> which is not pre-installed in `windows` runners. Fortunately, since version
-> 2.18.0, this action installs `yq` automatically if `flutter-version-file`
-> is specified, so no action is required from you.
+> which is not pre-installed in `windows` runners.
+> This action installs `yq` automatically if `flutter-version-file` is specified,
+> so no action is required from you.
 
 ### Use latest release for particular channel
 
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -85,7 +85,7 @@ steps:
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -99,7 +99,7 @@ steps:
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -113,7 +113,7 @@ steps:
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -129,7 +129,7 @@ You can get more infomation from [Flutter official docs](https://docs.flutter.de
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     env:
       FLUTTER_STORAGE_BASE_URL: https://storage.flutter-io.cn
@@ -145,13 +145,12 @@ steps:
 This action supports "alternative Flutters" in addition to the official
 [`flutter/flutter`](https://github.com/flutter/flutter), for example:
 - [Flock](https://github.com/join-the-flock/flock.git)
-- [a Flutter fork that supports
-  HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
+- [a Flutter fork that supports HarmonyOS](https://gitee.com/harmonycommando_flutter/flutter.git)
 
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -161,24 +160,18 @@ steps:
   - run: flutter --version
 ```
 
-> [!NOTE]
->
-> This feature was implemented in
-> [#344](https://github.com/subosito/flutter-action/pull/334) and is available
-> since v2.18.0.
-
 ### Apply a patch
 
-Sometimes you find a bug in Flutter and you fix it yourself (you're a
-rockstar!), and then submit a patch/PR to Flutter repository. However, everyone
-knows that code review takes time, but your app needs the fix _now_.
+Sometimes you find a bug in Flutter and fix it yourself (you're a rockstar!),
+and then submit a patch/PR to Flutter repository.
+However, everyone knows that code review takes time, but your app needs the fix _now_.
 
 You can apply your patch like this:
 
 ```yaml
 steps:
 - name: Clone repository
-  uses: actions/checkout@v4
+  uses: actions/checkout@v6
 - uses: subosito/flutter-action@v2
   with:
     flutter-version: 3.22.2
@@ -201,7 +194,7 @@ Build **Android** APK and app bundle:
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -224,7 +217,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -239,7 +232,7 @@ jobs:
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -257,7 +250,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -273,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -296,7 +289,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -316,7 +309,7 @@ Integration with [`actions/cache`](https://github.com/actions/cache):
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     with:
@@ -368,10 +361,10 @@ dynamic values:
 
 Example usage (inspired by [actions/cache@v5](https://github.com/actions/cache/blob/v5/README.md#skipping-steps-based-on-cache-hit) and [#346](https://github.com/subosito/flutter-action/pull/346)) to skip `melos bootstrap` if there was a pub cache hit:
 
-```
+```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
 
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
@@ -395,7 +388,7 @@ Use outputs from `flutter-action`:
 ```yaml
 steps:
   - name: Clone repository
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     id: flutter-action
@@ -421,7 +414,7 @@ If you don't need to install Flutter and just want the outputs, you can use the
 ```yaml
 steps:
   - name: Clone repository
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
   - name: Set up Flutter
     uses: subosito/flutter-action@v2
     id: flutter-action
