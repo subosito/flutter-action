@@ -227,7 +227,7 @@ if [ ! -x "$CACHE_PATH/flutter/bin/flutter" ]; then
 		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
 		if [ "$VERSION" != "any" ]; then
 			git config --global --add safe.directory "$CACHE_PATH/flutter"
-			(cd "$CACHE_PATH" && git checkout "$VERSION")
+			(cd "$CACHE_PATH/flutter" && git checkout "$VERSION")
 		fi
 	else
 		archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
