@@ -160,6 +160,23 @@ steps:
   - run: flutter --version
 ```
 
+### Use a custom GitHub token
+
+By default, the action authenticates GitHub API requests with `github.token`. 
+You can pass a different token if needed:
+
+```yaml
+steps:
+  - name: Clone repository
+    uses: actions/checkout@v6
+  - name: Set up Flutter
+    uses: subosito/flutter-action@v2
+    with:
+      channel: master
+      token: ${{ secrets.MY_GITHUB_PAT }}
+  - run: flutter --version
+```
+
 ### Apply a patch
 
 Sometimes you find a bug in Flutter and fix it yourself (you're a rockstar!),

@@ -71,6 +71,7 @@ ARCH=""
 VERSION=""
 VERSION_FILE=""
 GIT_SOURCE=""
+TOKEN="${GITHUB_TOKEN:-}"
 
 while getopts 'tc:k:d:l:pa:n:f:g:' flag; do
 	case "$flag" in
@@ -224,7 +225,13 @@ fi
 
 if [ ! -x "$CACHE_PATH/flutter/bin/flutter" ]; then
 	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
+		if [ -n "$TOKEN" ]; then
+			GIT_EXTRAHEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 | tr -d '\n')"
+			git -c "http.${GITHUB_SERVER_URL:-https://github.com}/.extraheader=$GIT_EXTRAHEADER" \
+				clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
+		else
+			git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
+		fi
 		if [ "$VERSION" != "any" ]; then
 			git config --global --add safe.directory "$CACHE_PATH/flutter"
 			(cd "$CACHE_PATH/flutter" && git checkout "$VERSION")
