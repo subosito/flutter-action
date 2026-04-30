@@ -54,6 +54,10 @@ inputs:
     description: Git clone source
     required: false
     default: "https://github.com/flutter/flutter.git"
+  token:
+    description: "GitHub token for authenticated GitHub API requests to avoid rate limiting"
+    required: false
+    default: ${{ github.token }}
 
 outputs:
   CHANNEL:
@@ -106,6 +110,8 @@ runs:
     - name: Set action inputs
       id: flutter-action
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         $GITHUB_ACTION_PATH/setup.sh -p \
           -n '${{ inputs.flutter-version }}' \
@@ -137,6 +143,8 @@ runs:
     - name: Run setup script
       shell: bash
       if: ${{ inputs.dry-run != 'true' && inputs.dry-run != true }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         $GITHUB_ACTION_PATH/setup.sh \
           -n '${{ steps.flutter-action.outputs.VERSION }}' \
