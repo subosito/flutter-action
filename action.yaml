@@ -54,6 +54,14 @@ inputs:
     description: Git clone source
     required: false
     default: "https://github.com/flutter/flutter.git"
+  custom-cache-action:
+    description: Path to a custom caching action that will be executed for flutter cache instead of the default caching mechanism. It must be a drop-in replacement for actions/cache.
+    required: false
+    default: ""
+  custom-pub-cache-action:
+    description: Path to a custom caching action that will be executed for pub cache instead of the default caching mechanism. It must be a drop-in replacement for actions/cache.
+    required: false
+    default: ""
 
 outputs:
   CHANNEL:
@@ -81,10 +89,10 @@ outputs:
     value: "${{ steps.flutter-action.outputs.GIT_SOURCE }}"
     description: Git source of Flutter SDK repository to clone
   CACHE-HIT:
-    value: "${{ steps.cache-flutter.outputs.cache-hit }}"
+    value: "${{ fromJSON(steps.cache-flutter.outputs.outputs || '{}').cache-hit }}"
     description: "`true` if the flutter cache was a hit"
   PUB-CACHE-HIT:
-    value: "${{ steps.cache-pub.outputs.cache-hit }}"
+    value: "${{ fromJSON(steps.cache-pub.outputs.outputs || '{}').cache-hit }}"
     description: "`true` if the pub cache was a hit"
 
 runs:
@@ -120,19 +128,23 @@ runs:
 
     - name: Cache Flutter
       id: cache-flutter
-      uses: actions/cache@v5
-      if: ${{ inputs.cache == 'true' }}
-      with:
-        path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
-        key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
+      uses: jenseng/dynamic-uses@v1
+      if: ${{ inputs.cache == 'true' || inputs.custom-cache-action != '' }}
+      with:      
+        uses: ${{ inputs.custom-cache-action == '' && 'actions/cache@v5' || inputs.custom-cache-action }}
+        with: |
+          path: ${{ toJSON(steps.flutter-action.outputs.CACHE-PATH) }}
+          key: '${{ steps.flutter-action.outputs.CACHE-KEY }}'
 
     - name: Cache pub dependencies
-      uses: actions/cache@v5
       id: cache-pub
-      if: ${{ (inputs.pub-cache == '' && inputs.cache == 'true') || inputs.pub-cache == 'true' }}
+      if: ${{ ((inputs.pub-cache == '' && inputs.cache == 'true') || inputs.pub-cache == 'true') || inputs.custom-pub-cache-action != '' }}
+      uses: jenseng/dynamic-uses@v1
       with:
-        path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
-        key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}
+        uses: ${{ inputs.custom-pub-cache-action == '' && 'actions/cache@v5' || inputs.custom-pub-cache-action }}
+        with: |
+          path: ${{ toJSON(steps.flutter-action.outputs.PUB-CACHE-PATH) }}
+          key: '${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}'
 
     - name: Run setup script
       shell: bash
