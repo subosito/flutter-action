@@ -112,6 +112,9 @@ if [ -n "$VERSION_FILE" ]; then
 		VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
 	fi
 
+    # Take lower bound of version if it is in the form of "^x.y.z"
+    VERSION="${VERSION#^}"
+
 	if [[ "$VERSION" == "stable" ]] || [[ "$VERSION" == "beta" ]] || [[ "$VERSION" == "master" ]] || [[ "$VERSION" == "main" ]]; then
 		CHANNEL="$VERSION"
 		VERSION="any"
