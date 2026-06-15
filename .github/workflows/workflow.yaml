@@ -79,7 +79,13 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest]
+          [
+            ubuntu-latest,
+            ubuntu-26.04-arm,
+            windows-latest,
+            windows-11-arm,
+            macos-latest,
+          ]
 
     steps:
       - name: Clone repository
@@ -87,7 +93,7 @@ jobs:
       - uses: ./
         with:
           channel: stable
-          flutter-version: 3.10.6
+          flutter-version: 3.44.x
           cache: true
       - run: dart --version
         shell: bash
@@ -99,7 +105,7 @@ jobs:
 
     strategy:
       matrix:
-        operating-system: [ubuntu-latest]
+        operating-system: [ubuntu-latest, windows-11-arm]
 
     steps:
       - name: Clone repository
@@ -142,6 +148,27 @@ jobs:
           echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
         shell: bash
       - run: flutter --version
+        shell: bash
+
+  test_print_output_win_arm64:
+    runs-on: windows-11-arm
+
+    # These calls to setup.sh sepcify the -t flag, which enables test mode.
+    # Test mode uses hardcoded Flutter release manifests from test/ directory.
+
+    steps:
+      - name: Install dependencies
+        run: choco install yq
+        shell: powershell
+      - name: Clone repository
+        uses: actions/checkout@v6
+      - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'stable'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'any'
+        shell: bash
+      - run: ./setup.sh -t -p                        | grep 'arm64'
         shell: bash
 
   test_print_output_x64:

@@ -28,8 +28,9 @@ filter_by_version() {
 	jq --arg version "$1" '.[].version |= gsub("^v"; "") | (if $version == "any" then .[0] else (map(select(.version == $version or (.version | startswith(($version | sub("\\.x$"; "")) + ".")) and .version != $version)) | .[0]) end)'
 }
 
-not_found_error() {
-	echo "Unable to determine Flutter version for channel: $1 version: $2 architecture: $3"
+not_found_warning() {
+	echo "Unable to determine Flutter version for channel: $1 version: $2 architecture: $3 via the JSON manifest $4"
+	echo "Falling back to git clone \"$5\", which may be slower."
 }
 
 transform_path() {
@@ -154,18 +155,6 @@ else
 	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
-if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
-else
-	VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
-fi
-
-case "$VERSION_MANIFEST" in
-*null*)
-	not_found_error "$CHANNEL" "$VERSION" "$ARCH"
-	exit 1
-	;;
-esac
 
 expand_key() {
 	version_channel=$(echo "$VERSION_MANIFEST" | jq -r '.channel')
@@ -183,6 +172,13 @@ expand_key() {
 
 	echo "$expanded_key"
 }
+
+VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
+case "$VERSION_MANIFEST" in
+*null*)
+	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
+	;;
+esac
 
 CACHE_KEY=$(expand_key "$CACHE_KEY")
 PUB_CACHE_KEY=$(expand_key "$PUB_CACHE_KEY")
@@ -223,14 +219,26 @@ if [ "$PRINT_ONLY" = true ]; then
 fi
 
 if [ ! -x "$CACHE_PATH/flutter/bin/flutter" ]; then
-	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
+	archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
+	if [ -z "$archive_url" ] || [ "$archive_url" = "null" ]; then
+		not_found_warning "$CHANNEL" "$VERSION" "$ARCH" "$MANIFEST_URL" "$GIT_SOURCE"
 		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
 		if [ "$VERSION" != "any" ]; then
 			git config --global --add safe.directory "$CACHE_PATH/flutter"
-			(cd "$CACHE_PATH/flutter" && git checkout "$VERSION")
+			# Sanitize VERSION, as it could be a pattern like 3.15.x
+			GIT_PATTERN="${VERSION/%x/*}"
+			if [ "$VERSION" != "$GIT_PATTERN" ]; then
+			  # We cannot simply checkout as we have a pattern, so we need to find the right ref that matches the pattern
+			  GIT_REF=$(git -C "$CACHE_PATH/flutter" tag -l "$GIT_PATTERN" --sort=-v:refname | grep -v "pre" | head -n 1)
+			  if [ -z "$GIT_REF" ]; then
+			    echo "No git ref found for pattern $GIT_PATTERN"
+			    exit 1
+			  fi
+			  VERSION="$GIT_REF"
+			fi
+			(cd "$CACHE_PATH/flutter" && git checkout "$VERSION" && ./bin/flutter doctor)
 		fi
 	else
-		archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
 		download_archive "$archive_url" "$CACHE_PATH"
 	fi
 fi
