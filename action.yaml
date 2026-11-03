@@ -143,4 +143,5 @@ runs:
           -a '${{ steps.flutter-action.outputs.ARCHITECTURE }}' \
           -c '${{ steps.flutter-action.outputs.CACHE-PATH }}' \
           -d '${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}' \
+          -g '${{ inputs.git-source }}' \
           ${{ steps.flutter-action.outputs.CHANNEL }}
