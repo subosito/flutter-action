@@ -239,6 +239,31 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -l '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-key' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-key'
         shell: bash
+      - name: Verify master/main cache key resolves git HEAD hash
+        shell: bash
+        run: |
+          tmp_repo=$(mktemp -d)
+          tmp_out=$(mktemp)
+          git init -q -b master "$tmp_repo"
+          git -C "$tmp_repo" config user.email "test@example.com"
+          git -C "$tmp_repo" config user.name "Test"
+          git -C "$tmp_repo" commit -q --allow-empty -m "commit 1"
+          sha1=$(git -C "$tmp_repo" rev-parse HEAD)
+
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" master
+          grep "CACHE-KEY=flutter-linux-master-any-x64-$sha1" "$tmp_out"
+
+          git -C "$tmp_repo" commit -q --allow-empty -m "commit 2"
+          sha2=$(git -C "$tmp_repo" rev-parse HEAD)
+          : >"$tmp_out"
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" master
+          grep "CACHE-KEY=flutter-linux-master-any-x64-$sha2" "$tmp_out"
+
+          : >"$tmp_out"
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" -n "$sha1" master
+          grep "CACHE-KEY=flutter-linux-master-$sha1-x64-master" "$tmp_out"
+
+          rm -rf "$tmp_repo" "$tmp_out"
 
 
   test_print_output_arm64:
@@ -312,3 +337,28 @@ jobs:
         shell: bash
       - run: ./setup.sh -t -p -l '/tmp/flutter/:channel:-:version:-:hash:-pub-cache-key' | grep '/tmp/flutter/stable-3.7.7-2ad6cd72c040113b47ee9055e722606a490ef0da-pub-cache-key'
         shell: bash
+      - name: Verify master/main cache key resolves git HEAD hash
+        shell: bash
+        run: |
+          tmp_repo=$(mktemp -d)
+          tmp_out=$(mktemp)
+          git init -q -b master "$tmp_repo"
+          git -C "$tmp_repo" config user.email "test@example.com"
+          git -C "$tmp_repo" config user.name "Test"
+          git -C "$tmp_repo" commit -q --allow-empty -m "commit 1"
+          sha1=$(git -C "$tmp_repo" rev-parse HEAD)
+
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" master
+          grep "CACHE-KEY=flutter-macos-master-any-arm64-$sha1" "$tmp_out"
+
+          git -C "$tmp_repo" commit -q --allow-empty -m "commit 2"
+          sha2=$(git -C "$tmp_repo" rev-parse HEAD)
+          : >"$tmp_out"
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" master
+          grep "CACHE-KEY=flutter-macos-master-any-arm64-$sha2" "$tmp_out"
+
+          : >"$tmp_out"
+          GITHUB_OUTPUT="$tmp_out" ./setup.sh -p -g "$tmp_repo" -n "$sha1" master
+          grep "CACHE-KEY=flutter-macos-master-$sha1-arm64-master" "$tmp_out"
+
+          rm -rf "$tmp_repo" "$tmp_out"
