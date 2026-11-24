@@ -148,6 +148,20 @@ if [ -z "${PUB_CACHE:-}" ]; then
 	fi
 fi
 
+# `DART_INSTALL_BIN` is where `dart install` places installed executables
+# (`$DART_DATA_HOME/install/bin`, defaulting to OS conventions).
+if [ -n "${DART_DATA_HOME:-}" ]; then
+	DART_DATA_HOME_TRIMMED="${DART_DATA_HOME%/}"
+	DART_DATA_HOME_TRIMMED="${DART_DATA_HOME_TRIMMED%\\}"
+	DART_INSTALL_BIN="$DART_DATA_HOME_TRIMMED/install/bin"
+elif [ "$OS_NAME" = "windows" ]; then
+	DART_INSTALL_BIN="$LOCALAPPDATA\\Dart\\install\\bin"
+elif [ "$OS_NAME" = "macos" ]; then
+	DART_INSTALL_BIN="$HOME/Library/Application Support/Dart/install/bin"
+else
+	DART_INSTALL_BIN="${XDG_STATE_HOME:-$HOME/.local/state}/Dart/install/bin"
+fi
+
 if [ "$TEST_MODE" = true ]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
 else
@@ -188,6 +202,7 @@ CACHE_KEY=$(expand_key "$CACHE_KEY")
 PUB_CACHE_KEY=$(expand_key "$PUB_CACHE_KEY")
 CACHE_PATH=$(expand_key "$(transform_path "$CACHE_PATH")")
 PUB_CACHE=$(expand_key "$(transform_path "$PUB_CACHE")")
+DART_INSTALL_BIN=$(transform_path "$DART_INSTALL_BIN")
 
 if [ "$PRINT_ONLY" = true ]; then
 	version_info=$(echo "$VERSION_MANIFEST" | jq -j '.channel,":",.version,":",.dart_sdk_arch // "x64"')
@@ -244,4 +259,5 @@ fi
 	echo "$CACHE_PATH/flutter/bin"
 	echo "$CACHE_PATH/flutter/bin/cache/dart-sdk/bin"
 	echo "$PUB_CACHE/bin"
+	echo "$DART_INSTALL_BIN"
 } >>"${GITHUB_PATH:-/dev/null}"
