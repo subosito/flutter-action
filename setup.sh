@@ -148,15 +148,43 @@ if [ -z "${PUB_CACHE:-}" ]; then
 	fi
 fi
 
-if [ "$TEST_MODE" = true ]; then
-	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
-else
-	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
-fi
+resolve_git_hash() {
+	if [ "$TEST_MODE" = true ]; then
+		echo "$CHANNEL"
+		return
+	fi
+
+	ref_args=("refs/heads/$CHANNEL")
+	if [ "$VERSION" != "any" ]; then
+		ref_args=("refs/heads/$VERSION" "refs/tags/$VERSION^{}" "refs/tags/$VERSION")
+	fi
+
+	resolved_hash=$(
+		(
+			case "$GIT_SOURCE" in
+			*://* | *@*) cd "${RUNNER_TEMP:-/tmp}" ;;
+			esac
+			GIT_TERMINAL_PROMPT=0 git ls-remote "$GIT_SOURCE" "${ref_args[@]}" 2>/dev/null
+		) | awk '{ hash = $1 } END { print hash }' || true
+	)
+
+	if [ -n "$resolved_hash" ]; then
+		echo "$resolved_hash"
+	else
+		echo "$CHANNEL"
+	fi
+}
 
 if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$CHANNEL\",\"sha256\":\"$CHANNEL\"}"
+	VERSION_HASH=$(resolve_git_hash)
+	VERSION_MANIFEST="{\"channel\":\"$CHANNEL\",\"version\":\"$VERSION\",\"dart_sdk_arch\":\"$ARCH\",\"hash\":\"$VERSION_HASH\",\"sha256\":\"$VERSION_HASH\"}"
 else
+	if [ "$TEST_MODE" = true ]; then
+		RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
+	else
+		RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
+	fi
+
 	VERSION_MANIFEST=$(echo "$RELEASE_MANIFEST" | filter_by_channel "$CHANNEL" | filter_by_arch "$ARCH" | filter_by_version "$VERSION")
 fi
 
