@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
 check_command() {
 	command -v "$1" >/dev/null 2>&1
@@ -45,7 +45,7 @@ download_archive() {
 	archive_name=$(basename "$1")
 	archive_local="$RUNNER_TEMP/$archive_name"
 
-	curl --connect-timeout 15 --retry 5 "$archive_url" >"$archive_local"
+	curl -fL --connect-timeout 15 --retry 5 "$archive_url" >"$archive_local"
 
 	mkdir -p "$2"
 
@@ -151,7 +151,7 @@ fi
 if [ "$TEST_MODE" = true ]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
 else
-	RELEASE_MANIFEST=$(curl --silent --connect-timeout 15 --retry 5 "$MANIFEST_URL")
+	RELEASE_MANIFEST=$(curl -fsSL --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
 if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
@@ -161,7 +161,7 @@ else
 fi
 
 case "$VERSION_MANIFEST" in
-*null*)
+*null* | "")
 	not_found_error "$CHANNEL" "$VERSION" "$ARCH"
 	exit 1
 	;;

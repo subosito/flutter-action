@@ -153,6 +153,25 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
+      - name: Verify setup.sh fails fast on invalid or unreachable manifests
+        shell: bash
+        run: |
+          os_name=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+          tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/flutter-action.XXXXXX")
+          trap 'rm -rf "$tmp_dir"' EXIT
+          mkdir -p "$tmp_dir/test"
+          cp ./setup.sh "$tmp_dir/setup.sh"
+          manifest_file="$tmp_dir/test/releases_$os_name.json"
+          tmp_err="$tmp_dir/stderr.log"
+
+          echo "<html>404 Not Found</html>" >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          : >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          if FLUTTER_STORAGE_BASE_URL="file:///nonexistent" ./setup.sh -p stable 2>"$tmp_err"; then exit 1; fi
+          grep -q "curl:" "$tmp_err"
       - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
         shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'
@@ -250,6 +269,25 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
+      - name: Verify setup.sh fails fast on invalid or unreachable manifests
+        shell: bash
+        run: |
+          os_name=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+          tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/flutter-action.XXXXXX")
+          trap 'rm -rf "$tmp_dir"' EXIT
+          mkdir -p "$tmp_dir/test"
+          cp ./setup.sh "$tmp_dir/setup.sh"
+          manifest_file="$tmp_dir/test/releases_$os_name.json"
+          tmp_err="$tmp_dir/stderr.log"
+
+          echo "<html>404 Not Found</html>" >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          : >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          if FLUTTER_STORAGE_BASE_URL="file:///nonexistent" ./setup.sh -p stable 2>"$tmp_err"; then exit 1; fi
+          grep -q "curl:" "$tmp_err"
       - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
         shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'
