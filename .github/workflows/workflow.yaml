@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run shellcheck
         uses: ludeeus/action-shellcheck@master
 
@@ -30,7 +30,6 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
-          - macos-13
         channel: [stable, beta, master]
         dry-run: [true, false]
         git-source:
@@ -43,7 +42,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - id: flutter-action
         uses: ./
         with:
@@ -80,11 +79,11 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          [ubuntu-latest, windows-latest, macos-latest, macos-13]
+          [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: ./
         with:
           channel: stable
@@ -104,7 +103,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: ./
         with:
           channel: stable
@@ -116,6 +115,35 @@ jobs:
         run: flutter --version | grep '3.3.10'
         shell: bash
 
+  test_master_version:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+      - id: flutter-action
+        uses: ./
+        with:
+          channel: master
+          flutter-version: e6ed6e9e16782a24a912e79d3100c496600aae5b # some commit made on 18/03/2026
+      - name: Echo outputs
+        run: |
+          echo RUNNER-OS=${{ runner.os }}
+          echo RUNNER-ARCH=${{ runner.arch }}
+
+          echo CACHE-PATH=${{ steps.flutter-action.outputs.CACHE-PATH }}
+          echo CACHE-KEY=${{ steps.flutter-action.outputs.CACHE-KEY }}
+          echo CHANNEL=${{ steps.flutter-action.outputs.CHANNEL }}
+          echo VERSION=${{ steps.flutter-action.outputs.VERSION }}
+          echo ARCHITECTURE=${{ steps.flutter-action.outputs.ARCHITECTURE }}
+        shell: bash
+      - run: flutter --version
+        shell: bash
+
   test_print_output_x64:
     runs-on: ubuntu-latest
 
@@ -124,7 +152,26 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Verify setup.sh fails fast on invalid or unreachable manifests
+        shell: bash
+        run: |
+          os_name=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+          tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/flutter-action.XXXXXX")
+          trap 'rm -rf "$tmp_dir"' EXIT
+          mkdir -p "$tmp_dir/test"
+          cp ./setup.sh "$tmp_dir/setup.sh"
+          manifest_file="$tmp_dir/test/releases_$os_name.json"
+          tmp_err="$tmp_dir/stderr.log"
+
+          echo "<html>404 Not Found</html>" >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          : >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          if FLUTTER_STORAGE_BASE_URL="file:///nonexistent" ./setup.sh -p stable 2>"$tmp_err"; then exit 1; fi
+          grep -q "curl:" "$tmp_err"
       - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
         shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'
@@ -221,7 +268,26 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Verify setup.sh fails fast on invalid or unreachable manifests
+        shell: bash
+        run: |
+          os_name=$(echo "$RUNNER_OS" | awk '{print tolower($0)}')
+          tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/flutter-action.XXXXXX")
+          trap 'rm -rf "$tmp_dir"' EXIT
+          mkdir -p "$tmp_dir/test"
+          cp ./setup.sh "$tmp_dir/setup.sh"
+          manifest_file="$tmp_dir/test/releases_$os_name.json"
+          tmp_err="$tmp_dir/stderr.log"
+
+          echo "<html>404 Not Found</html>" >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          : >"$manifest_file"
+          if "$tmp_dir/setup.sh" -t -p stable; then exit 1; fi
+
+          if FLUTTER_STORAGE_BASE_URL="file:///nonexistent" ./setup.sh -p stable 2>"$tmp_err"; then exit 1; fi
+          grep -q "curl:" "$tmp_err"
       - run: ./setup.sh -t -p -f test/pubspec.yaml   | grep '3.3.10'
         shell: bash
       - run: ./setup.sh -t -p                        | grep 'stable'

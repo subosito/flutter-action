@@ -15,7 +15,7 @@ inputs:
     required: false
     default: ""
   flutter-version-file:
-    description: The pubspec.yaml file with exact Flutter version defined
+    description: The pubspec.yaml or FVM config file with exact Flutter version defined
     required: false
     default: ""
   architecture:
@@ -32,6 +32,10 @@ inputs:
     default: ""
   cache-path:
     description: Flutter SDK cache path
+    required: false
+    default: ""
+  pub-cache:
+    description: Cache the Dart pub dependencies
     required: false
     default: ""
   pub-cache-key:
@@ -91,7 +95,7 @@ runs:
     # It's not preinstalled on Windows runners.
     # See https://github.com/actions/runner-images/issues/7443#issuecomment-1514597691
     - name: Make yq tool available on Windows runners
-      if: runner.os == 'Windows' && inputs.flutter-version-file != ''
+      if: runner.os == 'Windows' && inputs.flutter-version-file != '' && !endsWith(inputs.flutter-version-file, '.fvmrc') && !endsWith(inputs.flutter-version-file, 'fvm_config.json')
       run: choco install yq
       shell: bash
 
@@ -116,16 +120,16 @@ runs:
 
     - name: Cache Flutter
       id: cache-flutter
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       if: ${{ inputs.cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.CACHE-KEY }}
 
     - name: Cache pub dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       id: cache-pub
-      if: ${{ inputs.cache == 'true' }}
+      if: ${{ (inputs.pub-cache == '' && inputs.cache == 'true') || inputs.pub-cache == 'true' }}
       with:
         path: ${{ steps.flutter-action.outputs.PUB-CACHE-PATH }}
         key: ${{ steps.flutter-action.outputs.PUB-CACHE-KEY }}-${{ hashFiles('**/pubspec.lock') }}

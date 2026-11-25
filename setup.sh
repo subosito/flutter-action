@@ -51,18 +51,10 @@ download_archive() {
 
 	case "$archive_name" in
 	*.zip)
-		EXTRACT_PATH="$RUNNER_TEMP/_unzip_temp"
-		unzip -q -o "$archive_local" -d "$EXTRACT_PATH"
-		# Remove the folder again so that the move command can do a simple rename
-		# instead of moving the content into the target folder.
-		# This is a little bit of a hack since the "mv --no-target-directory"
-		# linux option is not available here
-		rm -r "$2"
-		mv "$EXTRACT_PATH"/flutter "$2"
-		rm -r "$EXTRACT_PATH"
+		unzip -q -o "$archive_local" -d "$2"
 		;;
 	*)
-		tar xf "$archive_local" -C "$2" --strip-components=1
+		tar xf "$archive_local" -C "$2"
 		;;
 	esac
 
@@ -92,9 +84,11 @@ while getopts 'tc:k:d:l:pa:n:f:g:' flag; do
 	n) VERSION="$OPTARG" ;;
 	f)
 		VERSION_FILE="$OPTARG"
-		if [ -n "$VERSION_FILE" ] && ! check_command yq; then
-			echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
-			exit 1
+		if [ -n "$VERSION_FILE" ]; then
+			if [[ "$VERSION_FILE" != *".fvmrc" ]] && [[ "$VERSION_FILE" != *"fvm_config.json" ]] && ! check_command yq; then
+				echo "yq not found. Install it from https://mikefarah.gitbook.io/yq"
+				exit 1
+			fi
 		fi
 		;;
 	g) GIT_SOURCE="$OPTARG" ;;
@@ -110,11 +104,24 @@ if [ -n "$VERSION_FILE" ]; then
 		exit 1
 	fi
 
-	VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
+	if [[ "$VERSION_FILE" == *".fvmrc" ]]; then
+		VERSION="$(jq -r '.flutter' "$VERSION_FILE")"
+	elif [[ "$VERSION_FILE" == *"fvm_config.json" ]]; then
+		VERSION="$(jq -r '.flutterSdkVersion // .flutter' "$VERSION_FILE")"
+	else
+		VERSION="$(yq eval '.environment.flutter' "$VERSION_FILE")"
+	fi
+
+	if [[ "$VERSION" == "stable" ]] || [[ "$VERSION" == "beta" ]] || [[ "$VERSION" == "master" ]] || [[ "$VERSION" == "main" ]]; then
+		CHANNEL="$VERSION"
+		VERSION="any"
+	fi
 fi
 
-shift $((OPTIND - 1))
-CHANNEL="${1:-}"
+ARR_CHANNEL=("${@:$OPTIND:1}")
+if [ -z "${CHANNEL:-}" ]; then
+	CHANNEL="${ARR_CHANNEL[0]:-}"
+fi
 
 [ -z "$CHANNEL" ] && CHANNEL=stable
 [ -z "$VERSION" ] && VERSION=any
@@ -144,7 +151,7 @@ fi
 if [ "$TEST_MODE" = true ]; then
 	RELEASE_MANIFEST=$(cat "$(dirname -- "${BASH_SOURCE[0]}")/test/$MANIFEST_JSON_PATH")
 else
-	RELEASE_MANIFEST=$(curl -sfL --connect-timeout 15 --retry 5 "$MANIFEST_URL")
+	RELEASE_MANIFEST=$(curl -fsSL --connect-timeout 15 --retry 5 "$MANIFEST_URL")
 fi
 
 if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
@@ -154,7 +161,7 @@ else
 fi
 
 case "$VERSION_MANIFEST" in
-*null*)
+*null* | "")
 	not_found_error "$CHANNEL" "$VERSION" "$ARCH"
 	exit 1
 	;;
@@ -198,7 +205,6 @@ if [ "$PRINT_ONLY" = true ]; then
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
-		echo "GIT_SOURCE=$GIT_SOURCE"
 		exit 0
 	fi
 
@@ -211,18 +217,17 @@ if [ "$PRINT_ONLY" = true ]; then
 		echo "CACHE-PATH=$CACHE_PATH"
 		echo "PUB-CACHE-KEY=$PUB_CACHE_KEY"
 		echo "PUB-CACHE-PATH=$PUB_CACHE"
-		echo "GIT_SOURCE=$GIT_SOURCE"
 	} >>"${GITHUB_OUTPUT:-/dev/null}"
 
 	exit 0
 fi
 
-if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
+if [ ! -x "$CACHE_PATH/flutter/bin/flutter" ]; then
 	if [ "$CHANNEL" = "master" ] || [ "$CHANNEL" = "main" ]; then
-		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH"
+		git clone -b "$CHANNEL" "$GIT_SOURCE" "$CACHE_PATH/flutter"
 		if [ "$VERSION" != "any" ]; then
-			git config --global --add safe.directory "$CACHE_PATH"
-			(cd "$CACHE_PATH" && git checkout "$VERSION")
+			git config --global --add safe.directory "$CACHE_PATH/flutter"
+			(cd "$CACHE_PATH/flutter" && git checkout "$VERSION")
 		fi
 	else
 		archive_url=$(echo "$VERSION_MANIFEST" | jq -r '.archive')
@@ -231,12 +236,12 @@ if [ ! -x "$CACHE_PATH/bin/flutter" ]; then
 fi
 
 {
-	echo "FLUTTER_ROOT=$CACHE_PATH"
+	echo "FLUTTER_ROOT=$CACHE_PATH/flutter"
 	echo "PUB_CACHE=$PUB_CACHE"
 } >>"${GITHUB_ENV:-/dev/null}"
 
 {
-	echo "$CACHE_PATH/bin"
-	echo "$CACHE_PATH/bin/cache/dart-sdk/bin"
+	echo "$CACHE_PATH/flutter/bin"
+	echo "$CACHE_PATH/flutter/bin/cache/dart-sdk/bin"
 	echo "$PUB_CACHE/bin"
 } >>"${GITHUB_PATH:-/dev/null}"
